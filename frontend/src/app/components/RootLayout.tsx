@@ -20,11 +20,11 @@ export function RootLayout() {
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-2">
             <MapPin size={14} className="text-[#b71508]" />
-            <span>123 Industrial Ave, TP. Hồ Chí Minh</span>
+            <span>235/10 Vo Thi Sau, Dong Hoa, Binh Duong</span>
           </div>
           <div className="flex items-center gap-2">
             <Mail size={14} className="text-[#b71508]" />
-            <span>contact@tuanloc.vn</span>
+            <span>tuanlocco@gmail.com</span>
           </div>
         </div>
         <div className="flex items-center gap-4 text-white">
@@ -38,17 +38,11 @@ export function RootLayout() {
 
       {/* Header */}
       <header className="bg-white border-b border-gray-100 py-4 px-8 flex justify-between items-center sticky top-0 z-50 shadow-sm">
-        <Link to="/" className="flex items-center gap-2">
-          <div className="bg-[#b71508] text-white p-1 rounded">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M4 6H20V8H4V6Z" fill="currentColor"/>
-              <path d="M4 11H20V13H4V11Z" fill="currentColor"/>
-              <path d="M4 16H14V18H4V16Z" fill="currentColor"/>
-            </svg>
-          </div>
+        <Link to="/" className="flex items-center gap-3">
+          <img src="/Logo.png" alt="Tuấn Lộc Logo" className="h-12 w-auto object-contain" />
           <div>
-            <div className="text-xl font-bold text-[#111827] tracking-tight leading-none uppercase">TUAN LOC</div>
-            <div className="text-[9px] font-semibold text-[#b71508] tracking-widest uppercase">HẠ TẦNG ĐIỆN & XÂY DỰNG</div>
+            <div className="text-xl font-bold text-[#b71508] tracking-tight leading-none uppercase">TUẤN LỘC</div>
+            <div className="text-[9px] font-semibold text-[#111827] tracking-widest uppercase margin-top-4"> BUÔN BÁN & THI CÔNG ĐIỆN CÔNG NGHIỆP</div>
           </div>
         </Link>
 
@@ -74,7 +68,7 @@ export function RootLayout() {
           </div>
           <div>
             <div className="text-xs text-gray-500 font-semibold uppercase tracking-wider">HOTLINE 24/7</div>
-            <div className="text-[#111827] font-bold text-lg">0900-TUAN-LOC</div>
+            <div className="text-[#111827] font-bold text-lg">098-535-2345</div>
           </div>
         </div>
       </header>
@@ -88,14 +82,8 @@ export function RootLayout() {
       <footer className="bg-[#e0e7ff] text-[#4b5563] pt-16 pb-8 border-t border-[#c7d2fe]">
         <div className="max-w-7xl mx-auto px-8 grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           <div>
-            <Link to="/" className="flex items-center gap-2 mb-6">
-              <div className="bg-[#b71508] text-white p-1 rounded">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M4 6H20V8H4V6Z" fill="currentColor"/>
-                  <path d="M4 11H20V13H4V11Z" fill="currentColor"/>
-                  <path d="M4 16H14V18H4V16Z" fill="currentColor"/>
-                </svg>
-              </div>
+            <Link to="/" className="flex items-center gap-3 mb-6">
+              <img src="/Logo.png" alt="Tuấn Lộc Logo" className="h-12 w-auto object-contain" />
               <div className="text-xl font-bold text-[#b71508] tracking-tight leading-none uppercase">Tuấn Lộc</div>
             </Link>
             <p className="text-sm leading-relaxed mb-6">
