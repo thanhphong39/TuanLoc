@@ -18,7 +18,15 @@ app.use("/api/posts", require("./src/routes/post"));
 // MongoDB Connection
 mongoose
   .connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB Connected"))
+  .then(async () => {
+    console.log("MongoDB Connected");
+    const Admin = require("./src/models/Admin");
+    const exists = await Admin.findOne({ username: "admin" });
+    if (!exists) {
+      await Admin.create({ username: "admin", password: "admin@123" });
+      console.log("Default admin created — username: admin / password: admin@123");
+    }
+  })
   .catch((err) => console.error("MongoDB connection error:", err.message));
 
 const PORT = process.env.PORT || 5000;

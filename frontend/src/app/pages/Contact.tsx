@@ -1,18 +1,42 @@
+import { useState } from "react";
 import { MapPin, PhoneCall, Mail, Navigation } from "lucide-react";
+import { createContact } from "../../lib/api";
 
 export function Contact() {
+  const [form, setForm] = useState({ fullName: "", email: "", phone: "", projectDescription: "" });
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.fullName || !form.email || !form.phone || !form.projectDescription) return;
+    setSubmitting(true);
+    try {
+      await createContact(form);
+      setForm({ fullName: "", email: "", phone: "", projectDescription: "" });
+      alert("Yêu cầu đã được gửi! Chúng tôi sẽ phản hồi trong vòng 24 giờ.");
+    } catch {
+      alert("Có lỗi xảy ra. Vui lòng thử lại.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <div className="flex flex-col w-full bg-white">
       {/* Hero */}
       <section className="relative w-full h-[350px] flex items-center bg-[#3b4b8a] overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <img 
-            src="https://images.unsplash.com/photo-1655936072893-921e69ae9038?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzdGVlbCUyMGJ1aWxkaW5nJTIwZnJhbWUlMjBjb25zdHJ1Y3Rpb258ZW58MXx8fHwxNzc4NjcwMDk3fDA&ixlib=rb-4.1.0&q=80&w=1080" 
-            alt="Hero Background" 
+          <img
+            src="https://images.unsplash.com/photo-1655936072893-921e69ae9038?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzdGVlbCUyMGJ1aWxkaW5nJTIwZnJhbWUlMjBjb25zdHJ1Y3Rpb258ZW58MXx8fHwxNzc4NjcwMDk3fDA&ixlib=rb-4.1.0&q=80&w=1080"
+            alt="Hero Background"
             className="w-full h-full object-cover opacity-30 mix-blend-multiply"
           />
         </div>
-        
+
         <div className="relative z-10 max-w-7xl mx-auto px-8 w-full text-white">
           <h1 className="text-5xl font-bold mb-4 text-white">Liên hệ với chúng tôi</h1>
           <p className="text-lg text-blue-100 max-w-xl">
@@ -66,19 +90,40 @@ export function Contact() {
 
         {/* Contact Form */}
         <div className="bg-[#f8fafc] border border-gray-200 rounded-xl p-10 h-fit">
-          <form className="flex flex-col gap-6">
+          <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div>
                 <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">HỌ VÀ TÊN</label>
-                <input type="text" placeholder="Nguyễn Văn A" className="w-full bg-white border border-gray-200 rounded p-4 text-sm text-[#111827] outline-none focus:border-[#b71508]" />
+                <input
+                  type="text"
+                  name="fullName"
+                  value={form.fullName}
+                  onChange={handleChange}
+                  placeholder="Nguyễn Văn A"
+                  className="w-full bg-white border border-gray-200 rounded p-4 text-sm text-[#111827] outline-none focus:border-[#b71508]"
+                />
               </div>
               <div>
                 <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">ĐỊA CHỈ EMAIL</label>
-                <input type="email" placeholder="email@congty.com" className="w-full bg-white border border-gray-200 rounded p-4 text-sm text-[#111827] outline-none focus:border-[#b71508]" />
+                <input
+                  type="email"
+                  name="email"
+                  value={form.email}
+                  onChange={handleChange}
+                  placeholder="email@congty.com"
+                  className="w-full bg-white border border-gray-200 rounded p-4 text-sm text-[#111827] outline-none focus:border-[#b71508]"
+                />
               </div>
               <div>
                 <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">SỐ ĐIỆN THOẠI</label>
-                <input type="text" placeholder="+84 ..." className="w-full bg-white border border-gray-200 rounded p-4 text-sm text-[#111827] outline-none focus:border-[#b71508]" />
+                <input
+                  type="text"
+                  name="phone"
+                  value={form.phone}
+                  onChange={handleChange}
+                  placeholder="+84 ..."
+                  className="w-full bg-white border border-gray-200 rounded p-4 text-sm text-[#111827] outline-none focus:border-[#b71508]"
+                />
               </div>
               <div>
                 <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">DỊCH VỤ QUAN TÂM</label>
@@ -92,12 +137,23 @@ export function Contact() {
             </div>
             <div>
               <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">MÔ TẢ DỰ ÁN</label>
-              <textarea rows={5} placeholder="Cho chúng tôi biết về yêu cầu dự án của bạn..." className="w-full bg-white border border-gray-200 rounded p-4 text-sm text-[#111827] outline-none focus:border-[#b71508] resize-none"></textarea>
+              <textarea
+                rows={5}
+                name="projectDescription"
+                value={form.projectDescription}
+                onChange={handleChange}
+                placeholder="Cho chúng tôi biết về yêu cầu dự án của bạn..."
+                className="w-full bg-white border border-gray-200 rounded p-4 text-sm text-[#111827] outline-none focus:border-[#b71508] resize-none"
+              />
             </div>
-            
+
             <div className="pt-4">
-              <button type="submit" className="bg-[#b71508] text-white font-bold py-4 rounded text-sm uppercase tracking-wider hover:bg-red-800 transition-colors w-full mb-4">
-                GỬI YÊU CẦU
+              <button
+                type="submit"
+                disabled={submitting}
+                className="bg-[#b71508] text-white font-bold py-4 rounded text-sm uppercase tracking-wider hover:bg-red-800 transition-colors w-full mb-4 disabled:opacity-60"
+              >
+                {submitting ? "ĐANG GỬI..." : "GỬI YÊU CẦU"}
               </button>
               <p className="text-center text-[10px] text-gray-500 uppercase tracking-widest">
                 Các quản lý dự án của chúng tôi thường phản hồi trong vòng 24 giờ làm việc.
@@ -110,7 +166,7 @@ export function Contact() {
       {/* Map */}
       <div className="w-full h-[500px] relative overflow-hidden bg-gray-900 group">
          <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtYXB8ZW58MXx8fHwxNzc4NjY5OTk1fDA&ixlib=rb-4.1.0&q=80&w=1080" alt="Map Location" className="w-full h-full object-cover mix-blend-luminosity opacity-40 transition-transform duration-1000 group-hover:scale-105" />
-         
+
          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
             <div className="bg-white px-6 py-4 rounded-lg shadow-2xl flex items-center gap-4 mb-2 z-10 animate-bounce">
                <div className="bg-[#b71508] text-white p-2 rounded"><MapPin size={20} /></div>

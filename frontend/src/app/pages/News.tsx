@@ -1,53 +1,34 @@
+import { useState, useEffect } from "react";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router";
+import { getPosts, formatDate, type ApiPost } from "../../lib/api";
 
 export function News() {
-  const news = [
-    {
-      id: 1,
-      category: "CÔNG NGHỆ",
-      date: "05 Tháng 10, 2024",
-      title: "Áp dụng công nghệ BIM trong thiết kế hạ tầng điện lực",
-      description: "Nâng cao độ chính xác và giảm thiểu sai sót trong quá trình thi công nhờ vào mô hình...",
-      image: "https://images.unsplash.com/photo-1754572861240-5b3f5a5959ea?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxlbGVjdHJvbmljJTIwY2lyY3VpdCUyMGJvYXJkJTIwdGVjaG5vbG9neXxlbnwxfHx8fDE3Nzg2NzAwNTl8MA&ixlib=rb-4.1.0&q=80&w=1080"
-    },
-    {
-      id: 2,
-      category: "ISO",
-      date: "28 Tháng 09, 2024",
-      title: "Tuấn Lộc đạt chứng nhận ISO 45001 về An toàn lao động",
-      description: "Khẳng định cam kết bảo vệ sức khỏe và an toàn cho toàn bộ đội ngũ kỹ sư, công nhân tại...",
-      image: "https://images.unsplash.com/photo-1589330694653-ded6df03f754?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxJU08lMjBjZXJ0aWZpY2F0aW9uJTIwZG9jdW1lbnR8ZW58MXx8fHwxNzc4NjcwMDU5fDA&ixlib=rb-4.1.0&q=80&w=1080"
-    },
-    {
-      id: 3,
-      category: "NỘI BỘ",
-      date: "12 Tháng 09, 2024",
-      title: "Lễ kỷ niệm 15 năm thành lập Tuấn Lộc Enterprise",
-      description: "Hành trình 15 năm kiến tạo những giá trị bền vững cho ngành điện lực Việt Nam với nhiều...",
-      image: "https://images.unsplash.com/photo-1778074762022-c33cc42f79ae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxlbmdpbmVlcnMlMjBkaXNjdXNzaW5nJTIwYmx1ZXByaW50fGVufDF8fHx8MTc3ODY3MDA2NHww&ixlib=rb-4.1.0&q=80&w=1080"
-    }
-  ];
+  const [news, setNews] = useState<ApiPost[]>([]);
+
+  useEffect(() => {
+    getPosts({ limit: "10" }).then((res) => setNews(res.posts)).catch(() => {});
+  }, []);
 
   return (
     <div className="flex flex-col w-full bg-[#f8fafc]">
       {/* Hero */}
       <section className="relative w-full h-[350px] flex items-center bg-gray-900 overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <img 
-            src="https://images.unsplash.com/photo-1735494033199-cb0b52275d6e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzbWFydCUyMGZhY3RvcnklMjBhdXRvbWF0aW9ufGVufDF8fHx8MTc3ODY2OTk5MXww&ixlib=rb-4.1.0&q=80&w=1080" 
-            alt="Hero Background" 
+          <img
+            src="https://images.unsplash.com/photo-1735494033199-cb0b52275d6e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzbWFydCUyMGZhY3RvcnklMjBhdXRvbWF0aW9ufGVufDF8fHx8MTc3ODY2OTk5MXww&ixlib=rb-4.1.0&q=80&w=1080"
+            alt="Hero Background"
             className="w-full h-full object-cover opacity-30"
           />
         </div>
-        
+
         <div className="relative z-10 max-w-7xl mx-auto px-8 w-full text-white">
           <div className="text-xs font-medium uppercase tracking-widest text-gray-400 mb-6 flex gap-2">
             <Link to="/" className="hover:text-white transition-colors">Trang chủ</Link>
             <span>/</span>
             <span className="text-white">Tin tức</span>
           </div>
-          
+
           <h1 className="text-5xl font-bold mb-4">Tin Tức & Sự Kiện</h1>
           <p className="text-lg text-gray-300 max-w-2xl">
             Cập nhật những thông tin mới nhất về dự án hạ tầng điện, công nghệ thi công và các tiêu chuẩn kỹ thuật hàng đầu từ Tuấn Lộc.
@@ -66,7 +47,7 @@ export function News() {
       </div>
 
       <div className="max-w-7xl mx-auto px-8 py-16 w-full">
-        {/* Featured News */}
+        {/* Featured News — static */}
         <div className="bg-white rounded-xl border border-gray-200 overflow-hidden mb-12 group cursor-pointer flex flex-col md:flex-row hover:shadow-lg transition-shadow">
           <div className="md:w-1/2 relative overflow-hidden h-[400px]">
             <img src="https://images.unsplash.com/photo-1776251896448-a5eb8ae25e35?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzdWJzdGF0aW9uJTIwbWFpbnRlbmFuY2V8ZW58MXx8fHwxNzc4NjcwMDU5fDA&ixlib=rb-4.1.0&q=80&w=1080" alt="Featured" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
@@ -93,21 +74,21 @@ export function News() {
 
         {/* News Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-          {news.map(item => (
-            <div key={item.id} className="bg-white rounded-xl border border-gray-200 overflow-hidden flex flex-col hover:shadow-lg transition-shadow group cursor-pointer">
+          {news.map((item) => (
+            <div key={item._id} className="bg-white rounded-xl border border-gray-200 overflow-hidden flex flex-col hover:shadow-lg transition-shadow group cursor-pointer">
               <div className="relative h-56 overflow-hidden">
                 <img src={item.image} alt={item.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                 <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-[#111827] text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-sm shadow-sm">
-                  {item.category}
+                  {item.badge}
                 </div>
               </div>
               <div className="p-8 flex flex-col flex-1">
-                <div className="text-gray-500 text-xs mb-3">{item.date}</div>
+                <div className="text-gray-500 text-xs mb-3">{formatDate(item.date)}</div>
                 <h3 className="text-xl font-bold text-[#111827] mb-4 group-hover:text-[#b71508] transition-colors line-clamp-3">
                   {item.title}
                 </h3>
                 <p className="text-gray-600 text-sm mb-6 line-clamp-3 flex-1">
-                  {item.description}
+                  {item.content}
                 </p>
                 <div className="text-[#b71508] font-bold text-xs uppercase tracking-wider flex items-center gap-1 mt-auto">
                   Đọc thêm <ArrowRight size={14} />
@@ -143,9 +124,9 @@ export function News() {
             </p>
           </div>
           <div className="flex-1 w-full flex flex-col sm:flex-row gap-4">
-            <input 
-              type="email" 
-              placeholder="Địa chỉ email của bạn" 
+            <input
+              type="email"
+              placeholder="Địa chỉ email của bạn"
               className="w-full bg-[#2a366b] border border-[#4d5e9f] rounded p-4 text-white placeholder-blue-300 outline-none focus:border-white"
             />
             <button className="bg-[#b71508] text-white font-bold py-4 px-8 rounded text-sm uppercase tracking-wider hover:bg-red-800 transition-colors whitespace-nowrap">

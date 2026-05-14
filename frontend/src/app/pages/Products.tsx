@@ -1,52 +1,14 @@
+import { useState, useEffect } from "react";
 import { ChevronDown, FileText, Settings, Download } from "lucide-react";
 import { Link } from "react-router";
+import { getProducts, type ApiProduct } from "../../lib/api";
 
 export function Products() {
-  const products = [
-    {
-      id: "tx-500",
-      category: "Máy biến áp",
-      name: "TX-500 Máy biến áp dầu",
-      badge: "HÀNG SẴN KHO",
-      image: "https://images.unsplash.com/photo-1509390144018-eeaf65052242?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwb3dlciUyMHRyYW5zZm9ybWVyfGVufDF8fHx8MTc3ODY2OTkxNXww&ixlib=rb-4.1.0&q=80&w=1080",
-      specs: [
-        { label: "Điện áp định mức", value: "35 kV" },
-        { label: "Công suất", value: "2500 kVA" },
-        { label: "Tiêu chuẩn", value: "IEC 60076" },
-      ],
-      action: "Liên hệ",
-      actionIcon: <FileText size={16} />
-    },
-    {
-      id: "armor-shield",
-      category: "Dây và Cáp điện",
-      name: "Cáp ArmorShield Cao Thế",
-      badge: "",
-      image: "https://images.unsplash.com/photo-1564491300644-34f660c910da?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxoaWdoJTIwdm9sdGFnZSUyMGNhYmxlJTIwY3Jvc3MlMjBzZWN0aW9ufGVufDF8fHx8MTc3ODY2OTkxNXww&ixlib=rb-4.1.0&q=80&w=1080",
-      specs: [
-        { label: "Dây dẫn", value: "99.9% Cu" },
-        { label: "Cách điện", value: "XLPE" },
-        { label: "Số lõi", value: "3 Lõi" },
-      ],
-      action: "Liên hệ",
-      actionIcon: <FileText size={16} />
-    },
-    {
-      id: "sg-prime",
-      category: "Tủ điện",
-      name: "Trung tâm điều khiển SG-Prime",
-      badge: "DÀNH CHO DOANH NGHIỆP",
-      image: "https://images.unsplash.com/photo-1613072233238-4d290992404d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxlbGVjdHJpY2FsJTIwY29udHJvbCUyMHBhbmVsJTIwc3dpdGNoZ2VhcnxlbnwxfHx8fDE3Nzg2Njk5MTV8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      specs: [
-        { label: "Cấp điện áp", value: "12-24 kV" },
-        { label: "Chống hồ quang", value: "Cấp 4" },
-        { label: "Cấp bảo vệ", value: "IP54" },
-      ],
-      action: "Liên hệ",
-      actionIcon: <Settings size={16} />,
-      primary: true
-    }
-  ];
+  const [products, setProducts] = useState<ApiProduct[]>([]);
+
+  useEffect(() => {
+    getProducts({ limit: "24" }).then((res) => setProducts(res.products)).catch(() => {});
+  }, []);
 
   return (
     <div className="flex flex-col w-full bg-[#f8fafc]">
@@ -111,7 +73,7 @@ export function Products() {
         {/* Product Grid */}
         <div className="flex-1">
           <div className="flex justify-between items-center mb-8">
-            <p className="text-sm text-gray-600 font-medium">Hiển thị 24 sản phẩm công nghiệp</p>
+            <p className="text-sm text-gray-600 font-medium">Hiển thị {products.length} sản phẩm công nghiệp</p>
             <div className="flex items-center gap-3 text-sm">
               <span className="text-gray-500">Sắp xếp:</span>
               <div className="font-bold text-[#b71508] flex items-center gap-1 cursor-pointer">
@@ -121,13 +83,13 @@ export function Products() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            {products.map(product => (
-              <div key={product.id} className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow flex flex-col">
-                <Link to={`/products/${product.id}`} className="block relative h-56 bg-gray-100 p-6 flex items-center justify-center group overflow-hidden">
-                  <img src={product.image} alt={product.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+            {products.map((product) => (
+              <div key={product._id} className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow flex flex-col">
+                <Link to={`/products/${product._id}`} className="relative h-56 bg-gray-100 p-6 flex items-center justify-center group overflow-hidden">
+                  <img src={product.images[0]} alt={product.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                   {product.badge && (
                     <div className={`absolute top-4 left-4 text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded-sm text-white z-10 ${
-                      product.badge === 'HÀNG SẴN KHO' ? 'bg-[#b71508]' : 'bg-[#3b4b8a]'
+                      product.badge === "HÀNG SẴN KHO" ? "bg-[#b71508]" : "bg-[#3b4b8a]"
                     }`}>
                       {product.badge}
                     </div>
@@ -135,25 +97,20 @@ export function Products() {
                 </Link>
                 <div className="p-6 flex flex-col flex-1">
                   <div className="text-xs font-bold text-[#3b4b8a] uppercase tracking-widest mb-2">{product.category}</div>
-                  <Link to={`/products/${product.id}`} className="text-xl font-bold text-[#111827] mb-6 hover:text-[#b71508] transition-colors line-clamp-2 min-h-[56px]">
+                  <Link to={`/products/${product._id}`} className="text-xl font-bold text-[#111827] mb-6 hover:text-[#b71508] transition-colors line-clamp-2 min-h-[56px]">
                     {product.name}
                   </Link>
-                  
+
                   <div className="space-y-3 mb-8 mt-auto">
-                    {product.specs.map((spec, i) => (
+                    {product.features.slice(0, 3).map((feat, i) => (
                       <div key={i} className="flex justify-between items-center pb-2 border-b border-gray-100 last:border-0 last:pb-0 text-sm">
-                        <span className="text-gray-500">{spec.label}</span>
-                        <span className="font-bold text-[#111827]">{spec.value}</span>
+                        <span className="text-gray-500 line-clamp-1">{feat}</span>
                       </div>
                     ))}
                   </div>
 
-                  <button className={`w-full py-3 px-4 rounded font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-colors ${
-                    product.primary 
-                      ? "bg-[#b71508] text-white hover:bg-red-800" 
-                      : "bg-white text-[#b71508] border border-[#b71508] hover:bg-red-50"
-                  }`}>
-                    {product.action} {product.actionIcon}
+                  <button className="w-full py-3 px-4 rounded font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-colors bg-white text-[#b71508] border border-[#b71508] hover:bg-red-50">
+                    Liên hệ <FileText size={16} />
                   </button>
                 </div>
               </div>
