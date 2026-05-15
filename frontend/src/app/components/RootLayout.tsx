@@ -1,6 +1,13 @@
 import { Outlet, Link, useLocation } from "react-router";
 import { MapPin, Mail, Facebook, Instagram, Twitter, Linkedin, Github, Phone, PhoneCall } from "lucide-react";
 
+const ZaloIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={className} fill="currentColor">
+    <path d="M21.5 12c0-4.694-4.253-8.5-9.5-8.5s-9.5 3.806-9.5 8.5c0 1.942.74 3.733 2.004 5.176l-1.004 3.324c-.06.196.012.41.176.533.088.066.192.1.3.1a.488.488 0 0 0 .216-.051l3.528-1.764c1.314.773 2.822 1.182 4.28 1.182 5.247 0 9.5-3.806 9.5-8.5z" />
+    <text x="12" y="15.5" fontSize="12" fontWeight="bold" textAnchor="middle" fill="#b71508" style={{ fontFamily: 'Arial' }}>Z</text>
+  </svg>
+);
+
 export function RootLayout() {
   const location = useLocation();
 
@@ -62,7 +69,7 @@ export function RootLayout() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-3">
+        <a href="tel:0985352345" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
           <div className="bg-[#b71508] text-white p-2 rounded-full">
             <PhoneCall size={18} />
           </div>
@@ -70,7 +77,7 @@ export function RootLayout() {
             <div className="text-xs text-gray-500 font-semibold uppercase tracking-wider">HOTLINE 24/7</div>
             <div className="text-[#111827] font-bold text-lg">098-535-2345</div>
           </div>
-        </div>
+        </a>
       </header>
 
       {/* Main Content */}
@@ -138,6 +145,31 @@ export function RootLayout() {
           </div>
         </div>
       </footer>
+
+      {/* Floating Buttons */}
+      <div className="fixed bottom-8 right-8 z-[9999] flex flex-col gap-4">
+        {/* Zalo Button */}
+        <a 
+          href="https://zalo.me/0985352345" 
+          target="_blank" 
+          rel="noreferrer"
+          className="pulsing-button w-14 h-14 bg-[#b71508] rounded-full flex items-center justify-center shadow-2xl transition-transform hover:scale-110 active:scale-95 animate-ring"
+          title="Chat Zalo"
+        >
+          <ZaloIcon className="w-10 h-10 text-white" />
+        </a>
+
+        {/* Facebook Button */}
+        <a 
+          href="#" 
+          target="_blank" 
+          rel="noreferrer"
+          className="pulsing-button w-14 h-14 bg-[#b71508] rounded-full flex items-center justify-center shadow-2xl transition-transform hover:scale-110 active:scale-95 animate-ring"
+          title="Facebook"
+        >
+          <Facebook size={28} className="text-white" />
+        </a>
+      </div>
     </div>
   );
 }

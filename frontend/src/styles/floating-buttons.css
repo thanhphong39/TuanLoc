@@ -1,0 +1,45 @@
+@keyframes ring {
+  0% { transform: rotate(0); }
+  1% { transform: rotate(20deg); }
+  3% { transform: rotate(-18deg); }
+  5% { transform: rotate(24deg); }
+  7% { transform: rotate(-22deg); }
+  9% { transform: rotate(20deg); }
+  11% { transform: rotate(-18deg); }
+  13% { transform: rotate(16deg); }
+  15% { transform: rotate(-14deg); }
+  17% { transform: rotate(12deg); }
+  19% { transform: rotate(-10deg); }
+  21% { transform: rotate(8deg); }
+  23% { transform: rotate(-6deg); }
+  25% { transform: rotate(4deg); }
+  27% { transform: rotate(-2deg); }
+  29% { transform: rotate(0); }
+  100% { transform: rotate(0); }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.8); opacity: 0.5; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+.animate-ring {
+  animation: ring 2s ease infinite;
+}
+
+.pulsing-button {
+  position: relative;
+}
+
+.pulsing-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 50%;
+  background: inherit;
+  z-index: -1;
+  animation: pulse-ring 1.5s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+}

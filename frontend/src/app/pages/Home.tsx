@@ -99,9 +99,9 @@ export function Home() {
             <button className="bg-[#b71508] hover:bg-red-800 text-white font-bold py-4 px-8 rounded text-sm uppercase tracking-wider transition-colors shadow-lg">
               XEM CÁC DỰ ÁN TRỌNG ĐIỂM
             </button>
-            <button className="border border-white/40 hover:bg-white/10 text-white font-bold py-4 px-8 rounded text-sm uppercase tracking-wider transition-colors">
+            <a href="tel:0985352345" className="border border-white/40 hover:bg-white/10 text-white font-bold py-4 px-8 rounded text-sm uppercase tracking-wider transition-colors text-center">
               THAM VẤN KỸ SƯ CỦA CHÚNG TÔI
-            </button>
+            </a>
           </div>
         </div>
       </section>
@@ -240,13 +240,13 @@ export function Home() {
               <button className="bg-[#b71508] text-white font-bold py-4 px-8 rounded text-sm uppercase tracking-wider hover:bg-red-800 transition-colors">
                 YÊU CẦU BÁO GIÁ
               </button>
-              <button className="bg-white border border-gray-300 text-[#111827] font-bold py-4 px-8 rounded text-sm uppercase tracking-wider hover:bg-gray-50 transition-colors">
+              <a href="tel:0985352345" className="bg-white border border-gray-300 text-[#111827] font-bold py-4 px-8 rounded text-sm uppercase tracking-wider hover:bg-gray-50 transition-colors text-center">
                 LIÊN HỆ PHÒNG KINH DOANH
-              </button>
+              </a>
             </div>
           </div>
           
-          <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-sm">
+          <a href="tel:0985352345" className="bg-white p-8 rounded-xl shadow-lg w-full max-w-sm hover:shadow-xl transition-shadow">
              <div className="flex items-center gap-4 mb-4">
                <div className="bg-red-100 text-[#b71508] p-3 rounded-full"><PhoneCall size={24} /></div>
                <div>
@@ -255,7 +255,7 @@ export function Home() {
                </div>
              </div>
              <p className="text-sm text-gray-600">Phục vụ 24/7 cho các yêu cầu hỗ trợ công nghiệp khẩn cấp và/hoặc vận hành trọng yếu.</p>
-          </div>
+          </a>
         </div>
       </section>
 

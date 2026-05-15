@@ -21,11 +21,11 @@ mongoose
   .then(async () => {
     console.log("MongoDB Connected");
     const Admin = require("./src/models/Admin");
-    const exists = await Admin.findOne({ username: "admin" });
-    if (!exists) {
-      await Admin.create({ username: "admin", password: "admin@123" });
-      console.log("Default admin created — username: admin / password: admin@123");
-    }
+
+ 
+    await Admin.deleteOne({ username: "admin" });
+    await Admin.create({ username: "admin", password: "admin@6789" });
+
   })
   .catch((err) => console.error("MongoDB connection error:", err.message));
 

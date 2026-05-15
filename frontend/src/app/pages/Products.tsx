@@ -109,9 +109,9 @@ export function Products() {
                     ))}
                   </div>
 
-                  <button className="w-full py-3 px-4 rounded font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-colors bg-white text-[#b71508] border border-[#b71508] hover:bg-red-50">
+                  <a href="tel:0985352345" className="w-full py-3 px-4 rounded font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-colors bg-white text-[#b71508] border border-[#b71508] hover:bg-red-50 text-center">
                     Liên hệ <FileText size={16} />
-                  </button>
+                  </a>
                 </div>
               </div>
             ))}

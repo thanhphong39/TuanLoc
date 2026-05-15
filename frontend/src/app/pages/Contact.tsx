@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MapPin, PhoneCall, Mail, Navigation } from "lucide-react";
+import { MapPin, PhoneCall, Mail } from "lucide-react";
 import { createContact } from "../../lib/api";
 
 export function Contact() {
@@ -31,9 +31,9 @@ export function Contact() {
       <section className="relative w-full h-[350px] flex items-center bg-[#3b4b8a] overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
-            src="https://images.unsplash.com/photo-1655936072893-921e69ae9038?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzdGVlbCUyMGJ1aWxkaW5nJTIwZnJhbWUlMjBjb25zdHJ1Y3Rpb258ZW58MXx8fHwxNzc4NjcwMDk3fDA&ixlib=rb-4.1.0&q=80&w=1080"
+            src="https://images.pexels.com/photos/33706868/pexels-photo-33706868.jpeg"
             alt="Hero Background"
-            className="w-full h-full object-cover opacity-30 mix-blend-multiply"
+            className="w-full h-full object-cover opacity-65 mix-blend-multiply"
           />
         </div>
 
@@ -68,14 +68,14 @@ export function Contact() {
               </div>
             </div>
 
-            <div className="border border-gray-200 rounded-lg p-6 flex gap-6 hover:border-[#b71508] transition-colors bg-[#fdfdfd]">
+            <a href="tel:0985352345" className="border border-gray-200 rounded-lg p-6 flex gap-6 hover:border-[#b71508] transition-colors bg-[#fdfdfd]">
               <div className="bg-red-50 text-[#b71508] p-4 rounded-full h-fit"><PhoneCall size={24} /></div>
               <div>
                 <h4 className="text-lg font-bold text-[#111827] mb-2">Hotline hỗ trợ</h4>
-                <p className="text-gray-600 text-sm mb-1">Trong nước: 0900-TUAN-LOC</p>
-                <p className="text-gray-600 text-sm">Quốc tế: +84 900 8826 562</p>
+                <p className="text-gray-600 text-sm mb-1">Di động: 098-535-2345</p>
+                <p className="text-gray-600 text-sm">Phục vụ 24/7</p>
               </div>
-            </div>
+            </a>
 
             <div className="border border-gray-200 rounded-lg p-6 flex gap-6 hover:border-[#b71508] transition-colors bg-[#fdfdfd]">
               <div className="bg-red-50 text-[#b71508] p-4 rounded-full h-fit"><Mail size={24} /></div>
@@ -163,21 +163,29 @@ export function Contact() {
         </div>
       </div>
 
-      {/* Map */}
-      <div className="w-full h-[500px] relative overflow-hidden bg-gray-900 group">
-         <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtYXB8ZW58MXx8fHwxNzc4NjY5OTk1fDA&ixlib=rb-4.1.0&q=80&w=1080" alt="Map Location" className="w-full h-full object-cover mix-blend-luminosity opacity-40 transition-transform duration-1000 group-hover:scale-105" />
+      <section className="w-full h-[500px] relative overflow-hidden bg-gray-100">
+        <iframe 
+          src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1861.993074723241!2d106.7729299!3d10.8999528!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3174d8f42fae2977%3A0x16451abb270f4419!2zMjM1LzZlLCAyMzUgVsO1IFRo4buLIFPDoXUsIMSQw7RuZyBIw7JhLCBI4buTIENow60gTWluaCwgVmlldG5hbQ!5e1!3m2!1sen!2s!4v1778847319930!5m2!1sen!2s"
+          width="100%" 
+          height="100%" 
+          style={{ border: 0 }} 
+          allowFullScreen={true} 
+          loading="lazy" 
+          referrerPolicy="no-referrer-when-downgrade"
+          title="Tuan Loc Electrical Engineering Location"
+          className="grayscale hover:grayscale-0 transition-all duration-700"
+        ></iframe>
 
-         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
-            <div className="bg-white px-6 py-4 rounded-lg shadow-2xl flex items-center gap-4 mb-2 z-10 animate-bounce">
-               <div className="bg-[#b71508] text-white p-2 rounded"><MapPin size={20} /></div>
-               <div>
-                 <div className="font-bold text-[#111827] text-lg leading-tight">Tập đoàn Tuấn Lộc</div>
-                 <div className="text-[10px] text-gray-500 uppercase tracking-widest">Trụ sở chính toàn cầu</div>
-               </div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center pointer-events-none">
+          <div className="bg-white/90 backdrop-blur px-6 py-4 rounded-lg shadow-2xl flex items-center gap-4 z-10">
+            <div className="bg-[#b71508] text-white p-2 rounded"><MapPin size={20} /></div>
+            <div>
+              <div className="font-bold text-[#111827] text-lg leading-tight">Công ty Tuấn Lộc</div>
+              <div className="text-[10px] text-gray-500 uppercase tracking-widest">Trụ sở chính</div>
             </div>
-            <div className="text-[#b71508]"><Navigation size={48} className="fill-[#b71508] rotate-180" /></div>
-         </div>
-      </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

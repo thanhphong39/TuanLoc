@@ -102,24 +102,24 @@ export function ProductDetails() {
           </ul>
 
           <div className="flex flex-col gap-4 mb-8">
-            <button className="bg-[#b71508] text-white font-bold py-4 px-6 rounded text-sm uppercase tracking-wider hover:bg-red-800 transition-colors flex items-center justify-center gap-2 w-full">
-              <Mail size={18} /> Yêu cầu báo giá doanh nghiệp
-            </button>
+            <a href="tel:0985352345" className="bg-[#b71508] text-white font-bold py-4 px-6 rounded text-sm uppercase tracking-wider hover:bg-red-800 transition-colors flex items-center justify-center gap-2 w-full text-center">
+              <Mail size={18} /> Liên Hệ Ngay
+            </a>
             <button className="bg-white border border-[#b71508] text-[#b71508] font-bold py-4 px-6 rounded text-sm uppercase tracking-wider hover:bg-red-50 transition-colors flex items-center justify-center gap-2 w-full">
-              <Download size={18} /> Tải Catalogue PDF đầy đủ
+              <Download size={18} /> Tải PDF đầy đủ
             </button>
           </div>
 
-          <div className="bg-[#f8fafc] p-6 rounded-lg border border-gray-100 flex items-start gap-4">
+          <a href="tel:0985352345" className="bg-[#f8fafc] p-6 rounded-lg border border-gray-100 flex items-start gap-4 hover:bg-gray-50 transition-colors">
             <div className="bg-white p-3 rounded-full shadow-sm text-[#b71508]">
               <PhoneCall size={20} />
             </div>
             <div>
               <div className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">Hỗ trợ kỹ thuật</div>
-              <div className="text-lg font-bold text-[#b71508] mb-1">{product.supportPhone || "1900.555.888"}</div>
+              <div className="text-lg font-bold text-[#b71508] mb-1">098-535-2345</div>
               <div className="text-sm text-gray-600">Sẵn sàng 24/7 cho các hạ tầng quan trọng.</div>
             </div>
-          </div>
+          </a>
         </div>
       </div>
 
@@ -205,18 +205,18 @@ export function ProductDetails() {
               Trao đổi trực tiếp với các kỹ sư điện cao cấp của chúng tôi về việc tích hợp {product.name} vào dự án hạ tầng tiếp theo của bạn.
             </p>
             <div className="space-y-6">
-              <div className="flex items-center gap-4">
+              <a href="tel:0985352345" className="flex items-center gap-4 hover:opacity-80 transition-opacity">
                 <div className="bg-red-500/20 text-[#ef4444] p-3 rounded"><PhoneCall size={24} /></div>
                 <div>
                   <div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">HOTLINE TOÀN CẦU</div>
-                  <div className="text-xl font-bold">{product.supportPhone || "0900.555.888"}</div>
+                  <div className="text-xl font-bold">098-535-2345</div>
                 </div>
-              </div>
+              </a>
               <div className="flex items-center gap-4">
                 <div className="bg-blue-500/20 text-blue-400 p-3 rounded"><Mail size={24} /></div>
                 <div>
                   <div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">YÊU CẦU DOANH NGHIỆP</div>
-                  <div className="text-xl font-bold">contact@tuanloc.com.vn</div>
+                  <div className="text-xl font-bold">tuanlocco.hcm@gmail.com</div>
                 </div>
               </div>
             </div>

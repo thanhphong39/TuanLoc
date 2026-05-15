@@ -30,11 +30,6 @@ export default function Login({ onLogin }) {
           <p>Hệ thống quản trị nội dung</p>
         </div>
 
-        <div className="login-hint">
-          Tài khoản mặc định:<br />
-          <strong>Username:</strong> admin &nbsp;|&nbsp; <strong>Password:</strong> admin@123
-        </div>
-
         <form className="login-form" onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Tên đăng nhập</label>
