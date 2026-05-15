@@ -1,16 +1,84 @@
+import { useState, useEffect } from "react";
 import { ArrowRight, Settings, Radio, CheckCircle, ChevronRight, PhoneCall } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
+
+const BANNERS = [
+  "/Banner.jpg",
+  "/banner2.jpg",
+  "/banner3.jpg"
+];
+
 
 export function Home() {
+  const [[page, direction], setPage] = useState([0, 0]);
+
+  const paginate = (newDirection: number) => {
+    setPage([page + newDirection, newDirection]);
+  };
+
+  const currentIndex = ((page % BANNERS.length) + BANNERS.length) % BANNERS.length;
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      paginate(1);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [page]);
+
+  const slideVariants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? "100%" : "-100%",
+      opacity: 0
+    }),
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 0.5
+    },
+    exit: (direction: number) => ({
+      zIndex: 0,
+      x: direction < 0 ? "100%" : "-100%",
+      opacity: 0
+    })
+  };
+
   return (
     <div className="flex flex-col w-full">
       {/* Hero */}
       <section className="relative w-full h-[600px] flex items-center bg-gray-900 overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <img 
-            src="https://images.unsplash.com/photo-1765375522929-994a71439c63?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxlbGVjdHJpY2FsJTIwc3Vic3RhdGlvbiUyMGluZnJhc3RydWN0dXJlfGVufDF8fHx8MTc3ODY2OTg4Mnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral" 
-            alt="Hero Background" 
-            className="w-full h-full object-cover opacity-50"
-          />
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          <AnimatePresence initial={false} custom={direction}>
+            <motion.img 
+              key={page}
+              src={BANNERS[currentIndex]}
+              custom={direction}
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{
+                x: { type: "spring", stiffness: 300, damping: 30 },
+                opacity: { duration: 0.2 }
+              }}
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+          </AnimatePresence>
+          
+          {/* Navigation Dots */}
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+            {BANNERS.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => {
+                  const newDirection = index > currentIndex ? 1 : -1;
+                  setPage([index, newDirection]);
+                }}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                  currentIndex === index ? "bg-[#b71508] w-8" : "bg-white/50 hover:bg-white"
+                }`}
+              />
+            ))}
+          </div>
         </div>
         
         <div className="relative z-10 max-w-7xl mx-auto px-8 w-full flex flex-col items-start text-white">
