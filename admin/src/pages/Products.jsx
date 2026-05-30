@@ -1,5 +1,18 @@
 import { useState, useEffect } from "react";
 import { getProducts, createProduct, updateProduct, deleteProduct, getProduct } from "../lib/api";
+import { Plus, Pencil, Trash2, Package, CheckCircle, AlertCircle, ChevronLeft, ChevronRight } from "lucide-react";
+
+const CATEGORIES = [
+  "Máy cắt hạ thế",
+  "Biến tần",
+  "PLC & Tự động hóa",
+  "Contactor & Relay",
+  "Khởi động mềm",
+  "Encoder & Cảm biến",
+  "Nguồn xung",
+  "Cầu đấu dây",
+  "Giám sát điện",
+];
 
 const EMPTY = { name: "", category: "", badge: "", description: "", features: "", supportPhone: "" };
 
@@ -7,10 +20,11 @@ export default function Products() {
   const [items, setItems] = useState([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
-  const [modal, setModal] = useState(null); // null | "create" | "edit"
+  const [modal, setModal] = useState(null);
   const [form, setForm] = useState(EMPTY);
   const [editId, setEditId] = useState(null);
   const [images, setImages] = useState([]);
+  const [previews, setPreviews] = useState([]);
   const [loading, setLoading] = useState(false);
   const [alert, setAlert] = useState(null);
 
@@ -23,21 +37,28 @@ export default function Products() {
 
   const showAlert = (msg, type = "success") => {
     setAlert({ msg, type });
-    setTimeout(() => setAlert(null), 3000);
+    setTimeout(() => setAlert(null), 3500);
   };
 
-  const openCreate = () => { setForm(EMPTY); setImages([]); setEditId(null); setModal("create"); };
+  const openCreate = () => {
+    setForm(EMPTY); setImages([]); setPreviews([]);
+    setEditId(null); setModal("create");
+  };
 
   const openEdit = async (id) => {
     const p = await getProduct(id);
     setForm({
-      name: p.name, category: p.category, badge: p.badge,
+      name: p.name, category: p.category, badge: p.badge || "",
       description: p.description, features: p.features.join("\n"),
-      supportPhone: p.supportPhone,
+      supportPhone: p.supportPhone || "",
     });
-    setImages([]);
-    setEditId(id);
-    setModal("edit");
+    setImages([]); setPreviews(p.images || []);
+    setEditId(id); setModal("edit");
+  };
+
+  const handleImages = (files) => {
+    setImages(Array.from(files));
+    setPreviews(Array.from(files).map((f) => URL.createObjectURL(f)));
   };
 
   const handleSubmit = async (e) => {
@@ -58,56 +79,100 @@ export default function Products() {
 
       setModal(null);
       load();
-      showAlert(modal === "edit" ? "Đã cập nhật sản phẩm" : "Đã tạo sản phẩm");
+      showAlert(modal === "edit" ? "Đã cập nhật sản phẩm thành công!" : "Đã thêm sản phẩm mới!");
     } catch {
-      showAlert("Có lỗi xảy ra", "error");
+      showAlert("Có lỗi xảy ra. Vui lòng thử lại.", "error");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleDelete = async (id) => {
-    if (!confirm("Xóa sản phẩm này?")) return;
+  const handleDelete = async (id, name) => {
+    if (!confirm(`Xóa sản phẩm "${name}"?`)) return;
     await deleteProduct(id);
     load();
-    showAlert("Đã xóa sản phẩm");
+    showAlert("Đã xóa sản phẩm.");
   };
+
+  const f = (key) => (e) => setForm((p) => ({ ...p, [key]: e.target.value }));
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
-        <h2 className="page-heading" style={{ marginBottom: 0 }}>Sản phẩm</h2>
-        <button className="btn btn-primary" onClick={openCreate}>+ Thêm sản phẩm</button>
+      {/* Header */}
+      <div className="page-header">
+        <div className="page-header-left">
+          <h2>Sản phẩm</h2>
+          <p>{total} sản phẩm trong hệ thống</p>
+        </div>
+        <button className="btn btn-primary" onClick={openCreate}>
+          <Plus size={16} /> Thêm sản phẩm
+        </button>
       </div>
 
-      {alert && <div className={`alert alert-${alert.type}`}>{alert.msg}</div>}
+      {alert && (
+        <div className={`alert alert-${alert.type}`}>
+          {alert.type === "success"
+            ? <CheckCircle size={15} />
+            : <AlertCircle size={15} />}
+          {alert.msg}
+        </div>
+      )}
 
       <div className="card">
         <div className="table-wrap">
           <table>
             <thead>
               <tr>
-                <th>Ảnh</th><th>Tên sản phẩm</th><th>Danh mục</th><th>Badge</th><th>Hotline</th><th>Thao tác</th>
+                <th style={{ width: 64 }}>Ảnh</th>
+                <th>Tên sản phẩm</th>
+                <th>Danh mục</th>
+                <th>Badge</th>
+                <th>Hotline</th>
+                <th style={{ width: 110 }}>Thao tác</th>
               </tr>
             </thead>
             <tbody>
               {items.length === 0 && (
-                <tr><td colSpan={6} className="empty">Chưa có sản phẩm nào</td></tr>
+                <tr>
+                  <td colSpan={6}>
+                    <div className="empty">
+                      <div className="empty-icon"><Package size={40} /></div>
+                      Chưa có sản phẩm nào
+                    </div>
+                  </td>
+                </tr>
               )}
               {items.map((p) => (
                 <tr key={p._id}>
                   <td>
-                    {p.images[0]
+                    {p.images?.[0]
                       ? <img src={p.images[0]} className="td-img" alt={p.name} />
-                      : <div className="td-img" style={{ background: "#f1f5f9" }} />}
+                      : <div className="td-img-placeholder" />}
                   </td>
-                  <td><strong>{p.name}</strong></td>
-                  <td>{p.category}</td>
-                  <td>{p.badge && <span className="badge">{p.badge}</span>}</td>
-                  <td>{p.supportPhone}</td>
-                  <td style={{ display: "flex", gap: 8 }}>
-                    <button className="btn btn-edit btn-sm" onClick={() => openEdit(p._id)}>Sửa</button>
-                    <button className="btn btn-danger btn-sm" onClick={() => handleDelete(p._id)}>Xóa</button>
+                  <td>
+                    <div style={{ fontWeight: 600, fontSize: 13, marginBottom: 2 }}>{p.name}</div>
+                    {p.description && (
+                      <div style={{ fontSize: 11, color: "var(--muted)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: 280 }}>
+                        {p.description.slice(0, 80)}…
+                      </div>
+                    )}
+                  </td>
+                  <td><span className="cat-badge">{p.category}</span></td>
+                  <td>
+                    {p.badge
+                      ? <span className={`badge ${p.badge === "HÀNG SẴN KHO" ? "badge-red" : "badge-blue"}`}>{p.badge}</span>
+                      : <span style={{ color: "#cbd5e1", fontSize: 12 }}>—</span>}
+                  </td>
+                  <td style={{ fontSize: 12, color: "var(--muted)" }}>{p.supportPhone || "—"}</td>
+                  <td>
+                    <div style={{ display: "flex", gap: 6 }}>
+                      <button className="btn btn-edit btn-sm btn-icon" onClick={() => openEdit(p._id)} title="Sửa">
+                        <Pencil size={14} />
+                      </button>
+                      <button className="btn btn-danger btn-sm btn-icon" onClick={() => handleDelete(p._id, p.name)} title="Xóa">
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -117,59 +182,134 @@ export default function Products() {
 
         {totalPages > 1 && (
           <div className="pagination">
-            <button className="page-btn" disabled={page === 1} onClick={() => setPage(p => p - 1)}>‹</button>
+            <button className="page-btn" disabled={page === 1} onClick={() => setPage((p) => p - 1)}>
+              <ChevronLeft size={15} />
+            </button>
             {Array.from({ length: totalPages }, (_, i) => (
-              <button key={i} className={`page-btn ${page === i + 1 ? "active" : ""}`} onClick={() => setPage(i + 1)}>{i + 1}</button>
+              <button key={i} className={`page-btn ${page === i + 1 ? "active" : ""}`} onClick={() => setPage(i + 1)}>
+                {i + 1}
+              </button>
             ))}
-            <button className="page-btn" disabled={page === totalPages} onClick={() => setPage(p => p + 1)}>›</button>
+            <button className="page-btn" disabled={page === totalPages} onClick={() => setPage((p) => p + 1)}>
+              <ChevronRight size={15} />
+            </button>
           </div>
         )}
       </div>
 
+      {/* Modal */}
       {modal && (
         <div className="modal-overlay" onClick={(e) => e.target === e.currentTarget && setModal(null)}>
           <div className="modal">
             <div className="modal-header">
-              <span className="modal-title">{modal === "edit" ? "Sửa sản phẩm" : "Thêm sản phẩm"}</span>
-              <button className="modal-close" onClick={() => setModal(null)}>×</button>
-            </div>
-            <form onSubmit={handleSubmit}>
-              <div className="form-grid">
-                <div className="form-group">
-                  <label>Tên sản phẩm *</label>
-                  <input value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} required />
+              <div>
+                <div className="modal-title">
+                  {modal === "edit" ? "Chỉnh sửa sản phẩm" : "Thêm sản phẩm mới"}
                 </div>
-                <div className="form-group">
-                  <label>Danh mục *</label>
-                  <input value={form.category} onChange={e => setForm(p => ({ ...p, category: e.target.value }))} required placeholder="VD: DÂY VÀ CÁP ĐIỆN" />
-                </div>
-                <div className="form-group">
-                  <label>Badge</label>
-                  <input value={form.badge} onChange={e => setForm(p => ({ ...p, badge: e.target.value }))} placeholder="VD: XUẤT KHẨU" />
-                </div>
-                <div className="form-group">
-                  <label>Hotline hỗ trợ</label>
-                  <input value={form.supportPhone} onChange={e => setForm(p => ({ ...p, supportPhone: e.target.value }))} placeholder="1900.555.888" />
-                </div>
-                <div className="form-group full">
-                  <label>Mô tả *</label>
-                  <textarea value={form.description} onChange={e => setForm(p => ({ ...p, description: e.target.value }))} required />
-                </div>
-                <div className="form-group full">
-                  <label>Tính năng (mỗi dòng 1 tính năng)</label>
-                  <textarea value={form.features} onChange={e => setForm(p => ({ ...p, features: e.target.value }))} rows={4} placeholder={"Lõi đồng 99.9%\nCách điện XLPE 90°C\nGiáp thép dải kép (SWA)"} />
-                  <span className="hint">Mỗi dòng là một tính năng hiển thị trên website</span>
-                </div>
-                <div className="form-group full">
-                  <label>Ảnh sản phẩm {modal === "edit" && "(để trống = giữ ảnh cũ)"}</label>
-                  <input type="file" accept="image/*" multiple onChange={e => setImages(Array.from(e.target.files))} />
-                  <span className="hint">Chọn nhiều ảnh cùng lúc — upload lên Cloudinary</span>
+                <div className="modal-title-sub">
+                  {modal === "edit" ? "Cập nhật thông tin sản phẩm" : "Điền thông tin để đăng sản phẩm lên website"}
                 </div>
               </div>
+              <button className="modal-close" onClick={() => setModal(null)}>×</button>
+            </div>
+            <div className="modal-divider" />
+            <form onSubmit={handleSubmit}>
+              <div className="form-grid" style={{ marginBottom: 16 }}>
+                {/* Name */}
+                <div className="form-group full">
+                  <label>Tên sản phẩm *</label>
+                  <input
+                    value={form.name}
+                    onChange={f("name")}
+                    required
+                    placeholder="VD: Biến Tần Altivar ATV32"
+                  />
+                </div>
+
+                {/* Category */}
+                <div className="form-group">
+                  <label>Danh mục *</label>
+                  <select value={form.category} onChange={f("category")} required>
+                    <option value="">— Chọn danh mục —</option>
+                    {CATEGORIES.map((c) => (
+                      <option key={c} value={c}>{c}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Badge */}
+                <div className="form-group">
+                  <label>Badge</label>
+                  <select value={form.badge} onChange={f("badge")}>
+                    <option value="">— Không có badge —</option>
+                    <option value="HÀNG SẴN KHO">HÀNG SẴN KHO</option>
+                    <option value="MỚI">MỚI</option>
+                    <option value="BÁN CHẠY">BÁN CHẠY</option>
+                  </select>
+                </div>
+
+                {/* Support Phone */}
+                <div className="form-group">
+                  <label>Hotline hỗ trợ</label>
+                  <input
+                    value={form.supportPhone}
+                    onChange={f("supportPhone")}
+                    placeholder="0985352345"
+                  />
+                </div>
+
+                {/* Description */}
+                <div className="form-group full">
+                  <label>Mô tả sản phẩm *</label>
+                  <textarea
+                    value={form.description}
+                    onChange={f("description")}
+                    required
+                    rows={3}
+                    placeholder="Mô tả ngắn gọn về sản phẩm, công dụng và ứng dụng..."
+                  />
+                </div>
+
+                {/* Features */}
+                <div className="form-group full">
+                  <label>Thông số / Tính năng</label>
+                  <textarea
+                    value={form.features}
+                    onChange={f("features")}
+                    rows={5}
+                    placeholder={"Công suất: 0.18kW đến 15kW\nĐiện áp vào: 200–500V AC\nTần số ra: 0.1–599Hz\nGiao tiếp Modbus RTU"}
+                  />
+                  <span className="hint">Mỗi dòng là một thông số / tính năng hiển thị trên website</span>
+                </div>
+
+                {/* Images */}
+                <div className="form-group full">
+                  <label>Ảnh sản phẩm {modal === "edit" && <span style={{ fontWeight: 400, textTransform: "none" }}>(để trống = giữ ảnh cũ)</span>}</label>
+                  <div className="file-input-wrapper">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={(e) => handleImages(e.target.files)}
+                    />
+                  </div>
+                  <span className="hint">Chọn nhiều ảnh — tự động upload lên Cloudinary</span>
+                  {previews.length > 0 && (
+                    <div className="img-preview-grid">
+                      {previews.map((src, i) => (
+                        <img key={i} src={src} className="img-preview" alt={`preview-${i}`} />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+
               <div className="form-actions">
-                <button type="button" className="btn btn-outline" onClick={() => setModal(null)}>Hủy</button>
+                <button type="button" className="btn btn-outline" onClick={() => setModal(null)}>
+                  Hủy
+                </button>
                 <button type="submit" className="btn btn-primary" disabled={loading}>
-                  {loading ? "Đang lưu..." : "Lưu"}
+                  {loading ? "Đang lưu..." : modal === "edit" ? "Cập nhật" : "Thêm sản phẩm"}
                 </button>
               </div>
             </form>

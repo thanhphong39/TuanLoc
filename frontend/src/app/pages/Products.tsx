@@ -1,153 +1,270 @@
-import { useState, useEffect } from "react";
-import { ChevronDown, FileText, Settings, Download } from "lucide-react";
-import { Link } from "react-router";
+import { useState, useEffect, useCallback } from "react";
+import { FileText, Settings, Download, Search, X } from "lucide-react";
+import { Link, useSearchParams } from "react-router";
 import { getProducts, type ApiProduct } from "../../lib/api";
 
+const CATEGORIES = [
+  "Máy cắt hạ thế",
+  "Biến tần",
+  "PLC & Tự động hóa",
+  "Contactor & Relay",
+  "Khởi động mềm",
+  "Encoder & Cảm biến",
+  "Nguồn xung",
+  "Cầu đấu dây",
+  "Giám sát điện",
+];
+
+const LIMIT = 12;
+
 export function Products() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const urlCategory = searchParams.get("category") ?? "";
+
   const [products, setProducts] = useState<ApiProduct[]>([]);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
+  const [selectedCategory, setSelectedCategory] = useState(urlCategory);
+  const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const totalPages = Math.ceil(total / LIMIT);
+
+  const fetchProducts = useCallback((cat: string, pg: number) => {
+    setLoading(true);
+    const params: Record<string, string> = { page: String(pg), limit: String(LIMIT) };
+    if (cat) params.category = cat;
+    getProducts(params)
+      .then((res) => { setProducts(res.products); setTotal(res.total); })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
 
   useEffect(() => {
-    getProducts({ limit: "24" }).then((res) => setProducts(res.products)).catch(() => {});
-  }, []);
+    setSelectedCategory(urlCategory);
+    setPage(1);
+    fetchProducts(urlCategory, 1);
+  }, [urlCategory, fetchProducts]);
+
+  const handleCategoryClick = (cat: string) => {
+    const next = selectedCategory === cat ? "" : cat;
+    setSelectedCategory(next);
+    setPage(1);
+    if (next) setSearchParams({ category: next });
+    else setSearchParams({});
+    fetchProducts(next, 1);
+  };
+
+  const handlePageChange = (pg: number) => {
+    setPage(pg);
+    fetchProducts(selectedCategory, pg);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const displayed = search
+    ? products.filter((p) => p.name.toLowerCase().includes(search.toLowerCase()) || p.category.toLowerCase().includes(search.toLowerCase()))
+    : products;
 
   return (
     <div className="flex flex-col w-full bg-[#f8fafc]">
       {/* Hero */}
-      <div className="bg-[#f0f4f8] py-16 px-8 border-b border-gray-200">
+      <div className="bg-[#f0f4f8] py-14 px-8 border-b border-gray-200">
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-4xl font-bold text-[#111827] mb-4">
+          <div className="text-xs font-bold text-[#b71508] uppercase tracking-widest mb-3">Sản phẩm</div>
+          <h1 className="text-4xl font-bold text-[#111827] mb-3">
             Thiết bị <span className="text-[#b71508]">điện công nghiệp</span>
           </h1>
-          <p className="text-gray-600 max-w-2xl text-lg">
-            Giải pháp hạ tầng hiệu suất cao cho công nghiệp nặng, tiện ích công cộng và các dự án xây dựng thương mại. Được thiết kế với độ chính xác và tin cậy tuyệt đối.
+          <p className="text-gray-600 max-w-2xl text-base">
+            Phân phối chính hãng Schneider Electric, Mitsubishi, Siemens, Autonics, Connectwell, LS Mecapion và nhiều thương hiệu uy tín khác.
           </p>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-8 py-12 flex gap-12 w-full">
+      <div className="max-w-7xl mx-auto px-8 py-10 flex gap-10 w-full">
         {/* Sidebar */}
-        <div className="w-64 shrink-0 flex flex-col gap-10">
+        <div className="w-60 shrink-0 flex flex-col gap-8">
+          {/* Search */}
+          <div className="relative">
+            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Tìm sản phẩm..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full pl-9 pr-8 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#b71508] bg-white"
+            />
+            {search && (
+              <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                <X size={14} />
+              </button>
+            )}
+          </div>
+
+          {/* Categories */}
           <div>
-            <h3 className="text-xs font-bold text-[#b71508] uppercase tracking-widest mb-6">Danh mục</h3>
-            <div className="flex flex-col gap-4">
-              <label className="flex items-center gap-3 cursor-pointer">
-                <input type="checkbox" defaultChecked className="w-5 h-5 rounded border-gray-300 text-[#b71508] focus:ring-[#b71508]" />
-                <span className="text-sm font-semibold text-[#111827]">Tất cả thiết bị</span>
-              </label>
-              <label className="flex items-center gap-3 cursor-pointer">
-                <input type="checkbox" className="w-5 h-5 rounded border-gray-300 text-[#b71508] focus:ring-[#b71508]" />
-                <span className="text-sm font-medium text-gray-600">Máy biến áp</span>
-              </label>
-              <label className="flex items-center gap-3 cursor-pointer">
-                <input type="checkbox" className="w-5 h-5 rounded border-gray-300 text-[#b71508] focus:ring-[#b71508]" />
-                <span className="text-sm font-medium text-gray-600">Cáp điện cao thế</span>
-              </label>
-              <label className="flex items-center gap-3 cursor-pointer">
-                <input type="checkbox" className="w-5 h-5 rounded border-gray-300 text-[#b71508] focus:ring-[#b71508]" />
-                <span className="text-sm font-medium text-gray-600">Hệ thống tủ điện</span>
-              </label>
-              <label className="flex items-center gap-3 cursor-pointer">
-                <input type="checkbox" className="w-5 h-5 rounded border-gray-300 text-[#b71508] focus:ring-[#b71508]" />
-                <span className="text-sm font-medium text-gray-600">Máy cắt chân không</span>
-              </label>
+            <h3 className="text-xs font-bold text-[#b71508] uppercase tracking-widest mb-4">Danh mục</h3>
+            <div className="flex flex-col gap-1">
+              <button
+                onClick={() => handleCategoryClick("")}
+                className={`text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                  !selectedCategory ? "bg-[#b71508] text-white" : "text-gray-600 hover:bg-gray-100"
+                }`}
+              >
+                Tất cả sản phẩm
+              </button>
+              {CATEGORIES.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => handleCategoryClick(cat)}
+                  className={`text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                    selectedCategory === cat ? "bg-[#b71508] text-white" : "text-gray-600 hover:bg-gray-100"
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
             </div>
           </div>
 
-          <div>
-            <h3 className="text-xs font-bold text-[#b71508] uppercase tracking-widest mb-6">Thông số kỹ thuật</h3>
-            <div className="bg-white border border-gray-200 rounded p-3 flex justify-between items-center cursor-pointer">
-              <span className="text-sm text-gray-600">Dải điện áp (kV)</span>
-              <ChevronDown size={16} className="text-gray-400" />
-            </div>
-          </div>
-
-          <div className="bg-[#111827] text-white p-6 rounded-lg mt-4">
-            <h3 className="text-xl font-bold mb-4">Cần giải pháp tùy chỉnh?</h3>
-            <p className="text-sm text-gray-400 mb-6">Đội ngũ kỹ sư của chúng tôi cung cấp thiết kế hạ tầng điện theo yêu cầu riêng biệt.</p>
-            <button className="bg-[#b71508] text-white font-bold py-3 px-4 rounded w-full text-xs uppercase tracking-wider hover:bg-red-800 transition-colors">
-              Tham khảo chuyên gia
-            </button>
+          {/* CTA card */}
+          <div className="bg-[#111827] text-white p-5 rounded-xl">
+            <h3 className="text-base font-bold mb-3">Cần tư vấn?</h3>
+            <p className="text-sm text-gray-400 mb-4">Đội ngũ kỹ sư sẵn sàng hỗ trợ lựa chọn thiết bị phù hợp.</p>
+            <a href="tel:0985352345" className="bg-[#b71508] text-white font-bold py-2.5 px-4 rounded w-full text-xs uppercase tracking-wider hover:bg-red-800 transition-colors block text-center">
+              Gọi ngay
+            </a>
           </div>
         </div>
 
         {/* Product Grid */}
-        <div className="flex-1">
-          <div className="flex justify-between items-center mb-8">
-            <p className="text-sm text-gray-600 font-medium">Hiển thị {products.length} sản phẩm công nghiệp</p>
-            <div className="flex items-center gap-3 text-sm">
-              <span className="text-gray-500">Sắp xếp:</span>
-              <div className="font-bold text-[#b71508] flex items-center gap-1 cursor-pointer">
-                Mới nhất <ChevronDown size={16} />
-              </div>
+        <div className="flex-1 min-w-0">
+          <div className="flex justify-between items-center mb-6">
+            <div className="flex items-center gap-3">
+              <p className="text-sm text-gray-600 font-medium">
+                {search ? `${displayed.length} kết quả` : `${total} sản phẩm`}
+                {selectedCategory && <span className="ml-2 bg-[#b71508]/10 text-[#b71508] px-2 py-0.5 rounded text-xs font-bold">{selectedCategory}</span>}
+              </p>
+              {selectedCategory && (
+                <button onClick={() => handleCategoryClick("")} className="text-xs text-gray-400 hover:text-gray-600 flex items-center gap-1">
+                  <X size={12} /> Bỏ lọc
+                </button>
+              )}
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            {products.map((product) => (
-              <div key={product._id} className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow flex flex-col">
-                <Link to={`/products/${product._id}`} className="relative h-56 bg-gray-100 p-6 flex items-center justify-center group overflow-hidden">
-                  <img src={product.images[0]} alt={product.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                  {product.badge && (
-                    <div className={`absolute top-4 left-4 text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded-sm text-white z-10 ${
-                      product.badge === "HÀNG SẴN KHO" ? "bg-[#b71508]" : "bg-[#3b4b8a]"
-                    }`}>
-                      {product.badge}
-                    </div>
-                  )}
-                </Link>
-                <div className="p-6 flex flex-col flex-1">
-                  <div className="text-xs font-bold text-[#3b4b8a] uppercase tracking-widest mb-2">{product.category}</div>
-                  <Link to={`/products/${product._id}`} className="text-xl font-bold text-[#111827] mb-6 hover:text-[#b71508] transition-colors line-clamp-2 min-h-[56px]">
-                    {product.name}
-                  </Link>
-
-                  <div className="space-y-3 mb-8 mt-auto">
-                    {product.features.slice(0, 3).map((feat, i) => (
-                      <div key={i} className="flex justify-between items-center pb-2 border-b border-gray-100 last:border-0 last:pb-0 text-sm">
-                        <span className="text-gray-500 line-clamp-1">{feat}</span>
-                      </div>
-                    ))}
+          {loading ? (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="bg-white border border-gray-200 rounded-xl overflow-hidden animate-pulse">
+                  <div className="h-48 bg-gray-200" />
+                  <div className="p-5">
+                    <div className="h-3 bg-gray-200 rounded w-1/3 mb-3" />
+                    <div className="h-4 bg-gray-200 rounded w-full mb-2" />
+                    <div className="h-4 bg-gray-200 rounded w-3/4" />
                   </div>
-
-                  <a href="tel:0985352345" className="w-full py-3 px-4 rounded font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-colors bg-white text-[#b71508] border border-[#b71508] hover:bg-red-50 text-center">
-                    Liên hệ <FileText size={16} />
-                  </a>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
+              {displayed.map((product) => (
+                <div key={product._id} className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition-shadow flex flex-col group">
+                  <Link to={`/products/${product._id}`} className="relative h-48 bg-gray-50 flex items-center justify-center overflow-hidden">
+                    <img
+                      src={product.images[0]}
+                      alt={product.name}
+                      className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-110"
+                    />
+                    {product.badge && (
+                      <div className={`absolute top-3 left-3 text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded-sm text-white z-10 ${
+                        product.badge === "HÀNG SẴN KHO" ? "bg-[#b71508]" : "bg-[#3b4b8a]"
+                      }`}>
+                        {product.badge}
+                      </div>
+                    )}
+                  </Link>
+                  <div className="p-5 flex flex-col flex-1">
+                    <div className="text-[10px] font-bold text-[#3b4b8a] uppercase tracking-widest mb-2">{product.category}</div>
+                    <Link
+                      to={`/products/${product._id}`}
+                      className="text-base font-bold text-[#111827] mb-4 hover:text-[#b71508] transition-colors line-clamp-2 min-h-[48px] flex-1"
+                    >
+                      {product.name}
+                    </Link>
 
-          <div className="flex justify-center items-center gap-2">
-            <button className="w-10 h-10 flex items-center justify-center border border-gray-200 rounded text-gray-400 hover:bg-gray-50 disabled:opacity-50" disabled>
-              &lt;
-            </button>
-            <button className="w-10 h-10 flex items-center justify-center bg-[#b71508] text-white rounded font-bold">1</button>
-            <button className="w-10 h-10 flex items-center justify-center border border-gray-200 rounded text-[#111827] font-medium hover:bg-gray-50">2</button>
-            <button className="w-10 h-10 flex items-center justify-center border border-gray-200 rounded text-[#111827] font-medium hover:bg-gray-50">3</button>
-            <button className="w-10 h-10 flex items-center justify-center border border-gray-200 rounded text-[#111827] font-medium hover:bg-gray-50">
-              &gt;
-            </button>
-          </div>
+                    <div className="space-y-2 mb-4">
+                      {product.features.slice(0, 2).map((feat, i) => (
+                        <div key={i} className="text-xs text-gray-500 flex items-start gap-2">
+                          <span className="w-1 h-1 rounded-full bg-[#b71508] mt-1.5 shrink-0" />
+                          <span className="line-clamp-1">{feat}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="flex gap-2">
+                      <Link to={`/products/${product._id}`} className="flex-1 py-2.5 px-3 rounded text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-colors bg-[#b71508] text-white hover:bg-red-800">
+                        Xem chi tiết
+                      </Link>
+                      <a href="tel:0985352345" className="py-2.5 px-3 rounded text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-colors bg-white text-[#b71508] border border-[#b71508] hover:bg-red-50">
+                        <FileText size={14} />
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Pagination */}
+          {!search && totalPages > 1 && (
+            <div className="flex justify-center items-center gap-2">
+              <button
+                onClick={() => handlePageChange(page - 1)}
+                disabled={page === 1}
+                className="w-9 h-9 flex items-center justify-center border border-gray-200 rounded-lg text-gray-400 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                &lt;
+              </button>
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((pg) => (
+                <button
+                  key={pg}
+                  onClick={() => handlePageChange(pg)}
+                  className={`w-9 h-9 flex items-center justify-center rounded-lg font-bold text-sm ${
+                    pg === page ? "bg-[#b71508] text-white" : "border border-gray-200 text-[#111827] hover:bg-gray-50"
+                  }`}
+                >
+                  {pg}
+                </button>
+              ))}
+              <button
+                onClick={() => handlePageChange(page + 1)}
+                disabled={page === totalPages}
+                className="w-9 h-9 flex items-center justify-center border border-gray-200 rounded-lg text-gray-400 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                &gt;
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
       {/* Bottom CTA */}
-      <div className="bg-[#2d3748] text-white py-16 px-8 relative overflow-hidden mt-12">
+      <div className="bg-[#2d3748] text-white py-16 px-8 relative overflow-hidden mt-8">
         <div className="absolute right-0 top-0 bottom-0 w-1/3 opacity-10 flex items-center justify-center">
           <Settings size={300} />
         </div>
         <div className="max-w-7xl mx-auto relative z-10">
-          <h2 className="text-4xl font-bold mb-6 max-w-2xl text-white">Thông số kỹ thuật dự án phức tạp?</h2>
-          <p className="text-gray-400 text-lg max-w-2xl mb-8">
-            Đội ngũ kỹ sư của chúng tôi hỗ trợ lựa chọn các thông số kỹ thuật chính xác cho các dự án hạ tầng điện quy mô lớn. Chúng tôi đảm bảo tuân thủ mọi tiêu chuẩn khu vực và quốc tế.
+          <h2 className="text-3xl font-bold mb-4 max-w-2xl text-white">Cần tư vấn chọn thiết bị phù hợp?</h2>
+          <p className="text-gray-400 text-base max-w-2xl mb-6">
+            Đội ngũ kỹ thuật của chúng tôi sẵn sàng hỗ trợ bạn chọn thiết bị đúng thông số kỹ thuật cho từng ứng dụng.
           </p>
-          <div className="flex gap-4">
-            <button className="bg-[#b71508] text-white font-bold py-3 px-6 rounded text-sm uppercase tracking-wider hover:bg-red-800 transition-colors flex items-center gap-2">
-              <Download size={18} /> Tải Catalogue tổng
-            </button>
-            <button className="bg-transparent border border-gray-500 text-white font-bold py-3 px-6 rounded text-sm uppercase tracking-wider hover:bg-white/10 transition-colors">
-              Liên hệ kỹ thuật
-            </button>
+          <div className="flex gap-4 flex-wrap">
+            <a href="tel:0985352345" className="bg-[#b71508] text-white font-bold py-3 px-6 rounded text-sm uppercase tracking-wider hover:bg-red-800 transition-colors flex items-center gap-2">
+              <Download size={18} /> Liên hệ báo giá
+            </a>
+            <a href="tel:0985352345" className="bg-transparent border border-gray-500 text-white font-bold py-3 px-6 rounded text-sm uppercase tracking-wider hover:bg-white/10 transition-colors">
+              Hotline: 098-535-2345
+            </a>
           </div>
         </div>
       </div>
