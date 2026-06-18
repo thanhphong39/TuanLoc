@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Products from "./pages/Products";
 import Posts from "./pages/Posts";
+import Projects from "./pages/Projects";
 import Contacts from "./pages/Contacts";
 
 function ProtectedRoute({ children }) {
@@ -31,6 +32,7 @@ export default function App() {
                   <Route path="/" element={<Dashboard />} />
                   <Route path="/products" element={<Products />} />
                   <Route path="/posts" element={<Posts />} />
+                  <Route path="/projects" element={<Projects />} />
                   <Route path="/contacts" element={<Contacts />} />
                 </Routes>
               </Layout>

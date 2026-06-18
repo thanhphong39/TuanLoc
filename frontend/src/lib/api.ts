@@ -20,6 +20,26 @@ export interface ApiPost {
   badge: string;
 }
 
+export interface ApiProject {
+  _id: string;
+  title: string;
+  label: string;
+  subtitle: string;
+  description: string;
+  location: string;
+  status: string;
+  category: string;
+  client: string;
+  duration: string;
+  image: string;
+  galleryImages: string[];
+  outcomes: string[];
+  keyMetrics: { value: string; label: string; icon: string }[];
+  scope: { title: string; items: string[] }[];
+  challenges: { title: string; description: string }[];
+  large: boolean;
+}
+
 export const getProducts = (params?: Record<string, string>) =>
   fetch(`${BASE}/api/products${params ? "?" + new URLSearchParams(params) : ""}`)
     .then<{ products: ApiProduct[]; total: number }>((r) => r.json());
@@ -30,6 +50,13 @@ export const getProduct = (id: string) =>
 export const getPosts = (params?: Record<string, string>) =>
   fetch(`${BASE}/api/posts${params ? "?" + new URLSearchParams(params) : ""}`)
     .then<{ posts: ApiPost[]; total: number }>((r) => r.json());
+
+export const getProjects = (params?: Record<string, string>) =>
+  fetch(`${BASE}/api/projects${params ? "?" + new URLSearchParams(params) : ""}`)
+    .then<{ projects: ApiProject[]; total: number }>((r) => r.json());
+
+export const getProject = (id: string) =>
+  fetch(`${BASE}/api/projects/${id}`).then<ApiProject>((r) => r.json());
 
 export const createContact = (data: {
   fullName: string;

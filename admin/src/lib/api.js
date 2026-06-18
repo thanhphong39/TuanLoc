@@ -80,3 +80,30 @@ export const deleteContact = (id) =>
     method: "DELETE",
     headers: authHeader(),
   }).then(json);
+
+// Projects
+export const getProjects = (page = 1) =>
+  fetch(`${BASE}/api/projects?page=${page}&limit=10`, { headers: authHeader() }).then(json);
+
+export const getProject = (id) =>
+  fetch(`${BASE}/api/projects/${id}`, { headers: authHeader() }).then(json);
+
+export const createProject = (formData) =>
+  fetch(`${BASE}/api/projects`, {
+    method: "POST",
+    headers: authHeader(),
+    body: formData,
+  }).then(json);
+
+export const updateProject = (id, formData) =>
+  fetch(`${BASE}/api/projects/${id}`, {
+    method: "PUT",
+    headers: authHeader(),
+    body: formData,
+  }).then(json);
+
+export const deleteProject = (id) =>
+  fetch(`${BASE}/api/projects/${id}`, {
+    method: "DELETE",
+    headers: authHeader(),
+  }).then(json);

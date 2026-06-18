@@ -1,13 +1,14 @@
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import {
   LayoutDashboard, Package, FileText, MessageSquare,
-  LogOut, ExternalLink, Zap
+  LogOut, ExternalLink, Zap, FolderOpen
 } from "lucide-react";
 
 const navItems = [
   { to: "/", label: "Tổng quan", icon: LayoutDashboard, end: true },
   { to: "/products", label: "Sản phẩm", icon: Package },
   { to: "/posts", label: "Bài viết", icon: FileText },
+  { to: "/projects", label: "Dự án", icon: FolderOpen },
   { to: "/contacts", label: "Liên hệ", icon: MessageSquare },
 ];
 
@@ -15,6 +16,7 @@ const PAGE_TITLES = {
   "/": "Tổng quan",
   "/products": "Quản lý sản phẩm",
   "/posts": "Quản lý bài viết",
+  "/projects": "Quản lý dự án",
   "/contacts": "Quản lý liên hệ",
 };
 

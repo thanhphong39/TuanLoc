@@ -14,6 +14,7 @@ app.use("/api/auth", require("./src/routes/auth"));
 app.use("/api/products", require("./src/routes/product"));
 app.use("/api/contacts", require("./src/routes/contact"));
 app.use("/api/posts", require("./src/routes/post"));
+app.use("/api/projects", require("./src/routes/project"));
 
 // MongoDB Connection
 mongoose
