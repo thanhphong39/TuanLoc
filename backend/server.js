@@ -29,8 +29,13 @@ const connectDB = async () => {
   console.log("MongoDB Connected");
 };
 
-// Middleware: ensure DB is connected before every request
-app.use(async (req, res, next) => {
+// Health check — không cần DB
+app.get("/", (req, res) => {
+  res.json({ status: "ok", message: "Tuấn Lộc API is running 🚀" });
+});
+
+// Middleware: ensure DB is connected trước mọi /api request
+app.use("/api", async (req, res, next) => {
   try {
     await connectDB();
     next();
