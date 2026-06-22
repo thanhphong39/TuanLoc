@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { FileText, Settings, Download, Search, X } from "lucide-react";
 import { Link, useSearchParams } from "react-router";
+import { motion, AnimatePresence } from "motion/react";
 import { getProducts, type ApiProduct } from "../../lib/api";
 
 const CATEGORIES = [
@@ -15,7 +16,7 @@ const CATEGORIES = [
   "Giám sát điện",
 ];
 
-const LIMIT = 12;
+const LIMIT = 20;
 
 export function Products() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -35,7 +36,11 @@ export function Products() {
     const params: Record<string, string> = { page: String(pg), limit: String(LIMIT) };
     if (cat) params.category = cat;
     getProducts(params)
-      .then((res) => { setProducts(res.products); setTotal(res.total); })
+      .then((res) => {
+        if (!res?.products) return;
+        setProducts(res.products);
+        setTotal(res.total || 0);
+      })
       .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
@@ -65,10 +70,28 @@ export function Products() {
     ? products.filter((p) => p.name.toLowerCase().includes(search.toLowerCase()) || p.category.toLowerCase().includes(search.toLowerCase()))
     : products;
 
+  const fadeUpVariant = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+  };
+
+  const slideLeftVariant = {
+    hidden: { opacity: 0, x: -30 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut" } },
+  };
+
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.05 } },
+  };
+
   return (
     <div className="flex flex-col w-full bg-[#f8fafc]">
       {/* Hero */}
-      <div className="bg-[#f0f4f8] py-14 px-8 border-b border-gray-200">
+      <motion.div 
+        initial="hidden" animate="visible" variants={fadeUpVariant}
+        className="bg-[#f0f4f8] py-14 px-8 border-b border-gray-200"
+      >
         <div className="max-w-7xl mx-auto">
           <div className="text-xs font-bold text-[#b71508] uppercase tracking-widest mb-3">Sản phẩm</div>
           <h1 className="text-4xl font-bold text-[#111827] mb-3">
@@ -78,11 +101,14 @@ export function Products() {
             Phân phối chính hãng Schneider Electric, Mitsubishi, Siemens, Autonics, Connectwell, LS Mecapion và nhiều thương hiệu uy tín khác.
           </p>
         </div>
-      </div>
+      </motion.div>
 
-      <div className="max-w-7xl mx-auto px-8 py-10 flex gap-10 w-full">
+      <div className="max-w-7xl mx-auto px-4 md:px-8 py-10 flex flex-col lg:flex-row gap-6 md:gap-10 w-full">
         {/* Sidebar */}
-        <div className="w-60 shrink-0 flex flex-col gap-8">
+        <motion.div 
+          initial="hidden" animate="visible" variants={slideLeftVariant}
+          className="w-full lg:w-60 shrink-0 flex flex-col gap-8"
+        >
           {/* Search */}
           <div className="relative">
             <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -103,21 +129,22 @@ export function Products() {
           {/* Categories */}
           <div>
             <h3 className="text-xs font-bold text-[#b71508] uppercase tracking-widest mb-4">Danh mục</h3>
-            <div className="flex flex-col gap-1">
+            
+            <div className="flex lg:flex-col gap-2 lg:gap-1 overflow-x-auto pb-2 lg:pb-0 snap-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
               <button
                 onClick={() => handleCategoryClick("")}
-                className={`text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                  !selectedCategory ? "bg-[#b71508] text-white" : "text-gray-600 hover:bg-gray-100"
+                className={`shrink-0 text-left px-4 py-2 lg:px-3 lg:py-2.5 rounded-full lg:rounded-lg text-sm font-medium transition-all duration-300 snap-start ${
+                  !selectedCategory ? "bg-[#b71508] text-white shadow-md" : "bg-white lg:bg-transparent text-gray-600 hover:bg-gray-100 border border-gray-200 lg:border-transparent"
                 }`}
               >
-                Tất cả sản phẩm
+                Tất cả
               </button>
               {CATEGORIES.map((cat) => (
                 <button
                   key={cat}
                   onClick={() => handleCategoryClick(cat)}
-                  className={`text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                    selectedCategory === cat ? "bg-[#b71508] text-white" : "text-gray-600 hover:bg-gray-100"
+                  className={`shrink-0 text-left px-4 py-2 lg:px-3 lg:py-2.5 rounded-full lg:rounded-lg text-sm font-medium transition-all duration-300 snap-start ${
+                    selectedCategory === cat ? "bg-[#b71508] text-white shadow-md" : "bg-white lg:bg-transparent text-gray-600 hover:bg-gray-100 border border-gray-200 lg:border-transparent"
                   }`}
                 >
                   {cat}
@@ -130,11 +157,11 @@ export function Products() {
           <div className="bg-[#111827] text-white p-5 rounded-xl">
             <h3 className="text-base font-bold mb-3">Cần tư vấn?</h3>
             <p className="text-sm text-gray-400 mb-4">Đội ngũ kỹ sư sẵn sàng hỗ trợ lựa chọn thiết bị phù hợp.</p>
-            <a href="tel:0985352345" className="bg-[#b71508] text-white font-bold py-2.5 px-4 rounded w-full text-xs uppercase tracking-wider hover:bg-red-800 transition-colors block text-center">
+            <a href="https://zalo.me/0985352345" target="_blank" rel="noopener noreferrer" className="bg-[#b71508] text-white font-bold py-2.5 px-4 rounded w-full text-xs uppercase tracking-wider hover:bg-red-800 transition-colors block text-center">
               Gọi ngay
             </a>
           </div>
-        </div>
+        </motion.div>
 
         {/* Product Grid */}
         <div className="flex-1 min-w-0">
@@ -153,7 +180,7 @@ export function Products() {
           </div>
 
           {loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-5 mb-10">
               {Array.from({ length: 6 }).map((_, i) => (
                 <div key={i} className="bg-white border border-gray-200 rounded-xl overflow-hidden animate-pulse">
                   <div className="h-48 bg-gray-200" />
@@ -166,12 +193,18 @@ export function Products() {
               ))}
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
+            <motion.div 
+              key={selectedCategory + page + search}
+              initial="hidden"
+              animate="visible"
+              variants={staggerContainer}
+              className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-5 mb-10"
+            >
               {displayed.map((product) => (
-                <div key={product._id} className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition-shadow flex flex-col group">
+                <motion.div variants={fadeUpVariant} key={product._id} className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition-shadow flex flex-col group">
                   <Link to={`/products/${product._id}`} className="relative h-48 bg-gray-50 flex items-center justify-center overflow-hidden">
                     <img
-                      src={product.images[0]}
+                      src={product.images?.[0] || "/placeholder.jpg"}
                       alt={product.name}
                       className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-110"
                     />
@@ -202,17 +235,17 @@ export function Products() {
                     </div>
 
                     <div className="flex gap-2">
-                      <Link to={`/products/${product._id}`} className="flex-1 py-2.5 px-3 rounded text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-colors bg-[#b71508] text-white hover:bg-red-800">
-                        Xem chi tiết
+                      <Link to={`/products/${product._id}`} className="flex-1 py-2 px-1 md:py-2.5 md:px-3 rounded text-[10px] md:text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-colors bg-[#b71508] text-white hover:bg-red-800 text-center">
+                        Chi tiết
                       </Link>
-                      <a href="tel:0985352345" className="py-2.5 px-3 rounded text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-colors bg-white text-[#b71508] border border-[#b71508] hover:bg-red-50">
+                      <a href="https://zalo.me/0985352345" target="_blank" rel="noopener noreferrer" className="py-2 px-2 md:py-2.5 md:px-3 rounded text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-colors bg-white text-[#b71508] border border-[#b71508] hover:bg-red-50">
                         <FileText size={14} />
                       </a>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           )}
 
           {/* Pagination */}
@@ -249,9 +282,12 @@ export function Products() {
       </div>
 
       {/* Bottom CTA */}
-      <div className="bg-[#2d3748] text-white py-16 px-8 relative overflow-hidden mt-8">
+      <motion.div 
+        initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={fadeUpVariant}
+        className="bg-[#2d3748] text-white py-16 px-8 relative overflow-hidden mt-8"
+      >
         <div className="absolute right-0 top-0 bottom-0 w-1/3 opacity-10 flex items-center justify-center">
-          <Settings size={300} />
+          <Settings size={300} className="animate-[spin_20s_linear_infinite]" />
         </div>
         <div className="max-w-7xl mx-auto relative z-10">
           <h2 className="text-3xl font-bold mb-4 max-w-2xl text-white">Cần tư vấn chọn thiết bị phù hợp?</h2>
@@ -259,15 +295,15 @@ export function Products() {
             Đội ngũ kỹ thuật của chúng tôi sẵn sàng hỗ trợ bạn chọn thiết bị đúng thông số kỹ thuật cho từng ứng dụng.
           </p>
           <div className="flex gap-4 flex-wrap">
-            <a href="tel:0985352345" className="bg-[#b71508] text-white font-bold py-3 px-6 rounded text-sm uppercase tracking-wider hover:bg-red-800 transition-colors flex items-center gap-2">
+            <a href="https://zalo.me/0985352345" target="_blank" rel="noopener noreferrer" className="bg-[#b71508] text-white font-bold py-3 px-6 rounded text-sm uppercase tracking-wider hover:bg-red-800 transition-colors flex items-center gap-2">
               <Download size={18} /> Liên hệ báo giá
             </a>
-            <a href="tel:0985352345" className="bg-transparent border border-gray-500 text-white font-bold py-3 px-6 rounded text-sm uppercase tracking-wider hover:bg-white/10 transition-colors">
+            <a href="https://zalo.me/0985352345" target="_blank" rel="noopener noreferrer" className="bg-transparent border border-gray-500 text-white font-bold py-3 px-6 rounded text-sm uppercase tracking-wider hover:bg-white/10 transition-colors">
               Hotline: 098-535-2345
             </a>
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

@@ -102,7 +102,7 @@ export function ProductDetails() {
           </ul>
 
           <div className="flex flex-col gap-4 mb-8">
-            <a href="tel:0985352345" className="bg-[#b71508] text-white font-bold py-4 px-6 rounded text-sm uppercase tracking-wider hover:bg-red-800 transition-colors flex items-center justify-center gap-2 w-full text-center">
+            <a href="https://zalo.me/0985352345" target="_blank" rel="noopener noreferrer" className="bg-[#b71508] text-white font-bold py-4 px-6 rounded text-sm uppercase tracking-wider hover:bg-red-800 transition-colors flex items-center justify-center gap-2 w-full text-center">
               <Mail size={18} /> Liên Hệ Ngay
             </a>
             <button className="bg-white border border-[#b71508] text-[#b71508] font-bold py-4 px-6 rounded text-sm uppercase tracking-wider hover:bg-red-50 transition-colors flex items-center justify-center gap-2 w-full">
@@ -110,7 +110,7 @@ export function ProductDetails() {
             </button>
           </div>
 
-          <a href="tel:0985352345" className="bg-[#f8fafc] p-6 rounded-lg border border-gray-100 flex items-start gap-4 hover:bg-gray-50 transition-colors">
+          <a href="https://zalo.me/0985352345" target="_blank" rel="noopener noreferrer" className="bg-[#f8fafc] p-6 rounded-lg border border-gray-100 flex items-start gap-4 hover:bg-gray-50 transition-colors">
             <div className="bg-white p-3 rounded-full shadow-sm text-[#b71508]">
               <PhoneCall size={20} />
             </div>
@@ -205,7 +205,7 @@ export function ProductDetails() {
               Trao đổi trực tiếp với các kỹ sư điện cao cấp của chúng tôi về việc tích hợp {product.name} vào dự án hạ tầng tiếp theo của bạn.
             </p>
             <div className="space-y-6">
-              <a href="tel:0985352345" className="flex items-center gap-4 hover:opacity-80 transition-opacity">
+              <a href="https://zalo.me/0985352345" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 hover:opacity-80 transition-opacity">
                 <div className="bg-red-500/20 text-[#ef4444] p-3 rounded"><PhoneCall size={24} /></div>
                 <div>
                   <div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">HOTLINE TOÀN CẦU</div>

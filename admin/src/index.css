@@ -478,3 +478,121 @@ textarea { resize: vertical; min-height: 96px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+/* ── RESPONSIVE (MOBILE) ────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* Layout & Sidebar */
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+  .sidebar.open {
+    transform: translateX(0);
+    box-shadow: 4px 0 24px rgba(0,0,0,0.15);
+  }
+  .main {
+    margin-left: 0;
+  }
+  
+  /* Sidebar Backdrop */
+  .sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 15;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .sidebar-backdrop.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Topbar */
+  .topbar {
+    padding: 0 16px;
+    height: 56px;
+  }
+  .topbar-mobile-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-right: 12px;
+    color: var(--text);
+  }
+  .topbar-mobile-toggle:active {
+    background: #f1f5f9;
+  }
+
+  .topbar-site-btn {
+    display: none; /* Hide on small screens to save space */
+  }
+
+  /* Content */
+  .content {
+    padding: 20px 16px;
+  }
+
+  /* Grids */
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  .quick-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Login Page */
+  .login-page {
+    flex-direction: column;
+  }
+  .login-left {
+    width: 100%;
+    padding: 40px 20px;
+    align-items: center;
+    text-align: center;
+  }
+  .login-features {
+    align-items: center;
+  }
+  .login-right {
+    padding: 20px;
+  }
+  .login-box {
+    padding: 32px 24px;
+  }
+
+  /* Modal */
+  .modal {
+    width: 95%;
+    margin: 16px;
+  }
+  .modal-header {
+    padding: 16px 20px 0;
+  }
+  .modal form {
+    padding: 16px 20px 20px;
+  }
+
+  /* Hide avatar text, keep just initial on mobile */
+  .topbar-user span {
+    display: none;
+  }
+}
+
+/* Hide toggle on desktop */
+@media (min-width: 769px) {
+  .topbar-mobile-toggle {
+    display: none;
+  }
+}
+

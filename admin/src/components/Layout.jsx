@@ -1,7 +1,8 @@
+import { useState } from "react";
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import {
   LayoutDashboard, Package, FileText, MessageSquare,
-  LogOut, ExternalLink, Zap, FolderOpen
+  LogOut, ExternalLink, Zap, FolderOpen, Menu
 } from "lucide-react";
 
 const navItems = [
@@ -21,6 +22,7 @@ const PAGE_TITLES = {
 };
 
 export default function Layout({ children }) {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -34,8 +36,14 @@ export default function Layout({ children }) {
 
   return (
     <div className="layout">
+      {/* ── SIDEBAR BACKDROP ── */}
+      <div 
+        className={`sidebar-backdrop ${sidebarOpen ? "open" : ""}`} 
+        onClick={() => setSidebarOpen(false)}
+      />
+
       {/* ── SIDEBAR ── */}
-      <aside className="sidebar">
+      <aside className={`sidebar ${sidebarOpen ? "open" : ""}`}>
         <div className="sidebar-logo">
           <div className="sidebar-logo-icon">
             <Zap size={20} color="#fff" />
@@ -55,6 +63,7 @@ export default function Layout({ children }) {
               key={to}
               to={to}
               end={end}
+              onClick={() => setSidebarOpen(false)}
               className={({ isActive }) => "nav-item" + (isActive ? " active" : "")}
             >
               <Icon size={17} className="nav-icon" />
@@ -83,6 +92,9 @@ export default function Layout({ children }) {
       <div className="main">
         <div className="topbar">
           <div className="topbar-left">
+            <button className="topbar-mobile-toggle" onClick={() => setSidebarOpen(true)}>
+              <Menu size={20} />
+            </button>
             <span className="topbar-title">{pageTitle}</span>
           </div>
           <div className="topbar-right">

@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { Outlet, Link, useLocation } from "react-router";
-import { MapPin, Mail, Facebook, Instagram, Twitter, Linkedin, Github, Phone, PhoneCall } from "lucide-react";
+import { MapPin, Mail, Facebook, Instagram, Twitter, Linkedin, Github, Phone, PhoneCall, Menu, X } from "lucide-react";
 
 const ZaloIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" className={className} fill="currentColor">
@@ -10,6 +11,7 @@ const ZaloIcon = ({ className }: { className?: string }) => (
 
 export function RootLayout() {
   const location = useLocation();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = [
     { name: "Trang chủ", path: "/" },
@@ -23,7 +25,7 @@ export function RootLayout() {
   return (
     <div className="min-h-screen flex flex-col font-sans">
       {/* Topbar */}
-      <div className="bg-[#111827] text-[#9ca3af] text-xs py-2 px-8 flex justify-between items-center">
+      <div className="bg-[#111827] text-[#9ca3af] text-xs py-2 px-4 md:px-8 hidden md:flex justify-between items-center">
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-2">
             <MapPin size={14} className="text-[#b71508]" />
@@ -44,16 +46,16 @@ export function RootLayout() {
       </div>
 
       {/* Header */}
-      <header className="bg-white border-b border-gray-100 py-4 px-8 flex justify-between items-center sticky top-0 z-50 shadow-sm">
+      <header className="bg-white border-b border-gray-100 py-3 md:py-4 px-4 md:px-8 flex justify-between items-center sticky top-0 z-50 shadow-sm relative">
         <Link to="/" className="flex items-center gap-3">
           <img src="/Logo.png" alt="Tuấn Lộc Logo" className="h-12 w-auto object-contain" />
           <div>
-            <div className="text-xl font-bold text-[#b71508] tracking-tight leading-none uppercase">TUẤN LỘC</div>
-            <div className="text-[9px] font-semibold text-[#111827] tracking-widest uppercase margin-top-4"> BUÔN BÁN & THI CÔNG ĐIỆN CÔNG NGHIỆP</div>
+            <div className="text-lg md:text-xl font-bold text-[#b71508] tracking-tight leading-none uppercase">TUẤN LỘC</div>
+            <div className="text-[8px] md:text-[9px] font-semibold text-[#111827] tracking-widest uppercase mt-1"> BUÔN BÁN & THI CÔNG ĐIỆN</div>
           </div>
         </Link>
 
-        <nav className="flex items-center gap-8">
+        <nav className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
             <Link
               key={link.path}
@@ -69,15 +71,65 @@ export function RootLayout() {
           ))}
         </nav>
 
-        <a href="tel:0985352345" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-          <div className="bg-[#b71508] text-white p-2 rounded-full">
-            <PhoneCall size={18} />
+        <div className="flex items-center gap-4">
+          <a href="https://zalo.me/0985352345" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 md:gap-3 hover:opacity-80 transition-opacity">
+            <div className="bg-[#b71508] text-white p-2 rounded-full">
+              <PhoneCall size={16} className="md:w-[18px] md:h-[18px]" />
+            </div>
+            <div className="hidden sm:block">
+              <div className="text-[10px] md:text-xs text-gray-500 font-semibold uppercase tracking-wider">HOTLINE 24/7</div>
+              <div className="text-[#111827] font-bold text-base md:text-lg">098-535-2345</div>
+            </div>
+          </a>
+
+          <button 
+            className="md:hidden text-[#111827] p-1"
+            onClick={() => setMobileMenuOpen(true)}
+          >
+            <Menu size={24} />
+          </button>
+        </div>
+
+        {/* Mobile Menu Backdrop */}
+        <div 
+          className={`fixed inset-0 bg-black/60 z-[60] md:hidden transition-opacity duration-300 ${
+            mobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
+          onClick={() => setMobileMenuOpen(false)}
+        />
+
+        {/* Mobile Menu Drawer */}
+        <div 
+          className={`fixed top-0 right-0 bottom-0 w-[280px] bg-white z-[70] shadow-2xl md:hidden flex flex-col transform transition-transform duration-300 ease-in-out ${
+            mobileMenuOpen ? "translate-x-0" : "translate-x-full"
+          }`}
+        >
+          <div className="p-4 flex justify-between items-center border-b border-gray-100">
+            <span className="font-bold text-[#b71508] tracking-tight uppercase text-lg">Menu</span>
+            <button 
+              className="text-[#111827] p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <X size={20} />
+            </button>
           </div>
-          <div>
-            <div className="text-xs text-gray-500 font-semibold uppercase tracking-wider">HOTLINE 24/7</div>
-            <div className="text-[#111827] font-bold text-lg">098-535-2345</div>
+          <div className="flex flex-col py-2 overflow-y-auto">
+            {navLinks.map((link) => (
+              <Link
+                key={link.path}
+                to={link.path}
+                onClick={() => setMobileMenuOpen(false)}
+                className={`px-6 py-4 text-sm font-semibold uppercase tracking-wide transition-colors border-b border-gray-50 ${
+                  (location.pathname === link.path || (link.path !== '/' && location.pathname.startsWith(link.path)))
+                    ? "text-[#b71508] bg-red-50/50 border-l-4 border-l-[#b71508] px-5"
+                    : "text-[#4b5563] hover:text-[#b71508] hover:bg-gray-50 border-l-4 border-l-transparent px-5"
+                }`}
+              >
+                {link.name}
+              </Link>
+            ))}
           </div>
-        </a>
+        </div>
       </header>
 
       {/* Main Content */}
@@ -86,8 +138,8 @@ export function RootLayout() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-[#e0e7ff] text-[#4b5563] pt-16 pb-8 border-t border-[#c7d2fe]">
-        <div className="max-w-7xl mx-auto px-8 grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+      <footer className="bg-[#e0e7ff] text-[#4b5563] pt-12 md:pt-16 pb-8 border-t border-[#c7d2fe]">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mb-12">
           <div>
             <Link to="/" className="flex items-center gap-3 mb-6">
               <img src="/Logo.png" alt="Tuấn Lộc Logo" className="h-12 w-auto object-contain" />
@@ -137,7 +189,7 @@ export function RootLayout() {
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-8 pt-8 border-t border-[#c7d2fe] flex flex-col md:flex-row justify-between items-center text-xs">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 pt-8 border-t border-[#c7d2fe] flex flex-col md:flex-row justify-between items-center text-xs text-center md:text-left gap-4">
           <p>© 2024 Hạ tầng điện & Xây dựng Tuấn Lộc. Bảo lưu mọi quyền.</p>
           <div className="flex items-center gap-6 mt-4 md:mt-0">
             <span>ISO 9001:2015</span>
@@ -147,16 +199,16 @@ export function RootLayout() {
       </footer>
 
       {/* Floating Buttons */}
-      <div className="fixed bottom-8 right-8 z-[9999] flex flex-col gap-4">
+      <div className="fixed bottom-6 right-4 md:bottom-8 md:right-8 z-[9999] flex flex-col gap-3 md:gap-4">
         {/* Zalo Button */}
         <a 
           href="https://zalo.me/0985352345" 
           target="_blank" 
           rel="noreferrer"
-          className="pulsing-button w-14 h-14 bg-[#b71508] rounded-full flex items-center justify-center shadow-2xl transition-transform hover:scale-110 active:scale-95 animate-ring"
+          className="pulsing-button w-12 h-12 md:w-14 md:h-14 bg-[#b71508] rounded-full flex items-center justify-center shadow-2xl transition-transform hover:scale-110 active:scale-95 animate-ring"
           title="Chat Zalo"
         >
-          <ZaloIcon className="w-10 h-10 text-white" />
+          <ZaloIcon className="w-8 h-8 md:w-10 md:h-10 text-white" />
         </a>
 
         {/* Facebook Button */}
@@ -164,10 +216,10 @@ export function RootLayout() {
           href="#" 
           target="_blank" 
           rel="noreferrer"
-          className="pulsing-button w-14 h-14 bg-[#b71508] rounded-full flex items-center justify-center shadow-2xl transition-transform hover:scale-110 active:scale-95 animate-ring"
+          className="pulsing-button w-12 h-12 md:w-14 md:h-14 bg-[#b71508] rounded-full flex items-center justify-center shadow-2xl transition-transform hover:scale-110 active:scale-95 animate-ring"
           title="Facebook"
         >
-          <Facebook size={28} className="text-white" />
+          <Facebook className="w-6 h-6 md:w-[28px] md:h-[28px] text-white" />
         </a>
       </div>
     </div>
