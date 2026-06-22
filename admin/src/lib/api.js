@@ -4,8 +4,21 @@ const authHeader = () => ({
   Authorization: `Bearer ${localStorage.getItem("token") ?? ""}`,
 });
 
-const json = (r) => {
-  if (!r.ok) throw new Error(`HTTP ${r.status}`);
+// Tự động logout khi token hết hạn hoặc không hợp lệ
+export const logout = () => {
+  localStorage.removeItem("token");
+  window.location.replace("/login");
+};
+
+const json = async (r) => {
+  if (r.status === 401) {
+    logout(); // token hết hạn → tự động đăng xuất
+    throw new Error("Phiên đăng nhập hết hạn");
+  }
+  if (!r.ok) {
+    const body = await r.json().catch(() => ({}));
+    throw new Error(body.message ?? `HTTP ${r.status}`);
+  }
   return r.json();
 };
 

@@ -72,9 +72,10 @@ const updateProject = async (req, res) => {
   try {
     const data = { ...req.body };
     data.large = data.large === "true" || data.large === true;
-    data.outcomes = parseLines(data.outcomes);
 
     // Only overwrite structured fields if they were explicitly sent
+    if ("outcomes" in req.body) data.outcomes = parseLines(data.outcomes);
+    else delete data.outcomes;
     if ("keyMetrics" in req.body) data.keyMetrics = parseJson(data.keyMetrics, []);
     else delete data.keyMetrics;
     if ("scope" in req.body) data.scope = parseJson(data.scope, []);

@@ -6,7 +6,20 @@ require("dotenv").config();
 const app = express();
 
 // Middleware
-app.use(cors());
+const allowedOrigins = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(",").map((o) => o.trim())
+  : ["http://localhost:3000", "http://localhost:5173"];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Cho phép requests không có origin (ví dụ: mobile apps, curl)
+      if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+      callback(new Error(`CORS: Origin '${origin}' not allowed`));
+    },
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 // MongoDB Connection (cached for serverless)
@@ -33,6 +46,17 @@ app.use("/api/products", require("./src/routes/product"));
 app.use("/api/contacts", require("./src/routes/contact"));
 app.use("/api/posts", require("./src/routes/post"));
 app.use("/api/projects", require("./src/routes/project"));
+
+// Multer error handler (file size / type)
+// eslint-disable-next-line no-unused-vars
+app.use((err, req, res, next) => {
+  if (err.name === "MulterError" || err.message === "Only image files are allowed") {
+    return res.status(400).json({ message: err.message });
+  }
+  // General error handler — trả về JSON thay vì HTML
+  console.error(err.stack);
+  res.status(err.status ?? 500).json({ message: err.message ?? "Internal Server Error" });
+});
 
 // Export for Vercel serverless
 module.exports = app;

@@ -40,23 +40,32 @@ export interface ApiProject {
   large: boolean;
 }
 
+// Helper: check r.ok và throw lỗi rõ ràng
+const checkOk = async <T>(r: Response): Promise<T> => {
+  if (!r.ok) {
+    const body = await r.json().catch(() => ({})) as { message?: string };
+    throw new Error(body.message ?? `Lỗi ${r.status}`);
+  }
+  return r.json() as Promise<T>;
+};
+
 export const getProducts = (params?: Record<string, string>) =>
   fetch(`${BASE}/api/products${params ? "?" + new URLSearchParams(params) : ""}`)
-    .then<{ products: ApiProduct[]; total: number }>((r) => r.json());
+    .then<{ products: ApiProduct[]; total: number }>(checkOk);
 
 export const getProduct = (id: string) =>
-  fetch(`${BASE}/api/products/${id}`).then<ApiProduct>((r) => r.json());
+  fetch(`${BASE}/api/products/${id}`).then<ApiProduct>(checkOk);
 
 export const getPosts = (params?: Record<string, string>) =>
   fetch(`${BASE}/api/posts${params ? "?" + new URLSearchParams(params) : ""}`)
-    .then<{ posts: ApiPost[]; total: number }>((r) => r.json());
+    .then<{ posts: ApiPost[]; total: number }>(checkOk);
 
 export const getProjects = (params?: Record<string, string>) =>
   fetch(`${BASE}/api/projects${params ? "?" + new URLSearchParams(params) : ""}`)
-    .then<{ projects: ApiProject[]; total: number }>((r) => r.json());
+    .then<{ projects: ApiProject[]; total: number }>(checkOk);
 
 export const getProject = (id: string) =>
-  fetch(`${BASE}/api/projects/${id}`).then<ApiProject>((r) => r.json());
+  fetch(`${BASE}/api/projects/${id}`).then<ApiProject>(checkOk);
 
 export const createContact = (data: {
   fullName: string;
@@ -68,7 +77,7 @@ export const createContact = (data: {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
-  }).then((r) => r.json());
+  }).then(checkOk);
 
 export const formatDate = (dateStr: string) => {
   const d = new Date(dateStr);

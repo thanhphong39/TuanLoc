@@ -61,14 +61,15 @@ export default function Login({ onLogin }) {
 
           <form className="login-form" onSubmit={handleSubmit}>
             <div className="form-group">
-              <label>Email</label>
+              <label>Tên đăng nhập</label>
               <input
-                type="email"
+                type="text"
                 value={form.username}
                 onChange={(e) => setForm((p) => ({ ...p, username: e.target.value }))}
-                placeholder="tuanlocco.hcm@gmail.com"
+                placeholder="admin"
                 required
                 autoFocus
+                autoComplete="username"
               />
             </div>
             <div className="form-group">
@@ -79,6 +80,7 @@ export default function Login({ onLogin }) {
                 onChange={(e) => setForm((p) => ({ ...p, password: e.target.value }))}
                 placeholder="••••••••"
                 required
+                autoComplete="current-password"
               />
             </div>
 

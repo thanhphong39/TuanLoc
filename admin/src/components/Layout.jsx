@@ -74,7 +74,7 @@ export default function Layout({ children }) {
 
         <div className="sidebar-footer">
           <a
-            href="http://localhost:5173"
+            href={import.meta.env.VITE_SITE_URL ?? "http://localhost:5173"}
             target="_blank"
             rel="noreferrer"
             className="topbar-site-btn"

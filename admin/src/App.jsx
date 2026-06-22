@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Layout from "./components/Layout";
 import Login from "./pages/Login";
@@ -8,20 +7,23 @@ import Posts from "./pages/Posts";
 import Projects from "./pages/Projects";
 import Contacts from "./pages/Contacts";
 
+// Check token mỗi lần render — đồng bộ với DevTools
 function ProtectedRoute({ children }) {
   const token = localStorage.getItem("token");
   return token ? children : <Navigate to="/login" replace />;
 }
 
 export default function App() {
-  const [authed, setAuthed] = useState(!!localStorage.getItem("token"));
-
   return (
     <BrowserRouter>
       <Routes>
         <Route
           path="/login"
-          element={authed ? <Navigate to="/" replace /> : <Login onLogin={() => setAuthed(true)} />}
+          element={
+            localStorage.getItem("token")
+              ? <Navigate to="/" replace />
+              : <Login onLogin={() => window.location.replace("/")} />
+          }
         />
         <Route
           path="/*"
