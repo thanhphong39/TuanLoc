@@ -1,4 +1,4 @@
-const rawBase = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const rawBase = import.meta.env.VITE_API_URL || "https://tuanloc-backend.vercel.app";
 const BASE = rawBase.replace(/\/+$/, ""); // Loại bỏ dấu slash (/) ở cuối nếu có
 
 const authHeader = () => ({
