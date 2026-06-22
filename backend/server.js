@@ -5,18 +5,10 @@ require("dotenv").config();
 
 const app = express();
 
-// Middleware
-const allowedOrigins = process.env.ALLOWED_ORIGINS
-  ? process.env.ALLOWED_ORIGINS.split(",").map((o) => o.trim())
-  : ["http://localhost:3000", "http://localhost:5173"];
-
+// Cho phép tất cả các tên miền truy cập (tránh lỗi CORS khi deploy Vercel)
 app.use(
   cors({
-    origin: (origin, callback) => {
-      // Cho phép requests không có origin (ví dụ: mobile apps, curl)
-      if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
-      callback(new Error(`CORS: Origin '${origin}' not allowed`));
-    },
+    origin: (origin, callback) => callback(null, true),
     credentials: true,
   })
 );
