@@ -41,7 +41,7 @@ export function Products() {
         setProducts(res.products);
         setTotal(res.total || 0);
       })
-      .catch(() => {})
+      .catch((err) => console.error("Lỗi fetch products:", err))
       .finally(() => setLoading(false));
   }, []);
 

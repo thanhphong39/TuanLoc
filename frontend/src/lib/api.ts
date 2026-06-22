@@ -51,23 +51,25 @@ const checkOk = async <T>(r: Response): Promise<T> => {
   return r.json() as Promise<T>;
 };
 
+const NO_CACHE: RequestInit = { cache: "no-store" };
+
 export const getProducts = (params?: Record<string, string>) =>
-  fetch(`${BASE}/api/products${params ? "?" + new URLSearchParams(params) : ""}`)
+  fetch(`${BASE}/api/products${params ? "?" + new URLSearchParams(params) : ""}`, NO_CACHE)
     .then<{ products: ApiProduct[]; total: number }>(checkOk);
 
 export const getProduct = (id: string) =>
-  fetch(`${BASE}/api/products/${id}`).then<ApiProduct>(checkOk);
+  fetch(`${BASE}/api/products/${id}`, NO_CACHE).then<ApiProduct>(checkOk);
 
 export const getPosts = (params?: Record<string, string>) =>
-  fetch(`${BASE}/api/posts${params ? "?" + new URLSearchParams(params) : ""}`)
+  fetch(`${BASE}/api/posts${params ? "?" + new URLSearchParams(params) : ""}`, NO_CACHE)
     .then<{ posts: ApiPost[]; total: number }>(checkOk);
 
 export const getProjects = (params?: Record<string, string>) =>
-  fetch(`${BASE}/api/projects${params ? "?" + new URLSearchParams(params) : ""}`)
+  fetch(`${BASE}/api/projects${params ? "?" + new URLSearchParams(params) : ""}`, NO_CACHE)
     .then<{ projects: ApiProject[]; total: number }>(checkOk);
 
 export const getProject = (id: string) =>
-  fetch(`${BASE}/api/projects/${id}`).then<ApiProject>(checkOk);
+  fetch(`${BASE}/api/projects/${id}`, NO_CACHE).then<ApiProject>(checkOk);
 
 export const createContact = (data: {
   fullName: string;
