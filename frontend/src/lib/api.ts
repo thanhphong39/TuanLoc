@@ -1,3 +1,5 @@
+const rawBase = import.meta.env.VITE_API_URL || "https://tuanloc-backend.vercel.app";
+const BASE = rawBase.replace(/\/+$/, "");
 
 export interface ApiProduct {
   _id: string;
