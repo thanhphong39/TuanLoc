@@ -47,31 +47,6 @@ export function News() {
       </div>
 
       <div className="max-w-7xl mx-auto px-8 py-16 w-full">
-        {/* Featured News — static */}
-        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden mb-12 group cursor-pointer flex flex-col md:flex-row hover:shadow-lg transition-shadow">
-          <div className="md:w-1/2 relative overflow-hidden h-[400px]">
-            <img src="https://images.unsplash.com/photo-1776251896448-a5eb8ae25e35?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzdWJzdGF0aW9uJTIwbWFpbnRlbmFuY2V8ZW58MXx8fHwxNzc4NjcwMDU5fDA&ixlib=rb-4.1.0&q=80&w=1080" alt="Featured" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-            <div className="absolute top-6 left-6 bg-[#b71508] text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-sm">
-              NỔI BẬT
-            </div>
-          </div>
-          <div className="md:w-1/2 p-10 flex flex-col justify-center">
-             <div className="flex items-center gap-3 mb-4">
-               <span className="text-[#b71508] text-[10px] font-bold uppercase tracking-widest px-2 py-1 bg-red-50 rounded-sm">DỰ ÁN MỚI</span>
-               <span className="text-gray-500 text-sm">15 Tháng 10, 2024</span>
-             </div>
-             <h2 className="text-3xl font-bold text-[#111827] mb-6 leading-tight group-hover:text-[#b71508] transition-colors">
-               Hoàn tất giai đoạn 1 dự án đường dây 500kV mạch 3 khu vực miền Trung
-             </h2>
-             <p className="text-gray-600 mb-8 leading-relaxed">
-               Tuấn Lộc đã hoàn thành xuất sắc các hạng mục thi công lắp đặt trạm biến áp và kéo dây cho phân đoạn trọng điểm, đảm bảo đúng tiến độ cam kết với EVN và các tiêu chuẩn an toàn kỹ thuật khắt khe nhất.
-             </p>
-             <div className="text-[#b71508] font-bold text-sm uppercase tracking-wider flex items-center gap-2">
-               XEM CHI TIẾT <ArrowRight size={16} />
-             </div>
-          </div>
-        </div>
-
         {/* News Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
           {news.map((item) => (

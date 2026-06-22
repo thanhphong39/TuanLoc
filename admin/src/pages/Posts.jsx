@@ -69,9 +69,13 @@ export default function Posts() {
 
   const handleDelete = async (id, title) => {
     if (!confirm(`Xóa bài viết "${title}"?`)) return;
-    await deletePost(id);
-    load();
-    showAlert("Đã xóa bài viết.");
+    try {
+      await deletePost(id);
+      load();
+      showAlert("Đã xóa bài viết.");
+    } catch {
+      showAlert("Xóa thất bại. Vui lòng thử lại.", "error");
+    }
   };
 
   const fmtDate = (d) => d ? new Date(d).toLocaleDateString("vi-VN") : "—";
