@@ -1,5 +1,5 @@
 const rawBase = import.meta.env.VITE_API_URL || "https://tuanloc-backend.vercel.app";
-const BASE = rawBase.replace(/\/+$/, ""); // Loại bỏ dấu slash (/) ở cuối nếu có
+const BASE = rawBase.replace(/\/+$/, "") + "/api"; // Loại bỏ dấu slash (/) ở cuối nếu có và thêm /api
 
 const authHeader = () => ({
   Authorization: `Bearer ${localStorage.getItem("token") ?? ""}`,
@@ -25,7 +25,7 @@ const json = async (r) => {
 
 // Auth
 export const login = (username, password) =>
-  fetch(`${BASE}/api/auth/login`, {
+  fetch(`${BASE}/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username, password }),
@@ -33,91 +33,91 @@ export const login = (username, password) =>
 
 // Products
 export const getProducts = (page = 1) =>
-  fetch(`${BASE}/api/products?page=${page}&limit=10`, { headers: authHeader() }).then(json);
+  fetch(`${BASE}/products?page=${page}&limit=10`, { headers: authHeader() }).then(json);
 
 export const getProduct = (id) =>
-  fetch(`${BASE}/api/products/${id}`, { headers: authHeader() }).then(json);
+  fetch(`${BASE}/products/${id}`, { headers: authHeader() }).then(json);
 
 export const createProduct = (formData) =>
-  fetch(`${BASE}/api/products`, {
+  fetch(`${BASE}/products`, {
     method: "POST",
     headers: authHeader(),
     body: formData,
   }).then(json);
 
 export const updateProduct = (id, formData) =>
-  fetch(`${BASE}/api/products/${id}`, {
+  fetch(`${BASE}/products/${id}`, {
     method: "PUT",
     headers: authHeader(),
     body: formData,
   }).then(json);
 
 export const deleteProduct = (id) =>
-  fetch(`${BASE}/api/products/${id}`, {
+  fetch(`${BASE}/products/${id}`, {
     method: "DELETE",
     headers: authHeader(),
   }).then(json);
 
 // Posts
 export const getPosts = (page = 1) =>
-  fetch(`${BASE}/api/posts?page=${page}&limit=10`, { headers: authHeader() }).then(json);
+  fetch(`${BASE}/posts?page=${page}&limit=10`, { headers: authHeader() }).then(json);
 
 export const getPost = (id) =>
-  fetch(`${BASE}/api/posts/${id}`, { headers: authHeader() }).then(json);
+  fetch(`${BASE}/posts/${id}`, { headers: authHeader() }).then(json);
 
 export const createPost = (formData) =>
-  fetch(`${BASE}/api/posts`, {
+  fetch(`${BASE}/posts`, {
     method: "POST",
     headers: authHeader(),
     body: formData,
   }).then(json);
 
 export const updatePost = (id, formData) =>
-  fetch(`${BASE}/api/posts/${id}`, {
+  fetch(`${BASE}/posts/${id}`, {
     method: "PUT",
     headers: authHeader(),
     body: formData,
   }).then(json);
 
 export const deletePost = (id) =>
-  fetch(`${BASE}/api/posts/${id}`, {
+  fetch(`${BASE}/posts/${id}`, {
     method: "DELETE",
     headers: authHeader(),
   }).then(json);
 
 // Contacts
 export const getContacts = (page = 1) =>
-  fetch(`${BASE}/api/contacts?page=${page}&limit=20`, { headers: authHeader() }).then(json);
+  fetch(`${BASE}/contacts?page=${page}&limit=20`, { headers: authHeader() }).then(json);
 
 export const deleteContact = (id) =>
-  fetch(`${BASE}/api/contacts/${id}`, {
+  fetch(`${BASE}/contacts/${id}`, {
     method: "DELETE",
     headers: authHeader(),
   }).then(json);
 
 // Projects
 export const getProjects = (page = 1) =>
-  fetch(`${BASE}/api/projects?page=${page}&limit=10`, { headers: authHeader() }).then(json);
+  fetch(`${BASE}/projects?page=${page}&limit=10`, { headers: authHeader() }).then(json);
 
 export const getProject = (id) =>
-  fetch(`${BASE}/api/projects/${id}`, { headers: authHeader() }).then(json);
+  fetch(`${BASE}/projects/${id}`, { headers: authHeader() }).then(json);
 
 export const createProject = (formData) =>
-  fetch(`${BASE}/api/projects`, {
+  fetch(`${BASE}/projects`, {
     method: "POST",
     headers: authHeader(),
     body: formData,
   }).then(json);
 
 export const updateProject = (id, formData) =>
-  fetch(`${BASE}/api/projects/${id}`, {
+  fetch(`${BASE}/projects/${id}`, {
     method: "PUT",
     headers: authHeader(),
     body: formData,
   }).then(json);
 
 export const deleteProject = (id) =>
-  fetch(`${BASE}/api/projects/${id}`, {
+  fetch(`${BASE}/projects/${id}`, {
     method: "DELETE",
     headers: authHeader(),
   }).then(json);

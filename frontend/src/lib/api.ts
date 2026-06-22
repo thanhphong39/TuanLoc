@@ -1,5 +1,5 @@
 const rawBase = import.meta.env.VITE_API_URL || "https://tuanloc-backend.vercel.app";
-const BASE = rawBase.replace(/\/+$/, "");
+const BASE = rawBase.replace(/\/+$/, "") + "/api";
 
 export interface ApiProduct {
   _id: string;
@@ -51,22 +51,22 @@ const checkOk = async <T>(r: Response): Promise<T> => {
 };
 
 export const getProducts = (params?: Record<string, string>) =>
-  fetch(`${BASE}/api/products${params ? "?" + new URLSearchParams(params) : ""}`)
+  fetch(`${BASE}/products${params ? "?" + new URLSearchParams(params) : ""}`)
     .then<{ products: ApiProduct[]; total: number }>(checkOk);
 
 export const getProduct = (id: string) =>
-  fetch(`${BASE}/api/products/${id}`).then<ApiProduct>(checkOk);
+  fetch(`${BASE}/products/${id}`).then<ApiProduct>(checkOk);
 
 export const getPosts = (params?: Record<string, string>) =>
-  fetch(`${BASE}/api/posts${params ? "?" + new URLSearchParams(params) : ""}`)
+  fetch(`${BASE}/posts${params ? "?" + new URLSearchParams(params) : ""}`)
     .then<{ posts: ApiPost[]; total: number }>(checkOk);
 
 export const getProjects = (params?: Record<string, string>) =>
-  fetch(`${BASE}/api/projects${params ? "?" + new URLSearchParams(params) : ""}`)
+  fetch(`${BASE}/projects${params ? "?" + new URLSearchParams(params) : ""}`)
     .then<{ projects: ApiProject[]; total: number }>(checkOk);
 
 export const getProject = (id: string) =>
-  fetch(`${BASE}/api/projects/${id}`).then<ApiProject>(checkOk);
+  fetch(`${BASE}/projects/${id}`).then<ApiProject>(checkOk);
 
 export const createContact = (data: {
   fullName: string;
@@ -74,7 +74,7 @@ export const createContact = (data: {
   phone: string;
   projectDescription: string;
 }) =>
-  fetch(`${BASE}/api/contacts`, {
+  fetch(`${BASE}/contacts`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
