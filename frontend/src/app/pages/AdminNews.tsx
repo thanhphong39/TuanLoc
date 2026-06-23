@@ -140,50 +140,82 @@ export function AdminNews() {
   // ─── Login Screen ───
   if (!token) {
     return (
-      <div className="min-h-screen bg-[#f0f4f8] flex items-center justify-center p-4">
-        <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
-          <div className="flex items-center gap-3 mb-8">
-            <div className="w-10 h-10 bg-[#b71508] rounded-xl flex items-center justify-center">
-              <Newspaper className="w-5 h-5 text-white" />
+      <div className="min-h-screen bg-gray-50 flex flex-col justify-center items-center relative overflow-hidden font-sans px-4 sm:px-0">
+        {/* Background decoration */}
+        <div className="absolute top-[-10%] left-[-10%] w-[60%] sm:w-[40%] h-[40%] bg-red-100/50 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[60%] sm:w-[40%] h-[40%] bg-blue-100/50 rounded-full blur-3xl pointer-events-none" />
+        
+        <div className="bg-white rounded-2xl md:rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 p-6 sm:p-8 w-full max-w-[420px] relative z-10">
+          <div className="flex flex-col items-center mb-8">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-[#b71508] to-red-600 rounded-xl sm:rounded-2xl flex items-center justify-center mb-4 shadow-lg shadow-red-500/30">
+              <Newspaper className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
             </div>
-            <div>
-              <h1 className="text-xl font-bold text-gray-900">Admin Tuấn Lộc</h1>
-              <p className="text-xs text-gray-500">Quản lý tin tức & bài viết</p>
-            </div>
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-1 text-center">Quản Trị Hệ Thống</h1>
+            <p className="text-xs sm:text-sm text-gray-500 text-center">Đăng nhập để quản lý nội dung website</p>
           </div>
-          <form onSubmit={handleLogin} className="flex flex-col gap-4">
+
+          <form 
+            onSubmit={(e) => {
+              if (!loginForm.username.trim() || !loginForm.password.trim()) {
+                e.preventDefault();
+                setLoginError("Vui lòng điền đầy đủ tên đăng nhập và mật khẩu.");
+                return;
+              }
+              if (loginForm.password.length < 6) {
+                e.preventDefault();
+                setLoginError("Mật khẩu phải có ít nhất 6 ký tự.");
+                return;
+              }
+              handleLogin(e);
+            }} 
+            className="flex flex-col gap-4 sm:gap-5"
+          >
             <div>
-              <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Tên đăng nhập</label>
+              <label className="block text-[10px] sm:text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">Tên đăng nhập</label>
               <input
                 type="text"
                 required
                 value={loginForm.username}
-                onChange={(e) => setLoginForm((f) => ({ ...f, username: e.target.value }))}
-                className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm outline-none focus:border-[#b71508] focus:ring-2 focus:ring-red-50"
-                placeholder="admin"
+                onChange={(e) => {
+                  setLoginForm((f) => ({ ...f, username: e.target.value }));
+                  if (loginError) setLoginError("");
+                }}
+                className="w-full border border-gray-200 rounded-xl px-4 py-3 sm:py-3.5 text-sm outline-none focus:border-[#b71508] focus:ring-4 focus:ring-red-50 transition-all bg-gray-50/50 hover:bg-white"
+                placeholder="Nhập tên đăng nhập"
               />
             </div>
             <div>
-              <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Mật khẩu</label>
+              <label className="block text-[10px] sm:text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">Mật khẩu</label>
               <input
                 type="password"
                 required
                 value={loginForm.password}
-                onChange={(e) => setLoginForm((f) => ({ ...f, password: e.target.value }))}
-                className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm outline-none focus:border-[#b71508] focus:ring-2 focus:ring-red-50"
+                onChange={(e) => {
+                  setLoginForm((f) => ({ ...f, password: e.target.value }));
+                  if (loginError) setLoginError("");
+                }}
+                className="w-full border border-gray-200 rounded-xl px-4 py-3 sm:py-3.5 text-sm outline-none focus:border-[#b71508] focus:ring-4 focus:ring-red-50 transition-all bg-gray-50/50 hover:bg-white"
                 placeholder="••••••••"
               />
             </div>
-            {loginError && <p className="text-red-600 text-sm bg-red-50 px-3 py-2 rounded-lg">{loginError}</p>}
+            {loginError && (
+              <div className="bg-red-50 text-red-600 text-xs sm:text-sm px-4 py-3 rounded-xl border border-red-100 flex items-start gap-2 animate-[pulse_0.5s_ease-in-out]">
+                <div className="w-1.5 h-1.5 rounded-full bg-red-600 shrink-0 mt-1.5" />
+                <span className="leading-snug">{loginError}</span>
+              </div>
+            )}
             <button
               type="submit"
               disabled={loginLoading}
-              className="bg-[#b71508] text-white font-bold py-3 rounded-lg text-sm uppercase tracking-wider hover:bg-red-800 transition-colors disabled:opacity-60 flex items-center justify-center gap-2"
+              className="mt-2 bg-gradient-to-r from-[#b71508] to-red-600 text-white font-bold py-3.5 sm:py-4 rounded-xl text-xs sm:text-sm uppercase tracking-wider hover:shadow-lg hover:shadow-red-500/30 transition-all disabled:opacity-70 disabled:hover:shadow-none flex items-center justify-center gap-2"
             >
-              {loginLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
-              Đăng nhập
+              {loginLoading ? <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" /> : "Đăng nhập hệ thống"}
             </button>
           </form>
+
+          <div className="mt-6 sm:mt-8 pt-6 border-t border-gray-100 text-center">
+            <p className="text-[10px] sm:text-xs text-gray-400">© 2024 Tuấn Lộc. All rights reserved.</p>
+          </div>
         </div>
       </div>
     );

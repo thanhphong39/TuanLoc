@@ -23,13 +23,22 @@ const json = async (r) => {
   return r.json();
 };
 
-// Auth
-export const login = (username, password) =>
-  fetch(`${BASE}/api/auth/login`, {
+// Auth — intentionally avoids the shared `json` helper so a 401 (wrong password)
+// is returned as-is instead of triggering the global logout/redirect.
+export const login = async (username, password) => {
+  const r = await fetch(`${BASE}/api/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username, password }),
-  }).then(json);
+  });
+  const body = await r.json().catch(() => ({}));
+  if (!r.ok) {
+    const err = new Error(body.message ?? `HTTP ${r.status}`);
+    err.status = r.status;
+    throw err;
+  }
+  return body;
+};
 
 // Products
 export const getProducts = (page = 1) =>

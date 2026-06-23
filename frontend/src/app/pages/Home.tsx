@@ -76,7 +76,7 @@ export function Home() {
   return (
     <div className="flex flex-col w-full">
       {/* ── BANNER ── */}
-      <section className="relative w-full min-h-[600px] md:h-[750px] flex items-center bg-gray-950 overflow-hidden">
+      <section className="relative w-full min-h-[600px] md:h-[750px] flex items-center bg-gray-700 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <AnimatePresence initial={false} custom={direction}>
             <motion.img
@@ -88,11 +88,11 @@ export function Home() {
               animate="center"
               exit="exit"
               transition={{ x: { type: "spring", stiffness: 300, damping: 30 }, opacity: { duration: 0.8 } }}
-              className="absolute inset-0 w-full h-full object-cover mix-blend-overlay"
+              className="absolute inset-0 w-full h-full object-cover brightness-75"
             />
           </AnimatePresence>
-          <div className="absolute inset-0 bg-gradient-to-r from-gray-950/90 via-gray-900/60 to-transparent z-10" />
-          <div className="absolute inset-0 bg-gradient-to-t from-gray-950 via-transparent to-transparent z-10" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent z-10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent z-10" />
           
           {/* Pagination dots */}
           <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-30 flex gap-3">
@@ -291,35 +291,68 @@ export function Home() {
         </div>
       </section>
 
-      {/* ── THỐNG KÊ ── */}
-      <section className="bg-gray-950 relative py-16 md:py-24 text-white w-full overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] md:w-[800px] md:h-[800px] bg-red-600/10 rounded-full blur-[100px] md:blur-[120px] pointer-events-none" />
-        
-        <motion.div 
+      {/* ── TẠI SAO CHỌN CHÚNG TÔI ── */}
+      <section className="bg-[#080e1a] relative py-20 md:py-32 text-white w-full overflow-hidden">
+        {/* Background layers */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute -top-32 left-1/3 w-[500px] h-[500px] bg-red-600/6 rounded-full blur-[120px]" />
+          <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-indigo-600/6 rounded-full blur-[120px]" />
+        </div>
+        {/* Subtle grid */}
+        <div
+          className="absolute inset-0 opacity-[0.025]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,.15) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.15) 1px, transparent 1px)",
+            backgroundSize: "48px 48px",
+          }}
+        />
+
+        <motion.div
           className="max-w-7xl mx-auto px-4 md:px-8 relative z-10"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: "-80px" }}
           variants={staggerContainer}
         >
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4">
+          {/* Section header */}
+          <motion.div variants={fadeUpVariant} className="text-center mb-16 md:mb-20">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-red-500/30 bg-red-500/10 text-red-400 text-xs font-bold uppercase tracking-widest mb-5">
+              <Award size={13} /> Tại sao chọn Tuấn Lộc
+            </div>
+            <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight leading-tight mb-4">
+              Đối tác tin cậy trong<br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-orange-400 to-amber-400">
+                thiết bị điện công nghiệp
+              </span>
+            </h2>
+            <p className="text-gray-400 text-sm md:text-base max-w-lg mx-auto leading-relaxed">
+              Hơn 10 năm kinh nghiệm phân phối thiết bị điện chính hãng, phục vụ hàng trăm doanh nghiệp trên toàn quốc.
+            </p>
+          </motion.div>
+
+          {/* Stats row */}
+          <motion.div variants={fadeUpVariant} className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 mb-12 md:mb-16">
             {[
-              { num: "44+", label: "Sản phẩm", color: "from-red-400 to-orange-400" },
-              { num: "6+", label: "Thương hiệu", color: "from-blue-400 to-indigo-400" },
-              { num: "9+", label: "Danh mục", color: "from-green-400 to-emerald-400" },
-              { num: "24/7", label: "Hỗ trợ kỹ thuật", color: "from-yellow-400 to-amber-400" }
-            ].map((stat, idx) => (
-              <motion.div variants={fadeUpVariant} key={idx} className="flex flex-col items-center justify-center text-center p-6 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-colors">
-                <div className={`text-5xl md:text-6xl font-extrabold mb-4 text-transparent bg-clip-text bg-gradient-to-br ${stat.color} filter drop-shadow-sm`}>
-                  {stat.num}
+              { num: "10+", label: "Năm kinh nghiệm", sub: "Trong ngành điện công nghiệp", grad: "from-red-500 to-orange-500", glow: "rgba(239,68,68,0.15)" },
+              { num: "500+", label: "Khách hàng", sub: "Doanh nghiệp tin dùng", grad: "from-blue-500 to-indigo-500", glow: "rgba(99,102,241,0.15)" },
+              { num: "100%", label: "Chính hãng", sub: "Cam kết xuất xứ rõ ràng", grad: "from-emerald-500 to-teal-500", glow: "rgba(16,185,129,0.15)" },
+              { num: "24/7", label: "Hỗ trợ kỹ thuật", sub: "Tư vấn & xử lý sự cố", grad: "from-amber-400 to-yellow-500", glow: "rgba(245,158,11,0.15)" },
+            ].map((s, i) => (
+              <div
+                key={i}
+                className="relative group rounded-2xl border border-white/8 bg-white/4 backdrop-blur-sm p-5 md:p-7 text-center overflow-hidden hover:border-white/15 transition-all duration-300 hover:-translate-y-1"
+                style={{ boxShadow: `0 0 40px ${s.glow}` }}
+              >
+                <div className={`absolute inset-x-0 -top-10 h-20 bg-gradient-to-br ${s.grad} opacity-10 blur-2xl group-hover:opacity-20 transition-opacity`} />
+                <div className={`text-4xl md:text-5xl font-black mb-2 text-transparent bg-clip-text bg-gradient-to-br ${s.grad}`}>
+                  {s.num}
                 </div>
-                <div className="text-sm uppercase tracking-widest text-gray-400 font-bold flex items-center gap-2">
-                  <CheckCircle2 size={16} className="text-gray-500" />
-                  {stat.label}
-                </div>
-              </motion.div>
+                <div className="text-sm font-bold text-white/80 uppercase tracking-wider">{s.label}</div>
+                <div className="text-xs text-gray-500 mt-1">{s.sub}</div>
+              </div>
             ))}
-          </div>
+          </motion.div>
         </motion.div>
       </section>
 

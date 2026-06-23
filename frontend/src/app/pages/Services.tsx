@@ -135,52 +135,8 @@ export function Services() {
         </div>
       </section>
 
-      {/* Service Specs */}
+      {/* CTA */}
       <section className="py-24 px-8 max-w-7xl mx-auto w-full">
-         <div className="mb-10">
-           <h2 className="text-3xl font-bold text-[#111827] mb-2">Thông số dịch vụ</h2>
-           <p className="text-gray-600">Các thông số kỹ thuật và tiêu chuẩn cho các phân cấp dịch vụ chính của chúng tôi.</p>
-         </div>
-
-         <div className="bg-white border border-gray-200 rounded-lg overflow-hidden mb-20">
-           <table className="w-full text-left">
-             <thead className="bg-[#3b4b8a] text-white text-xs uppercase tracking-widest">
-               <tr>
-                 <th className="py-4 px-6">CẤP DỊCH VỤ</th>
-                 <th className="py-4 px-6">DẢI ĐIỆN ÁP</th>
-                 <th className="py-4 px-6">THỜI GIAN THỰC HIỆN THÔNG THƯỜNG</th>
-                 <th className="py-4 px-6">ỨNG DỤNG CÔNG NGHIỆP</th>
-               </tr>
-             </thead>
-             <tbody className="text-sm text-gray-700 divide-y divide-gray-100">
-               <tr>
-                 <td className="py-4 px-6 font-bold text-[#111827]">Hạ tầng Cấp 1</td>
-                 <td className="py-4 px-6">110kV - 500kV</td>
-                 <td className="py-4 px-6">12 - 24 Tháng</td>
-                 <td className="py-4 px-6">Lưới điện quốc gia, Nhà máy điện</td>
-               </tr>
-               <tr className="bg-gray-50">
-                 <td className="py-4 px-6 font-bold text-[#111827]">Hệ thống điện công nghiệp</td>
-                 <td className="py-4 px-6">22kV - 110kV</td>
-                 <td className="py-4 px-6">6 - 12 Tháng</td>
-                 <td className="py-4 px-6">Sản xuất, Trung tâm dữ liệu</td>
-               </tr>
-               <tr>
-                 <td className="py-4 px-6 font-bold text-[#111827]">Phân phối thương mại</td>
-                 <td className="py-4 px-6">0.4kV - 22kV</td>
-                 <td className="py-4 px-6">3 - 6 Tháng</td>
-                 <td className="py-4 px-6">Khu phức hợp đô thị, Khu công nghệ</td>
-               </tr>
-               <tr className="bg-gray-50">
-                 <td className="py-4 px-6 font-bold text-[#111827]">Hợp đồng bảo trì</td>
-                 <td className="py-4 px-6">Mọi cấp độ</td>
-                 <td className="py-4 px-6">Liên tục (24/7)</td>
-                 <td className="py-4 px-6">Quản lý cơ sở hạ tầng, Vận hành tiện ích</td>
-               </tr>
-             </tbody>
-           </table>
-         </div>
-
          {/* CTA */}
          <div className="bg-[#fdf2f2] border border-red-100 rounded-2xl p-12 text-center max-w-3xl mx-auto">
             <h2 className="text-3xl font-bold text-[#111827] mb-4">Sẵn sàng tư vấn kỹ thuật?</h2>
