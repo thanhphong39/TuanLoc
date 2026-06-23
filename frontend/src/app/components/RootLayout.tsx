@@ -29,15 +29,15 @@ export function RootLayout() {
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-2">
             <MapPin size={14} className="text-[#b71508]" />
-            <span>235/10 Vo Thi Sau, Dong Hoa, Binh Duong</span>
+            <span>235/10 Đường Võ Thị Sáu, KP Tây A, P.Đông Hòa, TP. Hồ Chí Minh, VN</span>
           </div>
           <div className="flex items-center gap-2">
             <Mail size={14} className="text-[#b71508]" />
-            <span>tuanlocco@gmail.com</span>
+            <span>Tuanlocco.hcm@gmail.com</span>
           </div>
         </div>
         <div className="flex items-center gap-4 text-white">
-          <a href="#" className="hover:text-[#b71508]"><Facebook size={14} /></a>
+          <a href="https://www.facebook.com/tuannguyen163" target="_blank" rel="noopener noreferrer" className="hover:text-[#b71508]"><Facebook size={14} /></a>
           <a href="#" className="hover:text-[#b71508]"><Instagram size={14} /></a>
           <a href="#" className="hover:text-[#b71508]"><Twitter size={14} /></a>
           <a href="#" className="hover:text-[#b71508]"><Linkedin size={14} /></a>
@@ -72,13 +72,13 @@ export function RootLayout() {
         </nav>
 
         <div className="flex items-center gap-4">
-          <a href="https://zalo.me/0985352345" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 md:gap-3 hover:opacity-80 transition-opacity">
+          <a href="tel:09671789159" className="flex items-center gap-2 md:gap-3 hover:opacity-80 transition-opacity">
             <div className="bg-[#b71508] text-white p-2 rounded-full">
               <PhoneCall size={16} className="md:w-[18px] md:h-[18px]" />
             </div>
             <div className="hidden sm:block">
               <div className="text-[10px] md:text-xs text-gray-500 font-semibold uppercase tracking-wider">HOTLINE 24/7</div>
-              <div className="text-[#111827] font-bold text-base md:text-lg">098-535-2345</div>
+              <div className="text-[#111827] font-bold text-base md:text-lg">0967-178-9159</div>
             </div>
           </a>
 
@@ -202,7 +202,7 @@ export function RootLayout() {
       <div className="fixed bottom-6 right-4 md:bottom-8 md:right-8 z-[9999] flex flex-col gap-3 md:gap-4">
         {/* Zalo Button */}
         <a 
-          href="https://zalo.me/0985352345" 
+          href="https://zalo.me/09671789159" 
           target="_blank" 
           rel="noreferrer"
           className="pulsing-button w-12 h-12 md:w-14 md:h-14 bg-[#b71508] rounded-full flex items-center justify-center shadow-2xl transition-transform hover:scale-110 active:scale-95 animate-ring"
@@ -213,7 +213,7 @@ export function RootLayout() {
 
         {/* Facebook Button */}
         <a 
-          href="#" 
+          href="https://www.facebook.com/tuannguyen163" 
           target="_blank" 
           rel="noreferrer"
           className="pulsing-button w-12 h-12 md:w-14 md:h-14 bg-[#b71508] rounded-full flex items-center justify-center shadow-2xl transition-transform hover:scale-110 active:scale-95 animate-ring"

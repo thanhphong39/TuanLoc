@@ -86,17 +86,17 @@ export function Contact() {
               <div>
                 <h4 className="text-lg font-bold text-[#111827] mb-2">Trụ sở chính</h4>
                 <p className="text-gray-600 text-sm leading-relaxed">
-                  123 Đại lộ Công nghiệp, Quận Công nghệ cao<br />
-                  TP. Hồ Chí Minh, Việt Nam
+                  235/10 Đường Võ Thị Sáu, KP Tây A<br />
+                  P.Đông Hòa, TP. Hồ Chí Minh, VN
                 </p>
               </div>
             </motion.div>
 
-            <motion.a variants={fadeUpVariant} href="https://zalo.me/0985352345" target="_blank" rel="noopener noreferrer" className="border border-gray-200 rounded-lg p-6 flex gap-6 hover:border-[#b71508] hover:shadow-lg transition-all duration-300 bg-[#fdfdfd] hover:-translate-y-1">
+            <motion.a variants={fadeUpVariant} href="tel:09671789159" className="border border-gray-200 rounded-lg p-6 flex gap-6 hover:border-[#b71508] hover:shadow-lg transition-all duration-300 bg-[#fdfdfd] hover:-translate-y-1">
               <div className="bg-red-50 text-[#b71508] p-4 rounded-full h-fit"><PhoneCall size={24} /></div>
               <div>
                 <h4 className="text-lg font-bold text-[#111827] mb-2">Hotline hỗ trợ</h4>
-                <p className="text-gray-600 text-sm mb-1">Di động: 098-535-2345</p>
+                <p className="text-gray-600 text-sm mb-1">Di động: 0967-178-9159</p>
                 <p className="text-gray-600 text-sm">Phục vụ 24/7</p>
               </div>
             </motion.a>
@@ -105,8 +105,7 @@ export function Contact() {
               <div className="bg-red-50 text-[#b71508] p-4 rounded-full h-fit"><Mail size={24} /></div>
               <div>
                 <h4 className="text-lg font-bold text-[#111827] mb-2">Email doanh nghiệp</h4>
-                <p className="text-gray-600 text-sm mb-1">contact@tuanloc.com.vn</p>
-                <p className="text-gray-600 text-sm">projects@tuanloc.com.vn</p>
+                <p className="text-gray-600 text-sm mb-1">Tuanlocco.hcm@gmail.com</p>
               </div>
             </motion.div>
           </motion.div>

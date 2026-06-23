@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ArrowRight, ChevronRight, PhoneCall, Zap, Cpu, Radio, Shield, Activity, Cable, Box, Gauge } from "lucide-react";
+import { ArrowRight, ChevronRight, PhoneCall, Zap, Cpu, Radio, Shield, Activity, Cable, Box, Gauge, Award, CheckCircle2 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { Link } from "react-router";
 import { getProducts, type ApiProduct } from "../../lib/api";
@@ -7,24 +7,31 @@ import { getProducts, type ApiProduct } from "../../lib/api";
 const BANNERS = ["/Banner.jpg", "/banner2.jpg", "/banner3.jpg"];
 
 const CATEGORIES = [
-  { name: "Máy cắt hạ thế", icon: Zap, color: "bg-red-50 text-[#b71508] border-red-100", desc: "CB, MCCB, ACB, RCBO, RCCB" },
-  { name: "Biến tần", icon: Activity, color: "bg-blue-50 text-[#3b4b8a] border-blue-100", desc: "Altivar ATV32, ATV61, ATV312" },
-  { name: "PLC & Tự động hóa", icon: Cpu, color: "bg-purple-50 text-purple-700 border-purple-100", desc: "Mitsubishi Q, Siemens S7" },
-  { name: "Contactor & Relay", icon: Shield, color: "bg-orange-50 text-orange-700 border-orange-100", desc: "LC1D, LC1F, TeSys, Relay TH" },
-  { name: "Khởi động mềm", icon: Gauge, color: "bg-teal-50 text-teal-700 border-teal-100", desc: "Altistart ATS22, ATS48" },
-  { name: "Encoder & Cảm biến", icon: Radio, color: "bg-green-50 text-green-700 border-green-100", desc: "Autonics, LS Mecapion" },
-  { name: "Nguồn xung", icon: Box, color: "bg-yellow-50 text-yellow-700 border-yellow-100", desc: "Connectwell 1/2/3 pha" },
-  { name: "Cầu đấu dây", icon: Cable, color: "bg-indigo-50 text-indigo-700 border-indigo-100", desc: "Terminal blocks, Nối đất" },
-  { name: "Giám sát điện", icon: Activity, color: "bg-pink-50 text-pink-700 border-pink-100", desc: "Power Monitoring & Metering" },
+  { name: "Máy cắt hạ thế", icon: Zap, color: "from-red-500/20 to-orange-500/20 text-red-600", border: "border-red-200/50", desc: "CB, MCCB, ACB, RCBO, RCCB" },
+  { name: "Biến tần", icon: Activity, color: "from-blue-500/20 to-indigo-500/20 text-blue-600", border: "border-blue-200/50", desc: "Altivar ATV32, ATV61, ATV312" },
+  { name: "PLC & Tự động hóa", icon: Cpu, color: "from-purple-500/20 to-fuchsia-500/20 text-purple-600", border: "border-purple-200/50", desc: "Mitsubishi Q, Siemens S7" },
+  { name: "Contactor & Relay", icon: Shield, color: "from-orange-500/20 to-amber-500/20 text-orange-600", border: "border-orange-200/50", desc: "LC1D, LC1F, TeSys, Relay TH" },
+  { name: "Khởi động mềm", icon: Gauge, color: "from-teal-500/20 to-emerald-500/20 text-teal-600", border: "border-teal-200/50", desc: "Altistart ATS22, ATS48" },
+  { name: "Encoder & Cảm biến", icon: Radio, color: "from-green-500/20 to-lime-500/20 text-green-600", border: "border-green-200/50", desc: "Autonics, LS Mecapion" },
+  { name: "Nguồn xung", icon: Box, color: "from-yellow-500/20 to-amber-500/20 text-yellow-600", border: "border-yellow-200/50", desc: "Connectwell 1/2/3 pha" },
+  { name: "Cầu đấu dây", icon: Cable, color: "from-indigo-500/20 to-violet-500/20 text-indigo-600", border: "border-indigo-200/50", desc: "Terminal blocks, Nối đất" },
+  { name: "Giám sát điện", icon: Activity, color: "from-pink-500/20 to-rose-500/20 text-pink-600", border: "border-pink-200/50", desc: "Power Monitoring & Metering" },
 ];
 
 const BRANDS = [
-  { name: "Schneider Electric", color: "text-[#3dcd58]", bg: "bg-[#f0fdf4]" },
-  { name: "Mitsubishi", color: "text-red-600", bg: "bg-red-50" },
-  { name: "Siemens", color: "text-[#009999]", bg: "bg-teal-50" },
-  { name: "Autonics", color: "text-[#1d4ed8]", bg: "bg-blue-50" },
-  { name: "Connectwell", color: "text-orange-600", bg: "bg-orange-50" },
-  { name: "LS Mecapion", color: "text-purple-600", bg: "bg-purple-50" },
+  { name: "Schneider Electric", logo: "Schneider Electric" },
+  { name: "Mitsubishi", logo: "Mitsubishi" },
+  { name: "Siemens", logo: "Siemens" },
+  { name: "Autonics", logo: "Autonics" },
+  { name: "Connectwell", logo: "Connectwell" },
+  { name: "LS Mecapion", logo: "LS Mecapion" },
+  // Duplicate for seamless marquee
+  { name: "Schneider Electric", logo: "Schneider Electric" },
+  { name: "Mitsubishi", logo: "Mitsubishi" },
+  { name: "Siemens", logo: "Siemens" },
+  { name: "Autonics", logo: "Autonics" },
+  { name: "Connectwell", logo: "Connectwell" },
+  { name: "LS Mecapion", logo: "LS Mecapion" },
 ];
 
 export function Home() {
@@ -36,7 +43,7 @@ export function Home() {
   const currentIndex = ((page % BANNERS.length) + BANNERS.length) % BANNERS.length;
 
   useEffect(() => {
-    const timer = setInterval(() => paginate(1), 5000);
+    const timer = setInterval(() => paginate(1), 6000);
     return () => clearInterval(timer);
   }, [page]);
 
@@ -51,26 +58,26 @@ export function Home() {
   }, []);
 
   const slideVariants = {
-    enter: (d: number) => ({ x: d > 0 ? "100%" : "-100%", opacity: 0 }),
-    center: { zIndex: 1, x: 0, opacity: 1 },
-    exit: (d: number) => ({ zIndex: 0, x: d < 0 ? "100%" : "-100%", opacity: 0 }),
+    enter: (d: number) => ({ x: d > 0 ? "10%" : "-10%", opacity: 0 }),
+    center: { zIndex: 1, x: 0, opacity: 0.6 },
+    exit: (d: number) => ({ zIndex: 0, x: d < 0 ? "10%" : "-10%", opacity: 0 }),
   };
 
   const fadeUpVariant = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+    hidden: { opacity: 0, y: 40 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
   };
 
   const staggerContainer = {
     hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+    visible: { opacity: 1, transition: { staggerChildren: 0.15 } },
   };
 
   return (
     <div className="flex flex-col w-full">
       {/* ── BANNER ── */}
-      <section className="relative w-full h-[600px] flex items-center bg-gray-900 overflow-hidden">
-        <div className="absolute inset-0 z-0 overflow-hidden">
+      <section className="relative w-full min-h-[600px] md:h-[750px] flex items-center bg-gray-950 overflow-hidden">
+        <div className="absolute inset-0 z-0">
           <AnimatePresence initial={false} custom={direction}>
             <motion.img
               key={page}
@@ -80,53 +87,62 @@ export function Home() {
               initial="enter"
               animate="center"
               exit="exit"
-              transition={{ x: { type: "spring", stiffness: 300, damping: 30 }, opacity: { duration: 0.2 } }}
-              className="absolute inset-0 w-full h-full object-cover"
+              transition={{ x: { type: "spring", stiffness: 300, damping: 30 }, opacity: { duration: 0.8 } }}
+              className="absolute inset-0 w-full h-full object-cover mix-blend-overlay"
             />
           </AnimatePresence>
-          <div className="absolute inset-0 bg-black/50 z-10" />
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+          <div className="absolute inset-0 bg-gradient-to-r from-gray-950/90 via-gray-900/60 to-transparent z-10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-gray-950 via-transparent to-transparent z-10" />
+          
+          {/* Pagination dots */}
+          <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-30 flex gap-3">
             {BANNERS.map((_, i) => (
               <button
                 key={i}
                 onClick={() => setPage([i, i > currentIndex ? 1 : -1])}
-                className={`h-2 rounded-full transition-all duration-300 ${currentIndex === i ? "bg-[#b71508] w-8" : "bg-white/50 hover:bg-white w-2"}`}
+                className={`h-2 rounded-full transition-all duration-500 ease-out ${currentIndex === i ? "bg-red-500 w-10 shadow-[0_0_15px_rgba(239,68,68,0.7)]" : "bg-white/30 hover:bg-white/70 w-2"}`}
+                aria-label={`Go to slide ${i + 1}`}
               />
             ))}
           </div>
         </div>
 
-        <div className="relative z-20 max-w-7xl mx-auto px-4 md:px-8 w-full flex flex-col items-start text-white">
+        <div className="relative z-20 max-w-7xl mx-auto px-4 md:px-8 w-full flex flex-col justify-center h-full">
           <motion.div 
             initial="hidden" 
             animate="visible" 
             variants={staggerContainer}
-            className="flex flex-col items-start"
+            className="flex flex-col items-start max-w-3xl"
           >
-            <motion.div variants={fadeUpVariant} className="bg-[#b71508]/90 backdrop-blur-sm px-4 py-1.5 rounded-sm mb-6 inline-block text-xs font-bold uppercase tracking-widest shadow-lg">
-              Phân phối chính hãng
+            <motion.div variants={fadeUpVariant} className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-xl mb-6">
+              <Award className="text-yellow-400 w-5 h-5" />
+              <span className="text-xs md:text-sm font-bold text-white uppercase tracking-widest">Phân phối chính hãng</span>
             </motion.div>
-            <motion.h1 variants={fadeUpVariant} className="text-5xl md:text-7xl font-extrabold mb-4 leading-tight tracking-tight max-w-4xl drop-shadow-xl">
-              Thiết bị điện<br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-yellow-300 drop-shadow-none">công nghiệp chính hãng.</span>
+            
+            <motion.h1 variants={fadeUpVariant} className="text-4xl md:text-6xl lg:text-8xl font-extrabold mb-4 md:mb-6 leading-tight tracking-tight text-white">
+              Giải pháp <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-400 to-yellow-400 filter drop-shadow-lg">Toàn Diện.</span>
             </motion.h1>
-            <motion.p variants={fadeUpVariant} className="text-lg md:text-xl text-gray-200 mb-10 max-w-2xl leading-relaxed drop-shadow-md">
-              Cung cấp thiết bị điện công nghiệp từ các thương hiệu hàng đầu: Schneider, Mitsubishi, Siemens, Autonics, Connectwell và nhiều hơn nữa.
+            
+            <motion.p variants={fadeUpVariant} className="text-base md:text-xl text-gray-300 mb-8 md:mb-10 max-w-2xl leading-relaxed font-light">
+              Cung cấp thiết bị điện công nghiệp, tự động hóa chất lượng cao từ các thương hiệu hàng đầu thế giới. Cam kết chính hãng, bảo hành trọn đời.
             </motion.p>
-            <motion.div variants={fadeUpVariant} className="flex items-center gap-4 flex-wrap">
-              <Link to="/products" className="bg-[#b71508] hover:bg-red-700 text-white font-bold py-4 px-8 rounded text-sm uppercase tracking-wider transition-all shadow-xl hover:shadow-red-900/50 hover:-translate-y-1">
-                XEM SẢN PHẨM
+            
+            <motion.div variants={fadeUpVariant} className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+              <Link to="/products" className="group relative w-full sm:w-auto flex justify-center py-4 px-8 rounded-full bg-gradient-to-r from-red-600 to-red-500 text-white font-bold text-sm uppercase tracking-wider overflow-hidden shadow-[0_0_30px_rgba(220,38,38,0.3)] hover:shadow-[0_0_50px_rgba(220,38,38,0.5)] transition-all hover:-translate-y-1">
+                <span className="relative z-10 flex items-center gap-2">Khám phá sản phẩm <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" /></span>
+                <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out" />
               </Link>
-              <a href="https://zalo.me/0985352345" target="_blank" rel="noopener noreferrer" className="backdrop-blur-md bg-white/10 border border-white/40 hover:bg-white/20 text-white font-bold py-4 px-8 rounded text-sm uppercase tracking-wider transition-all hover:-translate-y-1 shadow-lg">
-                LIÊN HỆ TƯ VẤN
+              <a href="tel:09671789159" className="w-full sm:w-auto flex justify-center items-center gap-2 py-4 px-8 rounded-full bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/20 text-white font-bold text-sm uppercase tracking-wider transition-all hover:-translate-y-1">
+                <PhoneCall size={18} /> Liên hệ tư vấn
               </a>
             </motion.div>
           </motion.div>
         </div>
       </section>
 
-      {/* ── DANH MỤC SẢN PHẨM ── */}
-      <section className="py-24 px-4 md:px-8 bg-white w-full overflow-hidden">
+      {/* ── DANH MỤC SẢN PHẨM (BENTO GRID) ── */}
+      <section className="py-16 md:py-24 px-4 md:px-8 bg-gray-50 w-full overflow-hidden">
         <motion.div 
           className="max-w-7xl mx-auto"
           initial="hidden"
@@ -134,40 +150,51 @@ export function Home() {
           viewport={{ once: true, margin: "-100px" }}
           variants={staggerContainer}
         >
-          <motion.div variants={fadeUpVariant} className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-4">
-            <div>
-              <div className="text-xs font-bold text-[#b71508] uppercase tracking-widest mb-3">Danh mục</div>
-              <h2 className="text-4xl md:text-5xl font-extrabold text-[#111827] tracking-tight">Sản phẩm theo danh mục</h2>
+          <motion.div variants={fadeUpVariant} className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6">
+            <div className="max-w-2xl">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-10 h-1 bg-red-500 rounded-full" />
+                <div className="text-sm font-bold text-red-600 uppercase tracking-widest">Khám phá</div>
+              </div>
+              <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 tracking-tight leading-tight">Danh mục sản phẩm</h2>
             </div>
-            <Link to="/products" className="text-[#b71508] font-bold text-sm uppercase tracking-wider flex items-center gap-2 hover:gap-3 transition-all hover:text-red-800">
-              XEM TẤT CẢ <ArrowRight size={16} />
+            <Link to="/products" className="group flex items-center gap-3 px-6 py-3 rounded-full bg-white border border-gray-200 text-gray-900 font-bold text-sm uppercase tracking-wider hover:border-red-500 hover:text-red-600 transition-all shadow-sm hover:shadow-md">
+              Xem tất cả <div className="w-8 h-8 rounded-full bg-gray-100 group-hover:bg-red-50 flex items-center justify-center transition-colors"><ArrowRight size={16} /></div>
             </Link>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {CATEGORIES.map((cat) => {
+          <div className="grid grid-rows-2 grid-flow-col auto-cols-[calc(50%-0.5rem)] gap-4 overflow-x-auto snap-x snap-mandatory pb-6 md:grid-rows-none md:auto-cols-auto md:grid-cols-2 lg:grid-cols-3 md:grid-flow-row md:overflow-visible md:pb-0 scrollbar-hide">
+            {CATEGORIES.map((cat, idx) => {
               const Icon = cat.icon;
               const count = categoryCounts[cat.name] || 0;
               return (
-                <motion.div variants={fadeUpVariant} key={cat.name}>
+                <motion.div variants={fadeUpVariant} key={cat.name} className={`snap-center ${idx === 0 || idx === 3 ? 'md:col-span-2 lg:col-span-1' : ''}`}>
                   <Link
                     to={`/products?category=${encodeURIComponent(cat.name)}`}
-                    className={`group p-8 rounded-2xl border ${cat.color} hover:shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col gap-4 bg-opacity-40 backdrop-blur-sm bg-white/50 h-full`}
+                    className="group relative flex flex-col h-full bg-white rounded-2xl md:rounded-3xl p-5 md:p-8 border border-gray-100 overflow-hidden hover:shadow-2xl hover:shadow-gray-200/50 transition-all duration-500 hover:-translate-y-2 z-10"
                   >
-                    <div className="flex items-start justify-between">
-                      <div className="p-3 bg-white rounded-xl shadow-sm group-hover:scale-110 transition-transform duration-300">
-                        <Icon size={32} />
+                    <div className={`absolute top-0 right-0 w-32 h-32 md:w-64 md:h-64 bg-gradient-to-br ${cat.color} rounded-full blur-2xl md:blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 -translate-y-1/2 translate-x-1/2 -z-10`} />
+                    
+                    <div className="flex justify-between items-start mb-4 md:mb-8">
+                      <div className={`p-3 md:p-4 rounded-xl md:rounded-2xl bg-gradient-to-br ${cat.color} border ${cat.border} shadow-inner group-hover:scale-110 transition-transform duration-500`}>
+                        <Icon className="w-6 h-6 md:w-7 md:h-7 drop-shadow-md" />
                       </div>
                       {count > 0 && (
-                        <span className="text-xs font-bold bg-white px-3 py-1 rounded-full shadow-sm">{count} SP</span>
+                        <div className="flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1 md:py-1.5 rounded-full bg-gray-50 border border-gray-100 text-[10px] md:text-xs font-bold text-gray-600 shadow-sm">
+                          <span className="w-1 h-1 md:w-1.5 md:h-1.5 rounded-full bg-green-500" />
+                          <span className="hidden sm:inline">{count} SP</span>
+                          <span className="sm:hidden">{count}</span>
+                        </div>
                       )}
                     </div>
-                    <div className="flex-1 mt-2">
-                      <h3 className="font-extrabold text-[#111827] text-xl mb-2">{cat.name}</h3>
-                      <p className="text-sm text-gray-500 line-clamp-2">{cat.desc}</p>
+                    
+                    <div className="mt-auto">
+                      <h3 className="font-extrabold text-gray-900 text-base md:text-xl mb-1 md:mb-2 group-hover:text-red-600 transition-colors leading-tight">{cat.name}</h3>
+                      <p className="text-xs md:text-sm text-gray-500 leading-relaxed line-clamp-2">{cat.desc}</p>
                     </div>
-                    <div className="flex items-center gap-1 text-sm font-bold opacity-70 group-hover:opacity-100 transition-opacity mt-4">
-                      Xem sản phẩm <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                    
+                    <div className="absolute bottom-4 right-4 md:bottom-8 md:right-8 w-8 h-8 md:w-10 md:h-10 rounded-full bg-gray-50 flex items-center justify-center opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+                      <ChevronRight size={16} className="text-gray-900 md:w-5 md:h-5" />
                     </div>
                   </Link>
                 </motion.div>
@@ -178,7 +205,7 @@ export function Home() {
       </section>
 
       {/* ── SẢN PHẨM NỔI BẬT ── */}
-      <section className="py-24 px-4 md:px-8 bg-gray-50 w-full overflow-hidden">
+      <section className="py-16 md:py-24 px-4 md:px-8 bg-white w-full overflow-hidden">
         <motion.div 
           className="max-w-7xl mx-auto"
           initial="hidden"
@@ -186,43 +213,55 @@ export function Home() {
           viewport={{ once: true, margin: "-100px" }}
           variants={staggerContainer}
         >
-          <motion.div variants={fadeUpVariant} className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-4">
-            <div>
-              <div className="text-xs font-bold text-[#b71508] uppercase tracking-widest mb-3">Nổi bật</div>
-              <h2 className="text-4xl md:text-5xl font-extrabold text-[#111827] tracking-tight">Sản phẩm tiêu biểu</h2>
+          <motion.div variants={fadeUpVariant} className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6">
+            <div className="max-w-2xl">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-10 h-1 bg-red-500 rounded-full" />
+                <div className="text-sm font-bold text-red-600 uppercase tracking-widest">Tiêu biểu</div>
+              </div>
+              <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 tracking-tight leading-tight">Sản phẩm nổi bật</h2>
             </div>
-            <Link to="/products" className="text-[#b71508] font-bold text-sm uppercase tracking-wider flex items-center gap-2 hover:gap-3 transition-all hover:text-red-800">
-              XEM TẤT CẢ <ArrowRight size={16} />
+            <Link to="/products" className="group flex items-center gap-3 px-6 py-3 rounded-full bg-white border border-gray-200 text-gray-900 font-bold text-sm uppercase tracking-wider hover:border-red-500 hover:text-red-600 transition-all shadow-sm hover:shadow-md">
+              Xem tất cả <div className="w-8 h-8 rounded-full bg-gray-100 group-hover:bg-red-50 flex items-center justify-center transition-colors"><ArrowRight size={16} /></div>
             </Link>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-8">
             {featuredProducts.map((product) => (
               <motion.div variants={fadeUpVariant} key={product._id}>
                 <Link
                   to={`/products/${product._id}`}
-                  className="group bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 flex flex-col h-full"
+                  className="group block h-full bg-white rounded-[1.25rem] md:rounded-[2rem] p-2 md:p-3 border border-gray-100 hover:border-red-100 hover:shadow-2xl hover:shadow-red-900/5 transition-all duration-500 hover:-translate-y-1 md:hover:-translate-y-2 relative overflow-hidden"
                 >
-                  <div className="relative h-56 bg-[#f8fafc] flex items-center justify-center overflow-hidden">
+                  <div className="relative h-40 md:h-72 w-full rounded-2xl md:rounded-3xl bg-gray-50 flex items-center justify-center overflow-hidden mb-3 md:mb-5">
+                    <div className="absolute inset-0 bg-gradient-to-t from-gray-100/50 to-transparent z-0" />
                     <img
                       src={product.images?.[0] || "/placeholder.jpg"}
                       alt={product.name}
-                      className="w-full h-full object-contain p-6 transition-transform duration-700 group-hover:scale-110"
+                      className="w-full h-full object-contain p-4 md:p-8 relative z-10 transition-transform duration-700 group-hover:scale-110"
                     />
                     {product.badge && (
-                      <div className={`absolute top-4 left-4 text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded text-white shadow-md ${product.badge === "HÀNG SẴN KHO" ? "bg-[#b71508]" : "bg-[#3b4b8a]"}`}>
+                      <div className={`absolute top-2 left-2 md:top-4 md:left-4 z-20 text-[8px] md:text-[10px] font-bold uppercase tracking-widest px-2 py-1 md:px-3 md:py-1.5 rounded-full text-white shadow-md backdrop-blur-md ${product.badge === "HÀNG SẴN KHO" ? "bg-red-500/90 border border-red-400" : "bg-blue-600/90 border border-blue-500"}`}>
                         {product.badge}
                       </div>
                     )}
+                    
+                    {/* Hover Overlay */}
+                    <div className="absolute inset-0 bg-black/5 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 flex items-center justify-center">
+                      <div className="bg-white/90 backdrop-blur-md text-gray-900 font-bold px-4 py-2 md:px-6 md:py-3 rounded-full shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 flex items-center gap-1 md:gap-2 text-xs md:text-base">
+                        Chi tiết <ArrowRight size={14} className="md:w-4 md:h-4" />
+                      </div>
+                    </div>
                   </div>
-                  <div className="p-6 flex flex-col flex-1">
-                    <div className="text-[10px] font-bold text-[#3b4b8a] uppercase tracking-widest mb-2">{product.category}</div>
-                    <h3 className="font-bold text-[#111827] text-lg mb-4 line-clamp-2 flex-1 group-hover:text-[#b71508] transition-colors leading-snug">
+                  
+                  <div className="px-2 pb-2 md:px-5 md:pb-5 flex flex-col flex-1">
+                    <div className="text-[9px] md:text-xs font-bold text-gray-400 uppercase tracking-widest mb-1 md:mb-2 flex items-center gap-1 md:gap-2">
+                      <div className="w-1 h-1 md:w-1.5 md:h-1.5 rounded-full bg-gray-300" />
+                      <span className="truncate">{product.category}</span>
+                    </div>
+                    <h3 className="font-bold text-gray-900 text-sm md:text-lg mb-1 md:mb-2 line-clamp-2 flex-1 group-hover:text-red-600 transition-colors leading-snug">
                       {product.name}
                     </h3>
-                    <div className="flex items-center gap-1 text-sm font-bold text-[#b71508]">
-                      Xem chi tiết <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                    </div>
                   </div>
                 </Link>
               </motion.div>
@@ -231,100 +270,113 @@ export function Home() {
         </motion.div>
       </section>
 
-      {/* ── THƯƠNG HIỆU ĐỐI TÁC ── */}
-      <section className="py-20 px-4 md:px-8 bg-white border-t border-b border-gray-100 w-full overflow-hidden">
-        <motion.div 
-          className="max-w-7xl mx-auto"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={staggerContainer}
-        >
-          <motion.div variants={fadeUpVariant} className="text-center mb-12">
-            <div className="text-xs font-bold text-[#b71508] uppercase tracking-widest mb-3">Đối tác</div>
-            <h2 className="text-3xl md:text-4xl font-extrabold text-[#111827] tracking-tight">Thương hiệu phân phối chính hãng</h2>
-          </motion.div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6">
-            {BRANDS.map((brand) => (
-              <motion.div variants={fadeUpVariant} key={brand.name}>
-                <Link
-                  to={`/products?category=${encodeURIComponent(brand.name)}`}
-                  className={`${brand.bg} rounded-2xl p-6 flex items-center justify-center text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-2 cursor-pointer h-full border border-black/5`}
-                >
-                  <span className={`font-extrabold text-sm md:text-base ${brand.color}`}>{brand.name}</span>
-                </Link>
-              </motion.div>
+      {/* ── THƯƠNG HIỆU ĐỐI TÁC (MARQUEE) ── */}
+      <section className="py-12 md:py-16 bg-gray-50 border-t border-b border-gray-100 w-full overflow-hidden flex flex-col items-center">
+        <div className="text-xs md:text-sm font-bold text-gray-400 uppercase tracking-widest mb-8 md:mb-10 text-center">Đối tác phân phối chính hãng</div>
+        <div className="relative w-full max-w-[100vw] overflow-hidden flex bg-gray-50">
+          <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-gray-50 to-transparent z-10" />
+          <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-gray-50 to-transparent z-10" />
+          
+          <motion.div 
+            className="flex items-center gap-10 md:gap-24 px-4 md:px-8 whitespace-nowrap"
+            animate={{ x: ["0%", "-50%"] }}
+            transition={{ ease: "linear", duration: 30, repeat: Infinity }}
+          >
+            {BRANDS.map((brand, idx) => (
+              <div key={idx} className="flex items-center justify-center min-w-[150px] opacity-50 hover:opacity-100 transition-opacity duration-300 grayscale hover:grayscale-0">
+                <span className="font-extrabold text-2xl text-gray-800 tracking-tighter">{brand.logo}</span>
+              </div>
             ))}
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
       </section>
 
       {/* ── THỐNG KÊ ── */}
-      <section className="bg-[#111827] relative py-20 text-white w-full overflow-hidden">
-        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent pointer-events-none" />
+      <section className="bg-gray-950 relative py-16 md:py-24 text-white w-full overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] md:w-[800px] md:h-[800px] bg-red-600/10 rounded-full blur-[100px] md:blur-[120px] pointer-events-none" />
+        
         <motion.div 
-          className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-2 md:grid-cols-4 gap-12 md:gap-8 divide-x-0 md:divide-x divide-gray-700/50 relative z-10"
+          className="max-w-7xl mx-auto px-4 md:px-8 relative z-10"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
           variants={staggerContainer}
         >
-          <motion.div variants={fadeUpVariant} className="flex flex-col items-center justify-center text-center px-4">
-            <div className="text-6xl font-extrabold mb-3 text-transparent bg-clip-text bg-gradient-to-br from-red-400 to-white">44+</div>
-            <div className="text-xs uppercase tracking-widest text-gray-400 font-bold">SẢN PHẨM</div>
-          </motion.div>
-          <motion.div variants={fadeUpVariant} className="flex flex-col items-center justify-center text-center px-4 border-l md:border-l-0 border-gray-700/50 pl-4 md:pl-0">
-            <div className="text-6xl font-extrabold mb-3 text-transparent bg-clip-text bg-gradient-to-br from-blue-400 to-white">6</div>
-            <div className="text-xs uppercase tracking-widest text-gray-400 font-bold">THƯƠNG HIỆU</div>
-          </motion.div>
-          <motion.div variants={fadeUpVariant} className="flex flex-col items-center justify-center text-center px-4 pt-8 md:pt-0 border-t md:border-t-0 border-gray-700/50 mt-8 md:mt-0">
-            <div className="text-6xl font-extrabold mb-3 text-transparent bg-clip-text bg-gradient-to-br from-green-400 to-white">9</div>
-            <div className="text-xs uppercase tracking-widest text-gray-400 font-bold">DANH MỤC</div>
-          </motion.div>
-          <motion.div variants={fadeUpVariant} className="flex flex-col items-center justify-center text-center px-4 pt-8 md:pt-0 border-t border-l md:border-t-0 md:border-l-0 border-gray-700/50 mt-8 md:mt-0 pl-4 md:pl-0">
-            <div className="text-6xl font-extrabold mb-3 text-transparent bg-clip-text bg-gradient-to-br from-yellow-400 to-white">24/7</div>
-            <div className="text-xs uppercase tracking-widest text-gray-400 font-bold">HỖ TRỢ KỸ THUẬT</div>
-          </motion.div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4">
+            {[
+              { num: "44+", label: "Sản phẩm", color: "from-red-400 to-orange-400" },
+              { num: "6+", label: "Thương hiệu", color: "from-blue-400 to-indigo-400" },
+              { num: "9+", label: "Danh mục", color: "from-green-400 to-emerald-400" },
+              { num: "24/7", label: "Hỗ trợ kỹ thuật", color: "from-yellow-400 to-amber-400" }
+            ].map((stat, idx) => (
+              <motion.div variants={fadeUpVariant} key={idx} className="flex flex-col items-center justify-center text-center p-6 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-colors">
+                <div className={`text-5xl md:text-6xl font-extrabold mb-4 text-transparent bg-clip-text bg-gradient-to-br ${stat.color} filter drop-shadow-sm`}>
+                  {stat.num}
+                </div>
+                <div className="text-sm uppercase tracking-widest text-gray-400 font-bold flex items-center gap-2">
+                  <CheckCircle2 size={16} className="text-gray-500" />
+                  {stat.label}
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </motion.div>
       </section>
 
       {/* ── CTA ── */}
-      <section className="relative py-24 px-4 md:px-8 w-full flex justify-center bg-gray-50 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#fee2e2] to-white pointer-events-none" />
+      <section className="relative py-20 md:py-32 px-4 md:px-8 w-full flex justify-center overflow-hidden bg-white">
+        <div className="absolute inset-0 z-0">
+          <div className="absolute -top-[20%] -right-[10%] w-[60%] h-[60%] bg-gradient-to-br from-red-100 to-orange-50 rounded-full blur-3xl opacity-70" />
+          <div className="absolute -bottom-[20%] -left-[10%] w-[60%] h-[60%] bg-gradient-to-tr from-blue-50 to-indigo-50 rounded-full blur-3xl opacity-70" />
+        </div>
+        
         <motion.div 
-          className="max-w-5xl w-full flex flex-col md:flex-row items-center justify-between gap-12 bg-white/70 backdrop-blur-xl rounded-3xl p-8 md:p-14 border border-white shadow-2xl relative z-10"
+          className="max-w-6xl w-full flex flex-col lg:flex-row items-center justify-between gap-16 relative z-10"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
           variants={fadeUpVariant}
         >
-          <div className="max-w-xl text-center md:text-left">
-            <h2 className="text-4xl md:text-5xl font-extrabold text-[#111827] mb-6 tracking-tight">Cần báo giá hoặc tư vấn kỹ thuật?</h2>
-            <p className="text-gray-600 text-lg mb-8 leading-relaxed">
-              Đội ngũ kỹ thuật của chúng tôi sẵn sàng tư vấn lựa chọn thiết bị phù hợp cho dự án của bạn với giá cạnh tranh nhất.
+          <div className="flex-1 text-center lg:text-left">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-50 text-red-600 font-bold text-xs uppercase tracking-widest mb-6 border border-red-100 shadow-sm">
+              <Zap size={14} /> Sẵn sàng phục vụ
+            </div>
+            <h2 className="text-4xl md:text-6xl font-extrabold text-gray-900 mb-6 tracking-tight leading-tight">
+              Sẵn sàng cho <br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-orange-500">dự án của bạn?</span>
+            </h2>
+            <p className="text-gray-600 text-base md:text-xl mb-8 md:mb-10 leading-relaxed max-w-2xl mx-auto lg:mx-0">
+              Đội ngũ kỹ sư chuyên nghiệp của chúng tôi luôn sẵn sàng hỗ trợ tư vấn thiết kế, lựa chọn thiết bị và cung cấp giải pháp tối ưu nhất với chi phí hợp lý.
             </p>
-            <div className="flex gap-4 flex-wrap justify-center md:justify-start">
-              <a href="https://zalo.me/0985352345" target="_blank" rel="noopener noreferrer" className="bg-[#b71508] text-white font-bold py-4 px-8 rounded text-sm uppercase tracking-wider hover:bg-red-800 transition-all shadow-lg hover:shadow-red-900/50 hover:-translate-y-1">
-                GỌI NGAY
+            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+              <a href="tel:09671789159" className="group flex items-center justify-center gap-2 bg-gradient-to-r from-red-600 to-red-500 text-white font-bold py-4 px-8 rounded-full text-sm uppercase tracking-wider hover:from-red-700 hover:to-red-600 transition-all shadow-[0_0_20px_rgba(220,38,38,0.3)] hover:shadow-[0_0_30px_rgba(220,38,38,0.5)] hover:-translate-y-1">
+                <PhoneCall size={18} className="group-hover:animate-bounce" /> Nhận báo giá ngay
               </a>
-              <Link to="/contact" className="bg-white border border-gray-300 text-[#111827] font-bold py-4 px-8 rounded text-sm uppercase tracking-wider hover:bg-gray-50 transition-all text-center hover:-translate-y-1 shadow-sm">
-                GỬI YÊU CẦU
+              <Link to="/contact" className="group flex items-center justify-center gap-2 bg-white border border-gray-200 text-gray-900 font-bold py-4 px-8 rounded-full text-sm uppercase tracking-wider hover:border-gray-300 hover:bg-gray-50 transition-all hover:-translate-y-1 shadow-sm">
+                Gửi yêu cầu tư vấn <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
           </div>
 
-          <a href="https://zalo.me/0985352345" target="_blank" rel="noopener noreferrer" className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-sm hover:shadow-2xl transition-all hover:-translate-y-2 border border-gray-50 group">
-            <div className="flex items-center gap-5 mb-5">
-              <div className="bg-red-50 text-[#b71508] p-4 rounded-full group-hover:bg-[#b71508] group-hover:text-white transition-colors">
-                <PhoneCall size={28} />
+          <div className="w-full max-w-md relative mt-8 lg:mt-0">
+            <div className="absolute inset-0 bg-gradient-to-br from-red-500 to-orange-500 rounded-[2.5rem] transform rotate-3 scale-105 blur-lg opacity-20" />
+            <div className="relative bg-white/80 backdrop-blur-xl p-8 md:p-10 rounded-[2.5rem] shadow-2xl border border-white/50 flex flex-col items-center text-center">
+              <div className="w-20 h-20 md:w-24 md:h-24 bg-red-50 rounded-full flex items-center justify-center mb-6 relative shadow-inner">
+                <div className="absolute inset-0 bg-red-400 rounded-full animate-ping opacity-20" />
+                <PhoneCall size={32} className="text-red-600 md:w-10 md:h-10" />
               </div>
-              <div>
-                <div className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">Hotline kỹ thuật</div>
-                <div className="text-2xl font-extrabold text-[#111827]">098-535-2345</div>
+              <h3 className="text-xl md:text-2xl font-extrabold text-gray-900 mb-2">Hotline Kỹ Thuật</h3>
+              <p className="text-gray-500 mb-6 font-medium text-sm md:text-base">Trực tuyến 24/7</p>
+              <div className="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-orange-500 mb-8 tracking-tight drop-shadow-sm">
+                0967-178-9159
+              </div>
+              <div className="w-full bg-gray-50/80 p-4 rounded-2xl flex items-center justify-center gap-3 border border-gray-100 shadow-sm">
+                <div className="w-3 h-3 bg-green-500 rounded-full relative shadow-[0_0_10px_rgba(34,197,94,0.6)]">
+                  <div className="absolute inset-0 bg-green-500 rounded-full animate-ping opacity-50" />
+                </div>
+                <span className="font-bold text-gray-700 text-sm">Đang có chuyên viên trực</span>
               </div>
             </div>
-            <p className="text-sm text-gray-600 leading-relaxed">Phục vụ 24/7 cho các yêu cầu hỗ trợ kỹ thuật và tư vấn sản phẩm, thiết kế mạch.</p>
-          </a>
+          </div>
         </motion.div>
       </section>
     </div>

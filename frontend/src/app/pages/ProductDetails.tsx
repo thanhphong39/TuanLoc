@@ -102,22 +102,21 @@ export function ProductDetails() {
           </ul>
 
           <div className="flex flex-col gap-4 mb-8">
-            <a href="https://zalo.me/0985352345" target="_blank" rel="noopener noreferrer" className="bg-[#b71508] text-white font-bold py-4 px-6 rounded text-sm uppercase tracking-wider hover:bg-red-800 transition-colors flex items-center justify-center gap-2 w-full text-center">
-              <Mail size={18} /> Liên Hệ Ngay
+            <a href="tel:09671789159" className="bg-[#b71508] text-white font-bold py-4 px-6 rounded text-sm uppercase tracking-wider hover:bg-red-800 transition-colors flex items-center justify-center gap-2 w-full text-center">
+              <PhoneCall size={18} />
+              Nhận Báo Giá Cạnh Tranh
             </a>
             <button className="bg-white border border-[#b71508] text-[#b71508] font-bold py-4 px-6 rounded text-sm uppercase tracking-wider hover:bg-red-50 transition-colors flex items-center justify-center gap-2 w-full">
               <Download size={18} /> Tải PDF đầy đủ
             </button>
           </div>
 
-          <a href="https://zalo.me/0985352345" target="_blank" rel="noopener noreferrer" className="bg-[#f8fafc] p-6 rounded-lg border border-gray-100 flex items-start gap-4 hover:bg-gray-50 transition-colors">
-            <div className="bg-white p-3 rounded-full shadow-sm text-[#b71508]">
-              <PhoneCall size={20} />
-            </div>
+          <a href="tel:09671789159" className="bg-[#f8fafc] p-6 rounded-lg border border-gray-100 flex items-start gap-4 hover:bg-gray-50 transition-colors">
+            <div className="bg-red-50 text-[#b71508] p-3 rounded-full"><PhoneCall size={20} /></div>
             <div>
-              <div className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">Hỗ trợ kỹ thuật</div>
-              <div className="text-lg font-bold text-[#b71508] mb-1">098-535-2345</div>
-              <div className="text-sm text-gray-600">Sẵn sàng 24/7 cho các hạ tầng quan trọng.</div>
+              <div className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">Tư vấn kỹ thuật 24/7</div>
+              <div className="text-lg font-bold text-[#b71508] mb-1">0967-178-9159</div>
+              <p className="text-sm text-gray-500">Gọi ngay để được kỹ sư chuyên môn tư vấn trực tiếp.</p>
             </div>
           </a>
         </div>
@@ -204,19 +203,23 @@ export function ProductDetails() {
             <p className="text-gray-400 mb-8 leading-relaxed">
               Trao đổi trực tiếp với các kỹ sư điện cao cấp của chúng tôi về việc tích hợp {product.name} vào dự án hạ tầng tiếp theo của bạn.
             </p>
-            <div className="space-y-6">
-              <a href="https://zalo.me/0985352345" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 hover:opacity-80 transition-opacity">
-                <div className="bg-red-500/20 text-[#ef4444] p-3 rounded"><PhoneCall size={24} /></div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <a href="tel:09671789159" className="flex items-center gap-4 hover:opacity-80 transition-opacity">
+                <div className="w-14 h-14 bg-white/10 rounded-full flex items-center justify-center border border-white/20">
+                  <PhoneCall size={24} className="text-white" />
+                </div>
                 <div>
-                  <div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">HOTLINE TOÀN CẦU</div>
-                  <div className="text-xl font-bold">098-535-2345</div>
+                  <div className="text-[10px] text-blue-200 uppercase tracking-widest mb-1">Hotline Kỹ Thuật</div>
+                  <div className="text-xl font-bold">0967-178-9159</div>
                 </div>
               </a>
               <div className="flex items-center gap-4">
-                <div className="bg-blue-500/20 text-blue-400 p-3 rounded"><Mail size={24} /></div>
+                <div className="w-14 h-14 bg-white/10 rounded-full flex items-center justify-center border border-white/20">
+                  <Mail size={24} className="text-white" />
+                </div>
                 <div>
-                  <div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">YÊU CẦU DOANH NGHIỆP</div>
-                  <div className="text-xl font-bold">tuanlocco.hcm@gmail.com</div>
+                  <div className="text-[10px] text-blue-200 uppercase tracking-widest mb-1">Email Yêu Cầu Báo Giá</div>
+                  <div className="text-xl font-bold">Tuanlocco.hcm@gmail.com</div>
                 </div>
               </div>
             </div>

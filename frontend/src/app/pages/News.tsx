@@ -5,9 +5,13 @@ import { getPosts, formatDate, type ApiPost } from "../../lib/api";
 
 export function News() {
   const [news, setNews] = useState<ApiPost[]>([]);
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {
-    getPosts({ limit: "10" }).then((res) => setNews(res.posts)).catch(() => {});
+    getPosts({ limit: "10" }).then((res) => {
+      setNews(res.posts);
+      setTotal(res.total || 0);
+    }).catch(() => {});
   }, []);
 
   return (
@@ -46,47 +50,58 @@ export function News() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-8 py-16 w-full">
+      <div className="max-w-7xl mx-auto px-8 py-16 w-full min-h-[400px]">
         {/* News Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-          {news.map((item) => (
-            <div key={item._id} className="bg-white rounded-xl border border-gray-200 overflow-hidden flex flex-col hover:shadow-lg transition-shadow group cursor-pointer">
-              <div className="relative h-56 overflow-hidden">
-                <img src={item.image} alt={item.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-[#111827] text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-sm shadow-sm">
-                  {item.badge}
+        {news.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+            {news.map((item) => (
+              <div key={item._id} className="bg-white rounded-xl border border-gray-200 overflow-hidden flex flex-col hover:shadow-lg transition-shadow group cursor-pointer">
+                <div className="relative h-56 overflow-hidden">
+                  <img src={item.image} alt={item.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                  <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-[#111827] text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-sm shadow-sm">
+                    {item.badge}
+                  </div>
+                </div>
+                <div className="p-8 flex flex-col flex-1">
+                  <div className="text-gray-500 text-xs mb-3">{formatDate(item.date)}</div>
+                  <h3 className="text-xl font-bold text-[#111827] mb-4 group-hover:text-[#b71508] transition-colors line-clamp-3">
+                    {item.title}
+                  </h3>
+                  <p className="text-gray-600 text-sm mb-6 line-clamp-3 flex-1">
+                    {item.content}
+                  </p>
+                  <div className="text-[#b71508] font-bold text-xs uppercase tracking-wider flex items-center gap-1 mt-auto">
+                    Đọc thêm <ArrowRight size={14} />
+                  </div>
                 </div>
               </div>
-              <div className="p-8 flex flex-col flex-1">
-                <div className="text-gray-500 text-xs mb-3">{formatDate(item.date)}</div>
-                <h3 className="text-xl font-bold text-[#111827] mb-4 group-hover:text-[#b71508] transition-colors line-clamp-3">
-                  {item.title}
-                </h3>
-                <p className="text-gray-600 text-sm mb-6 line-clamp-3 flex-1">
-                  {item.content}
-                </p>
-                <div className="text-[#b71508] font-bold text-xs uppercase tracking-wider flex items-center gap-1 mt-auto">
-                  Đọc thêm <ArrowRight size={14} />
-                </div>
-              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center py-20 text-center">
+            <div className="text-gray-400 mb-4">
+              <svg className="w-16 h-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l6 6v10a2 2 0 01-2 2z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M13 2v6h6" />
+              </svg>
             </div>
-          ))}
-        </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">Chưa có bài viết nào</h3>
+            <p className="text-gray-500 max-w-md">Hiện tại chưa có bài viết hoặc sự kiện nào trong danh mục này. Vui lòng quay lại sau.</p>
+          </div>
+        )}
 
         {/* Pagination */}
-        <div className="flex justify-center items-center gap-2 mb-8">
-            <button className="w-10 h-10 flex items-center justify-center border border-gray-200 rounded text-gray-400 hover:bg-gray-50 disabled:opacity-50" disabled>
-              &lt;
-            </button>
-            <button className="w-10 h-10 flex items-center justify-center bg-[#b71508] text-white rounded font-bold">1</button>
-            <button className="w-10 h-10 flex items-center justify-center border border-gray-200 rounded text-[#111827] font-medium hover:bg-gray-50">2</button>
-            <button className="w-10 h-10 flex items-center justify-center border border-gray-200 rounded text-[#111827] font-medium hover:bg-gray-50">3</button>
-            <span className="w-10 h-10 flex items-center justify-center text-gray-400">...</span>
-            <button className="w-10 h-10 flex items-center justify-center border border-gray-200 rounded text-[#111827] font-medium hover:bg-gray-50">12</button>
-            <button className="w-10 h-10 flex items-center justify-center border border-gray-200 rounded text-[#111827] font-medium hover:bg-gray-50">
-              &gt;
-            </button>
-        </div>
+        {total > 10 && (
+          <div className="flex justify-center items-center gap-2 mb-8">
+              <button className="w-10 h-10 flex items-center justify-center border border-gray-200 rounded text-gray-400 hover:bg-gray-50 disabled:opacity-50" disabled>
+                &lt;
+              </button>
+              <button className="w-10 h-10 flex items-center justify-center bg-[#b71508] text-white rounded font-bold">1</button>
+              <button className="w-10 h-10 flex items-center justify-center border border-gray-200 rounded text-[#111827] font-medium hover:bg-gray-50 disabled:opacity-50" disabled>
+                &gt;
+              </button>
+          </div>
+        )}
       </div>
 
       {/* Newsletter */}
