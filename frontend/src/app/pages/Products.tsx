@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { FileText, Settings, Download, Search, X } from "lucide-react";
+import { Settings, Search, X, PhoneCall } from "lucide-react";
 import { Link, useSearchParams } from "react-router";
 import { motion, AnimatePresence } from "motion/react";
 import { getProducts, type ApiProduct } from "../../lib/api";

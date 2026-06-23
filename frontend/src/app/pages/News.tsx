@@ -1,18 +1,44 @@
 import { useState, useEffect } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Loader2 } from "lucide-react";
 import { Link } from "react-router";
 import { getPosts, formatDate, type ApiPost } from "../../lib/api";
+
+const BADGE_FILTERS = [
+  { label: "Tất cả", value: "" },
+  { label: "Dự án mới", value: "DỰ ÁN MỚI" },
+  { label: "Công nghệ", value: "CÔNG NGHỆ" },
+  { label: "ISO", value: "ISO" },
+  { label: "Nội bộ", value: "NỘI BỘ" },
+];
+
+const LIMIT = 9;
 
 export function News() {
   const [news, setNews] = useState<ApiPost[]>([]);
   const [total, setTotal] = useState(0);
+  const [activeBadge, setActiveBadge] = useState("");
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(true);
+
+  const totalPages = Math.ceil(total / LIMIT);
 
   useEffect(() => {
-    getPosts({ limit: "10" }).then((res) => {
-      setNews(res.posts);
-      setTotal(res.total || 0);
-    }).catch(() => {});
-  }, []);
+    setLoading(true);
+    const params: Record<string, string> = { limit: String(LIMIT), page: String(page) };
+    if (activeBadge) params.badge = activeBadge;
+    getPosts(params)
+      .then((res) => {
+        setNews(res.posts);
+        setTotal(res.total || 0);
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, [activeBadge, page]);
+
+  const handleBadgeClick = (badge: string) => {
+    setActiveBadge(badge);
+    setPage(1);
+  };
 
   return (
     <div className="flex flex-col w-full bg-[#f8fafc]">
@@ -33,48 +59,66 @@ export function News() {
             <span className="text-white">Tin tức</span>
           </div>
 
-          <h1 className="text-5xl font-bold mb-4">Tin Tức & Sự Kiện</h1>
+          <h1 className="text-5xl font-bold mb-4">Tin Tức &amp; Sự Kiện</h1>
           <p className="text-lg text-gray-300 max-w-2xl">
             Cập nhật những thông tin mới nhất về dự án hạ tầng điện, công nghệ thi công và các tiêu chuẩn kỹ thuật hàng đầu từ Tuấn Lộc.
           </p>
         </div>
       </section>
 
+      {/* Filter Tabs */}
       <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-8 py-4 flex gap-4 overflow-x-auto">
-          <button className="bg-[#b71508] text-white font-bold text-xs uppercase tracking-widest px-6 py-2.5 rounded-full shrink-0">Tất cả</button>
-          <button className="bg-white border border-gray-200 text-gray-600 font-bold text-xs uppercase tracking-widest px-6 py-2.5 rounded-full hover:bg-gray-50 shrink-0">Dự án mới</button>
-          <button className="bg-white border border-gray-200 text-gray-600 font-bold text-xs uppercase tracking-widest px-6 py-2.5 rounded-full hover:bg-gray-50 shrink-0">Công nghệ</button>
-          <button className="bg-white border border-gray-200 text-gray-600 font-bold text-xs uppercase tracking-widest px-6 py-2.5 rounded-full hover:bg-gray-50 shrink-0">ISO</button>
-          <button className="bg-white border border-gray-200 text-gray-600 font-bold text-xs uppercase tracking-widest px-6 py-2.5 rounded-full hover:bg-gray-50 shrink-0">Nội bộ</button>
+        <div className="max-w-7xl mx-auto px-8 py-4 flex gap-3 overflow-x-auto">
+          {BADGE_FILTERS.map((f) => (
+            <button
+              key={f.value}
+              onClick={() => handleBadgeClick(f.value)}
+              className={`shrink-0 font-bold text-xs uppercase tracking-widest px-6 py-2.5 rounded-full transition-colors ${
+                activeBadge === f.value
+                  ? "bg-[#b71508] text-white"
+                  : "bg-white border border-gray-200 text-gray-600 hover:bg-gray-50"
+              }`}
+            >
+              {f.label}
+            </button>
+          ))}
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-8 py-16 w-full min-h-[400px]">
-        {/* News Grid */}
-        {news.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+        {loading ? (
+          <div className="flex items-center justify-center py-20">
+            <Loader2 className="w-8 h-8 text-[#b71508] animate-spin" />
+          </div>
+        ) : news.length > 0 ? (
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-8 mb-12">
             {news.map((item) => (
-              <div key={item._id} className="bg-white rounded-xl border border-gray-200 overflow-hidden flex flex-col hover:shadow-lg transition-shadow group cursor-pointer">
-                <div className="relative h-56 overflow-hidden">
+              <Link
+                key={item._id}
+                to={`/news/${item._id}`}
+                className="bg-white rounded-xl border border-gray-200 overflow-hidden flex flex-col hover:shadow-lg transition-shadow group cursor-pointer"
+              >
+                <div className="relative h-32 md:h-56 overflow-hidden">
                   <img src={item.image} alt={item.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                  <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-[#111827] text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-sm shadow-sm">
-                    {item.badge}
-                  </div>
+                  {item.badge && (
+                    <div className="absolute top-2 left-2 md:top-4 md:left-4 bg-white/90 backdrop-blur-sm text-[#111827] text-[8px] md:text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 md:px-3 md:py-1 rounded-sm shadow-sm">
+                      {item.badge}
+                    </div>
+                  )}
                 </div>
-                <div className="p-8 flex flex-col flex-1">
-                  <div className="text-gray-500 text-xs mb-3">{formatDate(item.date)}</div>
-                  <h3 className="text-xl font-bold text-[#111827] mb-4 group-hover:text-[#b71508] transition-colors line-clamp-3">
+                <div className="p-3 md:p-6 flex flex-col flex-1">
+                  <div className="text-gray-500 text-[10px] md:text-xs mb-1 md:mb-3">{formatDate(item.date)}</div>
+                  <h3 className="text-xs md:text-lg font-bold text-[#111827] mb-2 md:mb-3 group-hover:text-[#b71508] transition-colors line-clamp-2 md:line-clamp-3 flex-1 leading-snug">
                     {item.title}
                   </h3>
-                  <p className="text-gray-600 text-sm mb-6 line-clamp-3 flex-1">
+                  <p className="text-gray-600 text-[10px] md:text-sm mb-2 md:mb-5 line-clamp-2 hidden md:block">
                     {item.content}
                   </p>
-                  <div className="text-[#b71508] font-bold text-xs uppercase tracking-wider flex items-center gap-1 mt-auto">
-                    Đọc thêm <ArrowRight size={14} />
+                  <div className="text-[#b71508] font-bold text-[10px] md:text-xs uppercase tracking-wider flex items-center gap-1 mt-auto">
+                    Đọc thêm <ArrowRight size={12} className="md:w-3.5 md:h-3.5" />
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         ) : (
@@ -91,15 +135,33 @@ export function News() {
         )}
 
         {/* Pagination */}
-        {total > 10 && (
+        {!loading && totalPages > 1 && (
           <div className="flex justify-center items-center gap-2 mb-8">
-              <button className="w-10 h-10 flex items-center justify-center border border-gray-200 rounded text-gray-400 hover:bg-gray-50 disabled:opacity-50" disabled>
-                &lt;
+            <button
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              disabled={page === 1}
+              className="w-10 h-10 flex items-center justify-center border border-gray-200 rounded text-gray-400 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              &lt;
+            </button>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((pg) => (
+              <button
+                key={pg}
+                onClick={() => setPage(pg)}
+                className={`w-10 h-10 flex items-center justify-center rounded font-bold ${
+                  pg === page ? "bg-[#b71508] text-white" : "border border-gray-200 text-[#111827] hover:bg-gray-50"
+                }`}
+              >
+                {pg}
               </button>
-              <button className="w-10 h-10 flex items-center justify-center bg-[#b71508] text-white rounded font-bold">1</button>
-              <button className="w-10 h-10 flex items-center justify-center border border-gray-200 rounded text-[#111827] font-medium hover:bg-gray-50 disabled:opacity-50" disabled>
-                &gt;
-              </button>
+            ))}
+            <button
+              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+              disabled={page === totalPages}
+              className="w-10 h-10 flex items-center justify-center border border-gray-200 rounded text-gray-400 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              &gt;
+            </button>
           </div>
         )}
       </div>
