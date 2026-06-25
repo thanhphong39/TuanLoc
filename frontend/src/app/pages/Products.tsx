@@ -157,7 +157,7 @@ export function Products() {
           <div className="bg-[#111827] text-white p-5 rounded-xl">
             <h3 className="text-base font-bold mb-3">Cần tư vấn?</h3>
             <p className="text-sm text-gray-400 mb-4">Đội ngũ kỹ sư sẵn sàng hỗ trợ lựa chọn thiết bị phù hợp.</p>
-            <a href="tel:09671789159" className="bg-[#b71508] text-white font-bold py-2.5 px-4 rounded w-full text-xs uppercase tracking-wider hover:bg-red-800 transition-colors block text-center">
+            <a href="tel:0967789159" className="bg-[#b71508] text-white font-bold py-2.5 px-4 rounded w-full text-xs uppercase tracking-wider hover:bg-red-800 transition-colors block text-center">
               Nhận Báo Giá
             </a>
           </div>
@@ -238,7 +238,7 @@ export function Products() {
                       <Link to={`/products/${product._id}`} className="flex-1 py-2 px-1 md:py-2.5 md:px-3 rounded text-[10px] md:text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-colors bg-[#b71508] text-white hover:bg-red-800 text-center">
                         Chi tiết
                       </Link>
-                      <a href="tel:09671789159" className="py-2 px-2 md:py-2.5 md:px-3 rounded text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-colors bg-white text-[#b71508] border border-[#b71508] hover:bg-red-50">
+                      <a href="tel:0967789159" className="py-2 px-2 md:py-2.5 md:px-3 rounded text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-colors bg-white text-[#b71508] border border-[#b71508] hover:bg-red-50">
                         <PhoneCall size={14} className="md:w-4 md:h-4" /> Báo Giá
                       </a>
                     </div>
@@ -295,12 +295,12 @@ export function Products() {
             Đội ngũ kỹ thuật của chúng tôi sẵn sàng hỗ trợ bạn chọn thiết bị đúng thông số kỹ thuật cho từng ứng dụng.
           </p>
           <div className="flex gap-4 flex-wrap">
-            <a href="tel:09671789159" className="bg-[#b71508] text-white font-bold py-3 px-6 rounded text-sm uppercase tracking-wider hover:bg-red-800 transition-colors flex items-center gap-2">
+            <a href="tel:0967789159" className="bg-[#b71508] text-white font-bold py-3 px-6 rounded text-sm uppercase tracking-wider hover:bg-red-800 transition-colors flex items-center gap-2">
               <PhoneCall size={18} />
               Liên hệ mua hàng
             </a>
-            <a href="tel:09671789159" className="bg-transparent border border-gray-500 text-white font-bold py-3 px-6 rounded text-sm uppercase tracking-wider hover:bg-white/10 transition-colors">
-              Hotline: 0967-178-9159
+            <a href="tel:0967789159" className="bg-transparent border border-gray-500 text-white font-bold py-3 px-6 rounded text-sm uppercase tracking-wider hover:bg-white/10 transition-colors">
+              Hotline: 0967 789 159
             </a>
           </div>
         </div>

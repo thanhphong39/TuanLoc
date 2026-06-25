@@ -72,13 +72,13 @@ export function RootLayout() {
         </nav>
 
         <div className="flex items-center gap-4">
-          <a href="tel:09671789159" className="flex items-center gap-2 md:gap-3 hover:opacity-80 transition-opacity">
+          <a href="tel:0967789159" className="flex items-center gap-2 md:gap-3 hover:opacity-80 transition-opacity">
             <div className="bg-[#b71508] text-white p-2 rounded-full">
               <PhoneCall size={16} className="md:w-[18px] md:h-[18px]" />
             </div>
             <div className="hidden sm:block">
               <div className="text-[10px] md:text-xs text-gray-500 font-semibold uppercase tracking-wider">HOTLINE 24/7</div>
-              <div className="text-[#111827] font-bold text-base md:text-lg">0967-178-9159</div>
+              <div className="text-[#111827] font-bold text-base md:text-lg">0967 789 159</div>
             </div>
           </a>
 
@@ -202,7 +202,7 @@ export function RootLayout() {
       <div className="fixed bottom-6 right-4 md:bottom-8 md:right-8 z-[9999] flex flex-col gap-3 md:gap-4">
         {/* Zalo Button */}
         <a 
-          href="https://zalo.me/09671789159" 
+          href="https://zalo.me/0967789159" 
           target="_blank" 
           rel="noreferrer"
           className="pulsing-button w-12 h-12 md:w-14 md:h-14 bg-[#b71508] rounded-full flex items-center justify-center shadow-2xl transition-transform hover:scale-110 active:scale-95 animate-ring"

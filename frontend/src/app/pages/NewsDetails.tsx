@@ -136,10 +136,10 @@ export function NewsDetails() {
             <ArrowLeft size={16} /> Quay lại tin tức
           </Link>
           <a
-            href="tel:09671789159"
+            href="tel:0967789159"
             className="flex items-center gap-2 px-6 py-3 rounded-full bg-[#b71508] text-white font-bold text-sm hover:bg-red-800 transition-colors"
           >
-            <PhoneCall size={16} /> Liên hệ tư vấn: 0967-178-9159
+            <PhoneCall size={16} /> Liên hệ tư vấn: 0967 789 159
           </a>
         </motion.div>
 

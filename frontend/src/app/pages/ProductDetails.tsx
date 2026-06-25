@@ -102,7 +102,7 @@ export function ProductDetails() {
           </ul>
 
           <div className="flex flex-col gap-4 mb-8">
-            <a href="tel:09671789159" className="bg-[#b71508] text-white font-bold py-4 px-6 rounded text-sm uppercase tracking-wider hover:bg-red-800 transition-colors flex items-center justify-center gap-2 w-full text-center">
+            <a href="tel:0967789159" className="bg-[#b71508] text-white font-bold py-4 px-6 rounded text-sm uppercase tracking-wider hover:bg-red-800 transition-colors flex items-center justify-center gap-2 w-full text-center">
               <PhoneCall size={18} />
               Nhận Báo Giá Cạnh Tranh
             </a>
@@ -111,11 +111,11 @@ export function ProductDetails() {
             </button>
           </div>
 
-          <a href="tel:09671789159" className="bg-[#f8fafc] p-6 rounded-lg border border-gray-100 flex items-start gap-4 hover:bg-gray-50 transition-colors">
+          <a href="tel:0967789159" className="bg-[#f8fafc] p-6 rounded-lg border border-gray-100 flex items-start gap-4 hover:bg-gray-50 transition-colors">
             <div className="bg-red-50 text-[#b71508] p-3 rounded-full"><PhoneCall size={20} /></div>
             <div>
               <div className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">Tư vấn kỹ thuật 24/7</div>
-              <div className="text-lg font-bold text-[#b71508] mb-1">0967-178-9159</div>
+              <div className="text-lg font-bold text-[#b71508] mb-1">0967 789 159</div>
               <p className="text-sm text-gray-500">Gọi ngay để được kỹ sư chuyên môn tư vấn trực tiếp.</p>
             </div>
           </a>
@@ -204,13 +204,13 @@ export function ProductDetails() {
               Trao đổi trực tiếp với các kỹ sư điện cao cấp của chúng tôi về việc tích hợp {product.name} vào dự án hạ tầng tiếp theo của bạn.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <a href="tel:09671789159" className="flex items-center gap-4 hover:opacity-80 transition-opacity">
+              <a href="tel:0967789159" className="flex items-center gap-4 hover:opacity-80 transition-opacity">
                 <div className="w-14 h-14 bg-white/10 rounded-full flex items-center justify-center border border-white/20">
                   <PhoneCall size={24} className="text-white" />
                 </div>
                 <div>
                   <div className="text-[10px] text-blue-200 uppercase tracking-widest mb-1">Hotline Kỹ Thuật</div>
-                  <div className="text-xl font-bold">0967-178-9159</div>
+                  <div className="text-xl font-bold">0967 789 159</div>
                 </div>
               </a>
               <div className="flex items-center gap-4">

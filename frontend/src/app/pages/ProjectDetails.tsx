@@ -246,7 +246,7 @@ export function ProjectDetails() {
             <div className="space-y-3">
               <div className="flex items-center gap-3 text-sm">
                 <PhoneCall size={16} className="text-red-200" />
-                <span className="font-bold">0900.555.888</span>
+                <span className="font-bold">0967 789 159</span>
               </div>
               <div className="flex items-center gap-3 text-sm">
                 <Mail size={16} className="text-red-200" />

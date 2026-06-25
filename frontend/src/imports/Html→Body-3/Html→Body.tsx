@@ -456,7 +456,7 @@ function Container21() {
     <div className="relative shrink-0 w-full" data-name="Container">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid content-stretch flex flex-col items-start pt-[4px] relative size-full">
         <div className="flex flex-col font-['Work_Sans:Regular',sans-serif] font-normal justify-center leading-[0] relative shrink-0 text-[#4859a7] text-[16px] w-full">
-          <p className="leading-[24px]">0900.555.888</p>
+          <p className="leading-[24px]">0967 789 159</p>
         </div>
       </div>
     </div>
@@ -1284,7 +1284,7 @@ function Container45() {
   return (
     <div className="content-stretch flex flex-col items-start relative shrink-0 w-full" data-name="Container">
       <div className="flex flex-col font-['Work_Sans:Regular',sans-serif] font-normal justify-center leading-[0] relative shrink-0 text-[#edf0ff] text-[16px] whitespace-nowrap">
-        <p className="leading-[24px]">0900.555.888</p>
+        <p className="leading-[24px]">0967 789 159</p>
       </div>
     </div>
   );
@@ -2195,7 +2195,7 @@ function Container83() {
   return (
     <div className="content-stretch flex flex-col items-start relative shrink-0 w-full" data-name="Container">
       <div className="flex flex-col font-['DM_Sans:Bold',sans-serif] font-bold justify-center leading-[0] relative shrink-0 text-[#00133a] text-[24px] whitespace-nowrap" style={{ fontVariationSettings: "'opsz' 14" }}>
-        <p className="leading-[24px]">0900.555.888</p>
+        <p className="leading-[24px]">0967 789 159</p>
       </div>
     </div>
   );

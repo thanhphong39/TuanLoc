@@ -133,7 +133,7 @@ export function Home() {
                 <span className="relative z-10 flex items-center gap-2">Khám phá sản phẩm <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" /></span>
                 <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out" />
               </Link>
-              <a href="tel:09671789159" className="w-full sm:w-auto flex justify-center items-center gap-2 py-4 px-8 rounded-full bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/20 text-white font-bold text-sm uppercase tracking-wider transition-all hover:-translate-y-1">
+              <a href="tel:0967789159" className="w-full sm:w-auto flex justify-center items-center gap-2 py-4 px-8 rounded-full bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/20 text-white font-bold text-sm uppercase tracking-wider transition-all hover:-translate-y-1">
                 <PhoneCall size={18} /> Liên hệ tư vấn
               </a>
             </motion.div>
@@ -381,7 +381,7 @@ export function Home() {
               Đội ngũ kỹ sư chuyên nghiệp của chúng tôi luôn sẵn sàng hỗ trợ tư vấn thiết kế, lựa chọn thiết bị và cung cấp giải pháp tối ưu nhất với chi phí hợp lý.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <a href="tel:09671789159" className="group flex items-center justify-center gap-2 bg-gradient-to-r from-red-600 to-red-500 text-white font-bold py-4 px-8 rounded-full text-sm uppercase tracking-wider hover:from-red-700 hover:to-red-600 transition-all shadow-[0_0_20px_rgba(220,38,38,0.3)] hover:shadow-[0_0_30px_rgba(220,38,38,0.5)] hover:-translate-y-1">
+              <a href="tel:0967789159" className="group flex items-center justify-center gap-2 bg-gradient-to-r from-red-600 to-red-500 text-white font-bold py-4 px-8 rounded-full text-sm uppercase tracking-wider hover:from-red-700 hover:to-red-600 transition-all shadow-[0_0_20px_rgba(220,38,38,0.3)] hover:shadow-[0_0_30px_rgba(220,38,38,0.5)] hover:-translate-y-1">
                 <PhoneCall size={18} className="group-hover:animate-bounce" /> Nhận báo giá ngay
               </a>
               <Link to="/contact" className="group flex items-center justify-center gap-2 bg-white border border-gray-200 text-gray-900 font-bold py-4 px-8 rounded-full text-sm uppercase tracking-wider hover:border-gray-300 hover:bg-gray-50 transition-all hover:-translate-y-1 shadow-sm">
@@ -400,7 +400,7 @@ export function Home() {
               <h3 className="text-xl md:text-2xl font-extrabold text-gray-900 mb-2">Hotline Kỹ Thuật</h3>
               <p className="text-gray-500 mb-6 font-medium text-sm md:text-base">Trực tuyến 24/7</p>
               <div className="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-orange-500 mb-8 tracking-tight drop-shadow-sm">
-                0967-178-9159
+                0967 789 159
               </div>
               <div className="w-full bg-gray-50/80 p-4 rounded-2xl flex items-center justify-center gap-3 border border-gray-100 shadow-sm">
                 <div className="w-3 h-3 bg-green-500 rounded-full relative shadow-[0_0_10px_rgba(34,197,94,0.6)]">
